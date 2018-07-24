@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'VPC Security Groups'
+Parameters:
+  VPCID:
+    Type: 'AWS::EC2::VPC::Id'
+
+Resources:
+  CCSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group which allows access to the Cloud Connectors
+      VpcId: !Ref VPCID
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 3389
+          ToPort: 3389
+      Tags:
+      - Key: Name
+        Value: !Sub '${AWS::StackName}-cc-sg'
+      - Key: App
+        Value: Citrix
+
+  VDASecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group which allows access to the VDA Workers
+      VpcId: !Ref VPCID
+      SecurityGroupIngress:
+        - IpProtocol: TCP
+          FromPort: 1494
+          ToPort: 1494
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: TCP
+          FromPort: 2598
+          ToPort: 2598
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: TCP
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !Ref CCSecurityGroup
+        - IpProtocol: TCP
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref CCSecurityGroup
+        - IpProtocol: TCP
+          FromPort: 8008
+          ToPort: 8008
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: TCP
+          FromPort: 3389
+          ToPort: 3389
+          CidrIp: 0.0.0.0/0   
+      Tags:
+      - Key: Name
+        Value: !Sub '${AWS::StackName}-vda-sg'
+      - Key: App
+        Value: Citrix
+Outputs:
+  CCSecurityGroup:
+    Value: !Ref CCSecurityGroup
+  VDASecurityGroup:
+    Value: !Ref VDASecurityGroup
