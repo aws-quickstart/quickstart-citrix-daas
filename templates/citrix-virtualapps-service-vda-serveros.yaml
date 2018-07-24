@@ -205,56 +205,56 @@ Parameters:
 Mappings:
   AWSAMIRegionMap:
     AMI:
-      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.03.24
-      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2018.03.24
-    ap-northeast-1:
-      WS2012R2: ami-3badff5d
-      WS2016FULLBASE: ami-6ccf9d0a
-    ap-northeast-2:
-      WS2012R2: ami-dde34cb3
-      WS2016FULLBASE: ami-ece04f82
-    ap-northeast-3:
-      WS2012R2: ami-00757d27a0476b33c
-      WS2016FULLBASE: ami-0c56d476b019fcd31
+      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.07.11
+      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2018.07.11
     ap-south-1:
-      WS2012R2: ami-d8b9e2b7
-      WS2016FULLBASE: ami-cabde6a5
-    ap-southeast-1:
-      WS2012R2: ami-169fc06a
-      WS2016FULLBASE: ami-b294cbce
-    ap-southeast-2:
-      WS2012R2: ami-e68f4384
-      WS2016FULLBASE: ami-058a4667
-    ca-central-1:
-      WS2012R2: ami-56fd7b32
-      WS2016FULLBASE: ami-d5fd7bb1
-    eu-central-1:
-      WS2012R2: ami-0bdc8fe0
-      WS2016FULLBASE: ami-29c192c2
-    eu-west-1:
-      WS2012R2: ami-e9104190
-      WS2016FULLBASE: ami-2316475a
-    eu-west-2:
-      WS2012R2: ami-19688e7e
-      WS2016FULLBASE: ami-9c6b8dfb
+        WS2012R2: ami-e013228f
+        WS2016FULLBASE: ami-ae1627c1
     eu-west-3:
-      WS2012R2: ami-802492fd
-      WS2016FULLBASE: ami-7225930f
+        WS2012R2: ami-e0b1019d
+        WS2016FULLBASE: ami-23b6065e
+    eu-west-2:
+        WS2012R2: ami-a3b259c4
+        WS2016FULLBASE: ami-9bb358fc
+    eu-west-1:
+        WS2012R2: ami-5ef8ebb4
+        WS2016FULLBASE: ami-96e1f27c
+    ap-northeast-3:
+        WS2012R2: ami-04474e79
+        WS2016FULLBASE: ami-88424bf5
+    ap-northeast-2:
+        WS2012R2: ami-28398d46
+        WS2016FULLBASE: ami-07219569
+    ap-northeast-1:
+        WS2012R2: ami-a73c5e4a
+        WS2016FULLBASE: ami-49096ba4
     sa-east-1:
-      WS2012R2: ami-6ed38702
-      WS2016FULLBASE: ami-9ede8af2
+        WS2012R2: ami-fac4e396
+        WS2016FULLBASE: ami-36caed5a
+    ca-central-1:
+        WS2012R2: ami-f334b697
+        WS2016FULLBASE: ami-303ebc54
+    ap-southeast-1:
+        WS2012R2: ami-43e49da9
+        WS2016FULLBASE: ami-84e79e6e
+    ap-southeast-2:
+        WS2012R2: ami-e3862381
+        WS2016FULLBASE: ami-d48623b6
+    eu-central-1:
+        WS2012R2: ami-f7ece81c
+        WS2016FULLBASE: ami-6af7f381
     us-east-1:
-      WS2012R2: ami-eb1ecd96
-      WS2016FULLBASE: ami-ed14c790
+        WS2012R2: ami-60093e1f
+        WS2016FULLBASE: ami-2d360152
     us-east-2:
-      WS2012R2: ami-2f16274a
-      WS2016FULLBASE: ami-8e1627eb
+        WS2012R2: ami-ca2318af
+        WS2016FULLBASE: ami-36241f53
     us-west-1:
-      WS2012R2: ami-4e07112e
-      WS2016FULLBASE: ami-6d04120d
+        WS2012R2: ami-132ac970
+        WS2016FULLBASE: ami-d12ecdb2
     us-west-2:
-      WS2012R2: ami-651f811d
-      WS2016FULLBASE: ami-8b1886f3
+        WS2012R2: ami-490b5831
+        WS2016FULLBASE: ami-6d336015
 
 
 Resources:

@@ -10,6 +10,37 @@ Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
       - Label:
+          default: Citrix Cloud Configuration
+        Parameters:
+          - CitrixCustomerId
+          - CitrixAPIClientID
+          - CitrixAPIClientSecret
+          - CitrixResourceLocation
+          - CitrixCloudConnector1HostName
+          - CitrixCloudConnector2HostName 
+          - CitrixVDAHostName  
+      - Label:
+          default: Citrix Media Installation Location
+        Parameters:
+          - CitrixInstallS3BucketName
+          - CitrixInstallS3KeyPrefix
+          - CitrixVDAInstallationFileName                          
+      - Label:
+          default: Active Directory Configuration
+        Parameters:
+          - DomainDNSName
+          - DomainNetBIOSName
+          - DomainAdminPassword      
+      - Label:
+          default: Amazon EC2 Configuration
+        Parameters:
+          - KeyPairName
+          - RDGWInstanceType
+          - CitrixCloudConnectorInstanceType
+          - CitrixVDAInstanceType
+          - CitrixCloudConnectorsWindowsServerVersion
+          - CitrixVDAWindowsServerVersion                   
+      - Label:
           default: Network Configuration
         Parameters:
           - AvailabilityZones
@@ -22,71 +53,13 @@ Metadata:
           - PublicSubnet2CIDR
           - RDGWCIDR
       - Label:
-          default: Amazon EC2 Configuration
-        Parameters:
-          - KeyPairName
-          - RDGWInstanceType
-          - CitrixCloudConnectorInstanceType
-          - CitrixVDAInstanceType
-          - CitrixCloudConnectorsWindowsServerVersion
-          - CitrixVDAWindowsServerVersion          
-      - Label:
-          default: Standard Active Directory Configuration
-        Parameters:
-          - ADScenarioType
-          - DomainDNSName
-          - DomainNetBIOSName
-          - DomainAdminPassword
-      - Label:
-          default: >-
-            Self-Managed Active Directory Configuration (for non-AWS Directory
-            Service architecture)
-        Parameters:
-          - DomainAdminUser
-          - ADServer1InstanceType
-          - ADServer1NetBIOSName
-          - ADServer1PrivateIP
-          - ADServer2InstanceType
-          - ADServer2NetBIOSName
-          - ADServer2PrivateIP
-          - RestoreModePassword
-      - Label:
-          default: Citrix Cloud Configuration
-        Parameters:
-          - CitrixCustomerId
-          - CitrixAPIClientID
-          - CitrixAPIClientSecret
-          - CitrixResourceLocation
-          - CitrixCloudConnector1HostName
-          - CitrixCloudConnector2HostName 
-          - CitrixVDAHostName             
-      - Label:
           default: AWS Quick Start Configuration
         Parameters:
           - QSS3BucketName
           - QSS3KeyPrefix
-      - Label:
-          default: Citrix Media Installation Location
-        Parameters:
-          - CitrixInstallS3BucketName
-          - CitrixInstallS3KeyPrefix
-          - CitrixVDAInstallationFileName              
+           
 
     ParameterLabels:
-      ADScenarioType:
-        default: AD Scenario Type
-      ADServer1InstanceType:
-        default: Domain Controller 1 Instance Type
-      ADServer1NetBIOSName:
-        default: Domain Controller 1 NetBIOS Name
-      ADServer1PrivateIP:
-        default: Domain Controller 1 Private IP Address
-      ADServer2InstanceType:
-        default: Domain Controller 2 Instance Type
-      ADServer2NetBIOSName:
-        default: Domain Controller 2 NetBIOS Name
-      ADServer2PrivateIP:
-        default: Domain Controller 2 Private IP Address      
       CitrixAPIClientID:
         default: Citrix Cloud API Client ID
       CitrixAPIClientSecret:
@@ -111,8 +84,6 @@ Metadata:
         default: Citrix Cloud Customer ID  
       DomainAdminPassword:
         default: Domain Admin Password
-      DomainAdminUser:
-        default: Domain Admin User Name
       DomainDNSName:
         default: Domain DNS Name
       DomainNetBIOSName:
@@ -141,8 +112,6 @@ Metadata:
         default: Remote Desktop Gateway Instance Type
       CitrixResourceLocation:
         default: Citrix Cloud Resource Location      
-      RestoreModePassword:
-        default: Restore Mode Password  
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type
       CitrixVDAInstallationFileName:
@@ -153,71 +122,7 @@ Metadata:
         default: VPC CIDR
 
 Parameters:
-  ADScenarioType:
-    AllowedValues:
-      - AWS Directory Service for Microsoft AD (Enterprise Edition)
-      - Microsoft AD on Amazon EC2
-    Default: AWS Directory Service for Microsoft AD (Enterprise Edition)
-    Description: >-
-      Select the type of AD DS deployment to use: AWS Directory Service for
-      Microsoft AD or managing your own Amazon EC2 AD instances.
-    Type: String
-  ADServer1InstanceType:
-    AllowedValues:
-      - t2.large
-      - m3.large
-      - m3.xlarge
-      - m3.2xlarge
-      - m4.large
-      - m4.xlarge
-      - m4.2xlarge
-      - m4.4xlarge
-    Default: m4.xlarge
-    Description: Amazon EC2 instance type for the first Active Directory instance
-    Type: String
-  ADServer1NetBIOSName:
-    AllowedPattern: '[a-zA-Z0-9\-]+'
-    Default: DC1
-    Description: NetBIOS name of the first Active Directory server (up to 15 characters)
-    MaxLength: '15'
-    MinLength: '1'
-    Type: String
-  ADServer1PrivateIP:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
-    Default: 10.0.0.10
-    Description: >-
-      Fixed private IP for the first Active Directory server located in
-      Availability Zone 1
-    Type: String
-  ADServer2InstanceType:
-    AllowedValues:
-      - t2.large
-      - m3.large
-      - m3.xlarge
-      - m3.2xlarge
-      - m4.large
-      - m4.xlarge
-      - m4.2xlarge
-      - m4.4xlarge
-    Default: m4.xlarge
-    Description: Amazon EC2 instance type for the second Active Directory instance
-    Type: String
-  ADServer2NetBIOSName:
-    AllowedPattern: '[a-zA-Z0-9\-]+'
-    Default: DC2
-    Description: NetBIOS name of the second Active Directory server (up to 15 characters)
-    MaxLength: '15'
-    MinLength: '1'
-    Type: String
-  ADServer2PrivateIP:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
-    Default: 10.0.1.10
-    Description: >-
-      Fixed private IP for the second Active Directory server located in
-      Availability Zone 2
-    Type: String
+
   AvailabilityZones:
     Description: >-
       Choose two Availability Zones that will be used to deploy your Windows
@@ -267,15 +172,6 @@ Parameters:
     MinLength: '8'
     NoEcho: 'true'
     Type: String
-  DomainAdminUser:
-    AllowedPattern: '[a-zA-Z0-9]*'
-    Default: admin
-    Description: >-
-      User name for the account that will be added as Domain Administrator. This
-      is separate from the default "Administrator" account. Note: Use "admin" if using managed AD.
-    MaxLength: '25'
-    MinLength: '5'
-    Type: String
   DomainDNSName:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
@@ -309,15 +205,6 @@ Parameters:
   RDGWCIDR:
     Description: CIDR from which you may connect to bastion host (e.g.1.1.1.1/32)
     Type: String
-  DomainDNSName:
-    Description: >-
-      Fully qualified domain name (FQDN). This is not a required parameter and
-      will not be used if the Remote Gateway servers are not joined to a domain.
-    Type: String
-    MinLength: '3'
-    MaxLength: '25'
-    AllowedPattern: '[a-zA-Z0-9]+\..+'
-    Default: "example.com"
   CitrixCloudConnectorInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String
@@ -453,9 +340,6 @@ Parameters:
       - WS2016FULLBASE
 
 Conditions:
-  UseAWSDirectoryServiceEE: !Equals 
-    - !Ref ADScenarioType
-    - AWS Directory Service for Microsoft AD (Enterprise Edition)
   GovCloudCondition: !Equals 
     - !Ref 'AWS::Region'
     - us-gov-west-1
@@ -489,47 +373,15 @@ Resources:
     Properties:
       TemplateURL: !Sub 
         - >-
-          https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/${QSADTemplate}
+          https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/ad-3.template
         - QSS3Region: !If 
             - GovCloudCondition
             - s3-us-gov-west-1
             - s3
-          QSADTemplate: !If 
-            - UseAWSDirectoryServiceEE
-            - ad-3.template
-            - ad-1.template
-      Parameters: !If 
-        - UseAWSDirectoryServiceEE
-        - DomainAdminPassword: !Ref DomainAdminPassword
-          DomainDNSName: !Ref DomainDNSName
-          DomainNetBIOSName: !Ref DomainNetBIOSName
-          PrivateSubnet1CIDR: !Ref PrivateInfraSubnet1CIDR
-          PrivateSubnet1ID: !GetAtt 
-            - VPCStack
-            - Outputs.PrivateSubnet1AID
-          PrivateSubnet2CIDR: !Ref PrivateInfraSubnet2CIDR
-          PrivateSubnet2ID: !GetAtt 
-            - VPCStack
-            - Outputs.PrivateSubnet2AID
-          PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
-          PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
-          QSS3BucketName: !Ref QSS3BucketName
-          QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/'
-          VPCCIDR: !Ref VPCCIDR
-          VPCID: !GetAtt 
-            - VPCStack
-            - Outputs.VPCID
-        - ADServer1InstanceType: !Ref ADServer1InstanceType
-          ADServer1NetBIOSName: !Ref ADServer1NetBIOSName
-          ADServer1PrivateIP: !Ref ADServer1PrivateIP
-          ADServer2InstanceType: !Ref ADServer2InstanceType
-          ADServer2NetBIOSName: !Ref ADServer2NetBIOSName
-          ADServer2PrivateIP: !Ref ADServer2PrivateIP
+      Parameters:
           DomainAdminPassword: !Ref DomainAdminPassword
-          DomainAdminUser: !Ref DomainAdminUser
           DomainDNSName: !Ref DomainDNSName
           DomainNetBIOSName: !Ref DomainNetBIOSName
-          KeyPairName: !Ref KeyPairName
           PrivateSubnet1CIDR: !Ref PrivateInfraSubnet1CIDR
           PrivateSubnet1ID: !GetAtt 
             - VPCStack
@@ -542,7 +394,6 @@ Resources:
           PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
           QSS3BucketName: !Ref QSS3BucketName
           QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/'
-          RestoreModePassword: !Ref RestoreModePassword
           VPCCIDR: !Ref VPCCIDR
           VPCID: !GetAtt 
             - VPCStack
@@ -579,7 +430,7 @@ Resources:
       - ADStack
     Properties:
       TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrixcloud-resourcelocation-master.yaml
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-resourcelocation.yaml
       Parameters:
         ADServer1PrivateIP:                  !GetAtt ADStack.Outputs.ADServer1PrivateIP
         ADServer2PrivateIP:                  !GetAtt ADStack.Outputs.ADServer2PrivateIP

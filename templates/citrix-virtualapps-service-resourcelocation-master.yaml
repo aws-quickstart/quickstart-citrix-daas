@@ -299,13 +299,13 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-iam.yaml
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-iam.yaml
 
   CitrixCloudSecurityGroups:
      Type: AWS::CloudFormation::Stack
      Properties:
        TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrixcloud-securitygroups.yaml
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-securitygroups.yaml
        Parameters:
         VPCID:                            !Ref VPCID          
 
@@ -314,7 +314,7 @@ Resources:
     DependsOn: 'CitrixCloudSecurityGroups'
     Properties:
       TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrixcloud-connectors.yaml
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-connectors.yaml
       Parameters:
         ADServer1PrivateIP:                   !Ref ADServer1PrivateIP
         ADServer2PrivateIP:                   !Ref ADServer2PrivateIP        
@@ -344,7 +344,7 @@ Resources:
       - CitrixCloudSecurityGroups
     Properties:
       TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-vda-serveros.yaml
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-vda-serveros.yaml
       Parameters:
         ADServer1PrivateIP:                   !Ref ADServer1PrivateIP
         ADServer2PrivateIP:                   !Ref ADServer2PrivateIP   
