@@ -188,7 +188,7 @@ Parameters:
   CitrixVDAInstallationFileName:
     Type: String
     Description:  File name of the VDA Installation Package    
-    Default: VDAServerSetup_7.17.exe
+    Default: VDAServerSetup_7.18.exe
   CitrixVDAInstanceType:
     Default: t2.medium
     Type: String
