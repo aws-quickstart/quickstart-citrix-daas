@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
+Description: This template deploys an IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
 
 Resources:
   CitrixUser:

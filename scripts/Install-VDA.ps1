@@ -44,6 +44,5 @@ try {
     write-Host "XD RDS VDA installed successfully"
 }
 catch {
-    $Error[0]
-    exit 1
+    $_ | Write-AWSQuickStartException
 }

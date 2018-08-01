@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'Citrix Cloud Connectors'
+Description: 'This template deploys two Citrix Cloud Connectors.'
 
 Metadata:
   'AWS::CloudFormation::Interface':

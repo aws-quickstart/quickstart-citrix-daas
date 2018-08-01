@@ -486,7 +486,8 @@ function Get-VDAInstallArgs {
     #If user does not specifies the installation path of VDA, it will be installed in default path
     if ([string]::IsNullOrEmpty($InstallDir))
     {
-         [System.Collections.ArrayList]$installargs = ("/quiet", "/optimize", "/verboselog")
+         [System.Collections.ArrayList]$installargs = ("/quiet",  "/verboselog")
+        #  [System.Collections.ArrayList]$installargs = ("/quiet", "/optimize", "/verboselog")
     }
     else
     {   
@@ -497,7 +498,8 @@ function Get-VDAInstallArgs {
             New-Item $InstallDir -type 'directory' | Out-Null
         }
 
-        [System.Collections.ArrayList]$installargs = ("/quiet","/optimize", "/installdir '$InstallDir'", "/verboselog")
+        [System.Collections.ArrayList]$installargs = ("/quiet", "/installdir '$InstallDir'", "/verboselog")
+        # [System.Collections.ArrayList]$installargs = ("/quiet","/optimize", "/installdir '$InstallDir'", "/verboselog")
     }
     
     if ($UseXenAppBranding) 

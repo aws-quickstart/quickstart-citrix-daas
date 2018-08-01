@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'Citrix Server VDA'
+Description: 'This template deploys a Citrix Server VDA.'
 
 Metadata:
   'AWS::CloudFormation::Interface':
@@ -385,11 +385,14 @@ Resources:
             c-Prep-VDA:
               command: powershell.exe -ExecutionPolicy Unrestricted C:\cfn\scripts\Prep-VDA.ps1
               waitAfterCompletion: '0'
-            d-Install-VDA: 
+            d-reboot:
+              command: powershell.exe -Command Restart-Computer -Force
+              waitAfterCompletion: forever              
+            e-Install-VDA: 
               command: !Sub |
                 powershell -command C:\cfn\scripts\Install-VDA.ps1 "-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\cfn\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}"
               waitAfterCompletion: '0'
-            e-reboot:
+            f-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
         finalize:  

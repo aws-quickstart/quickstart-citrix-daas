@@ -29,8 +29,6 @@ try {
 	Write-Host "Enabling Remote Assistance"
 	Install-WindowsFeature -Name Remote-Assistance 
 
-    # $driveLetter = cwcOS-Tools\Mount-Iso -IsoPath $VDA_MediaLocation\$VDA_MediaName -verbose
-
 	### Install C++ libararies
 	Write-Host "Installing Nuget"
 	Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
@@ -40,29 +38,13 @@ try {
 	Get-VcList | Get-VcRedist -Path C:\Temp\VcRedist
 	Get-VcList | Install-VcRedist -Path C:\Temp\VcRedist
 
-	# # C++ 2005 Runtime
-	# Write-Host "Installing C++ 2005 x86 ..."
-	# Start-Process -FilePath (join-path $driveLetter "Support\VcRedist_2005\vcredist_x86.exe") -Wait -ArgumentList "/q"
-	# Write-Host "Installing C++ 2005 x64 ..."
-	# Start-Process -FilePath (join-path $driveLetter "Support\VcRedist_2005\vcredist_x64.exe") -Wait -ArgumentList "/q"
-				
-	# # C++ 2008 SP1 Runtime
-	# Write-Host "Installing C++ 2008 x86 ..."
-	# Start-Process -FilePath (join-path $driveLetter "Support\VcRedist_2008_SP1\vcredist_x86.exe") -Wait -ArgumentList "/q"
-		
-	# Write-Host "Installing C++ 2008 x64 ..."
-	# Start-Process -FilePath (join-path $driveLetter "Support\VcRedist_2008_SP1\vcredist_x64.exe") -Wait -ArgumentList "/q"
-		
-	# # C++ 2010 Runtime
-	# Write-Host "Installing C++ 2010 x86 ..."
-	# Start-Process -FilePath (join-path $driveLetter "Support\VcRedist_2010_RTM\vcredist_x86.exe") -Wait -ArgumentList "/q"
-
-	# Write-Host "Installing C++ 2010 x64 ..."
-	# Start-Process -FilePath (join-path $driveLetter "Support\VcRedist_2010_RTM\vcredist_x64.exe") -Wait -ArgumentList "/q"
-
-    # cwcOS-Tools\Dismount-Iso $driveLetter -verbose
+	# Install Pre-req for v7.18 https://docs.citrix.com/en-us/session-recording/current-release/system-requirements.html
+	Write-Host "Downloading Microsoft .NET Framework 4.7.1"
+	cwcOS-Tools\Download-File -FileName "NDP471-KB4033342-x86-x64-AllOS-ENU.exe" -Path "https://download.microsoft.com/download/9/E/6/9E63300C-0941-4B45-A0EC-0008F96DD480" -ToFolder "C:\cfn\scripts\" -verbose
+	Write-Host "Installing Microsoft .NET Framework 4.7.1"
+	#Install-MSIOrEXE -installerPath c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe -installerArgs @("/Q", "/norestart")
+    Start-Process -FilePath "c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe" -ArgumentList "/q /norestart" -Wait
 }
 catch {
-    $Error[0]
-    exit 1
+	$_ | Write-AWSQuickStartException
 }

@@ -213,21 +213,26 @@ param(
         return $BearerAuthHeaderValue
     }
 
-Start-Transcript -Path C:\cfn\log\DeployCitrixCloudConnector.ps1.txt -Append   
-#Download Connector
-Download-Connector -downloadPath $ConnectorDowloadPath -connecterName $ConnectorInstallerName -customerId $CustomerId
-
-#Get Resource location id
-$customerResourceLocations = Get-CustomerResourceLocations -CustomerId $CustomerId -ClientId $APIClientID -ClientSecret $APIClientSecret -TrustUri $TrustUri -ReturnPSObject -verbose
-$SpecifiedResourceLocation = $customerResourceLocations.items | where {$_.name -eq $ResourceLocation}
-if ($SpecifiedResourceLocation) {
-    Write-Host "Customer ResourceLocations $($SpecifiedResourceLocation.id)"
-} else {
-    Throw "Unable to find a resource location named $ResourceLocation"
+try {
+    Start-Transcript -Path C:\cfn\log\DeployCitrixCloudConnector.ps1.txt -Append   
+    #Download Connector
+    Download-Connector -downloadPath $ConnectorDowloadPath -connecterName $ConnectorInstallerName -customerId $CustomerId
+    
+    #Get Resource location id
+    $customerResourceLocations = Get-CustomerResourceLocations -CustomerId $CustomerId -ClientId $APIClientID -ClientSecret $APIClientSecret -TrustUri $TrustUri -ReturnPSObject -verbose
+    $SpecifiedResourceLocation = $customerResourceLocations.items | where {$_.name -eq $ResourceLocation}
+    if ($SpecifiedResourceLocation) {
+        Write-Host "Customer ResourceLocations $($SpecifiedResourceLocation.id)"
+    } else {
+        Throw "Unable to find a resource location named $ResourceLocation"
+    }
+    
+    #Install Connector
+    $args = "/q /CustomerName:$CustomerId /ClientId:$APIClientID /ClientSecret:$APIClientSecret /Location:$($SpecifiedResourceLocation.id) /AcceptTermsOfService:true"
+    $ConnectorInstaller = (join-path -Path $ConnectorDowloadPath -ChildPath $ConnectorInstallerName)
+    Write-host "** Installing... $ConnectorInstaller with arguments $args ."
+    Start-Process $ConnectorInstaller $args -Wait
 }
-
-#Install Connector
-$args = "/q /CustomerName:$CustomerId /ClientId:$APIClientID /ClientSecret:$APIClientSecret /Location:$($SpecifiedResourceLocation.id) /AcceptTermsOfService:true"
-$ConnectorInstaller = (join-path -Path $ConnectorDowloadPath -ChildPath $ConnectorInstallerName)
-Write-host "** Installing... $ConnectorInstaller with arguments $args ."
-Start-Process $ConnectorInstaller $args -Wait
+catch {
+    $_ | Write-AWSQuickStartException
+}

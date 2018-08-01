@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'VPC Security Groups'
+Description: 'This template deploys VPC Security Groups for Citrix Cloud Connectors and Citrix VDA'
 Parameters:
   VPCID:
     Type: 'AWS::EC2::VPC::Id'
