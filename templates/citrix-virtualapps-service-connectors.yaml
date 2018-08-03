@@ -122,6 +122,7 @@ Parameters:
     Type: String
   DomainAdminPassword:
     Type: String
+    NoEcho: 'true'
   DomainAdminUser:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: admin

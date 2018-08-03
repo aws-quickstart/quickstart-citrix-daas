@@ -140,6 +140,7 @@ Parameters:
     Type: String
   DomainAdminPassword:
     Type: String
+    NoEcho: 'true'    
   DomainAdminUser:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: admin
@@ -387,12 +388,15 @@ Resources:
               waitAfterCompletion: '0'
             d-reboot:
               command: powershell.exe -Command Restart-Computer -Force
-              waitAfterCompletion: forever              
+              waitAfterCompletion: forever                 
             e-Install-VDA: 
               command: !Sub |
                 powershell -command C:\cfn\scripts\Install-VDA.ps1 "-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\cfn\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}"
               waitAfterCompletion: '0'
-            f-reboot:
+            f-scheduleTargetOSOptimizerOnNextBoot:
+              command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f
+              waitAfterCompletion: '0'                         
+            g-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
         finalize:  
