@@ -306,7 +306,7 @@ Parameters:
   CitrixVDAInstallationFileName:
     Type: String
     Description:  File name of the VDA Installation Package    
-    Default: VDAServerSetup_7.17.exe       
+    Default: VDAServerSetup_7.18.exe       
   CitrixVDAInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String

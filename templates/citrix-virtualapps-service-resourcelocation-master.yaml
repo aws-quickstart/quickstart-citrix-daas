@@ -9,6 +9,22 @@ Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
       - Label:
+          default: Citrix Cloud Configuration
+        Parameters:
+          - CitrixCustomerId
+          - CitrixAPIClientID
+          - CitrixAPIClientSecret
+          - CitrixResourceLocation
+          - CitrixCloudConnector1HostName
+          - CitrixCloudConnector2HostName 
+          - CitrixVDAHostName     
+      - Label:
+          default: Citrix Media Installation Location
+        Parameters:
+          - CitrixInstallS3BucketName
+          - CitrixInstallS3KeyPrefix
+          - CitrixVDAInstallationFileName             
+      - Label:
           default: Network Configuration
         Parameters:
           - VPCID
@@ -32,28 +48,13 @@ Metadata:
           - DomainDNSName
           - DomainNetBIOSName
           - DomainAdminPassword
-          - DomainAdminUser
-      - Label:
-          default: Citrix Cloud Configuration
-        Parameters:
-          - CitrixCustomerId
-          - CitrixAPIClientID
-          - CitrixAPIClientSecret
-          - CitrixResourceLocation
-          - CitrixCloudConnector1HostName
-          - CitrixCloudConnector2HostName 
-          - CitrixVDAHostName                   
+          - DomainAdminUser              
       - Label:
           default: AWS Quick Start Configuration
         Parameters:
           - QSS3BucketName
           - QSS3KeyPrefix
-      - Label:
-          default: Citrix Media Installation Location
-        Parameters:
-          - CitrixInstallS3BucketName
-          - CitrixInstallS3KeyPrefix
-          - CitrixVDAInstallationFileName              
+           
 
     ParameterLabels:
       ADServer1PrivateIP:
@@ -268,7 +269,7 @@ Parameters:
   CitrixVDAInstallationFileName:
     Type: String
     Description:  File name of the VDA Installation Package    
-    Default: VDAServerSetup_7.17.exe    
+    Default: VDAServerSetup_7.18.exe    
   CitrixVDAInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String
