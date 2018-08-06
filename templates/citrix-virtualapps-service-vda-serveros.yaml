@@ -101,7 +101,6 @@ Parameters:
     ConstraintDescription: >-
       Citrix Install Media location bucket name can include numbers, lowercase letters, uppercase
       letters, and hyphens (-). It cannot start or end with a hyphen (-).
-    Default: aws-quickstart
     Description: >-
       S3 bucket name for the Citrix Install Media assets. This bucket name can include
       numbers, lowercase letters, uppercase letters, and hyphens (-), but should
@@ -114,7 +113,6 @@ Parameters:
     ConstraintDescription: >-
       Citrix Install Media key prefix location can include numbers, lowercase letters, uppercase
       letters, hyphens (-), and forward slash (/).
-    Default: quickstart-citrix-xenappxendesktop/citrix-install-media
     Description: >-
       S3 key prefix for the Quick Start assets. Quick Start key prefix can
       include numbers, lowercase letters, uppercase letters, hyphens (-), and
