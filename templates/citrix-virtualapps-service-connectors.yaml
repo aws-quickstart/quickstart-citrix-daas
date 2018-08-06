@@ -104,7 +104,8 @@ Parameters:
     Default: t2.large
     AllowedValues:
       - t2.large
-      - m4.large
+      - m4.large 
+      - m5.large
   CitrixCloudConnectorSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup::Id'
   CitrixCloudConnectorsWindowsServerVersion:

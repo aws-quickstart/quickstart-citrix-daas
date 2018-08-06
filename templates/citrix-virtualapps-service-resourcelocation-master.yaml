@@ -179,7 +179,8 @@ Parameters:
     Default: t2.large
     AllowedValues:
       - t2.large
-      - m4.large
+      - m4.large 
+      - m5.large
   CitrixCustomerId:
     Description: Citrix Cloud Customer ID
     Type: String
@@ -274,13 +275,24 @@ Parameters:
     Default: t2.large
     AllowedValues:
       - t2.large
-      - m3.large
-      - m3.xlarge
-      - m3.2xlarge
+      - t2.xlarge
+      - t2.2xlarge
       - m4.large
       - m4.xlarge
       - m4.2xlarge
-      - m4.4xlarge      
+      - m4.4xlarge
+      - m5.large
+      - m5.xlarge
+      - m5.2xlarge
+      - m5.4xlarge      
+      - c4.large
+      - c4.xlarge
+      - c4.2xlarge
+      - c4.4xlarge        
+      - c5.large
+      - c5.xlarge
+      - c5.2xlarge
+      - c5.4xlarge          
   CitrixVDAWindowsServerVersion:
     Description: Version of preferred Windows Server for the Citrix Server VDAs.
     Type: String
