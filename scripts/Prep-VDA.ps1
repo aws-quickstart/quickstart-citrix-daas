@@ -44,6 +44,10 @@ try {
 	Write-Host "Installing Microsoft .NET Framework 4.7.1"
 	#Install-MSIOrEXE -installerPath c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe -installerArgs @("/Q", "/norestart")
     Start-Process -FilePath "c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe" -ArgumentList "/q /norestart" -Wait
+
+	Write-Host "Installing XenApp and XenDesktop Remote Powershell SDK"
+	
+
 }
 catch {
 	$_ | Write-AWSQuickStartException

@@ -90,8 +90,10 @@ Parameters:
     Type: String    
   CitrixAPIClientID:
     Type: String
+    NoEcho: 'true'    
   CitrixAPIClientSecret:
     Type: String
+    NoEcho: 'true'    
   CitrixCloudConnector1HostName:
     Type: String
     Default: CTX-CC1

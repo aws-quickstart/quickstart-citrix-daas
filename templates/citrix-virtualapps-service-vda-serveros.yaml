@@ -379,6 +379,8 @@ Resources:
               waitAfterCompletion: 'forever'
         installVDA:
           files:
+            'c:\cfn\scripts\CitrixPoshSdk.exe':
+              source: http://download.apps.cloud.com/CitrixPoshSdk.exe
             'c:\cfn\scripts\VDAServerSetup.exe':
               source: !Sub 'https://${CitrixInstallS3BucketName}.s3.amazonaws.com/${CitrixInstallS3KeyPrefix}/${CitrixVDAInstallationFileName}'
               authentication: S3AccessCreds
@@ -407,14 +409,17 @@ Resources:
             d-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever                 
-            e-Install-VDA: 
+            e-Install-CitrixRemotePowershellSDK:
+              command: c:\cfn\scripts\CitrixPoshSdk.exe /q
+              waitAfterCompletion: '0'              
+            f-Install-VDA: 
               command: !Sub |
                 powershell -command C:\cfn\scripts\Install-VDA.ps1 "-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\cfn\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}"
               waitAfterCompletion: '0'
-            f-scheduleTargetOSOptimizerOnNextBoot:
+            g-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f
               waitAfterCompletion: '0'                         
-            g-reboot:
+            h-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
         finalize:  

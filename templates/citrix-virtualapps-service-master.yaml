@@ -143,9 +143,11 @@ Parameters:
   CitrixAPIClientID:
     Description: Citrix Cloud API Client ID
     Type: String
+    NoEcho: 'true'    
   CitrixAPIClientSecret:
     Description: Citrix Cloud API Secret    
     Type: String
+    NoEcho: 'true'       
   CitrixResourceLocation:
     Description: Citrix Cloud Resource Location 
     Type: String
