@@ -5,6 +5,18 @@ Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
       - Label:
+          default: Citrix Cloud Configuration
+        Parameters:
+          - CitrixCustomerId
+          - CitrixAPIClientID
+          - CitrixAPIClientSecret
+          - CitrixResourceLocation
+          - CitrixHostingConnectionAWSIAMAccessKey
+          - CitrixHostingConnectionAWSIAMSecretKey
+          - CitrixHostingConnectionName
+          - CitrixCatalogName
+          - CitrixDeliveryGroupName
+      - Label:
           default: Network Configuration
         Parameters:
           - PrivateVDASubnet1
@@ -47,10 +59,28 @@ Metadata:
         default: Domain Controller 1 Private IP Address
       ADServer2PrivateIP:
         default: Domain Controller 2 Private IP Address   
+      CitrixAPIClientID:
+        default: Citrix Cloud API Client ID
+      CitrixAPIClientSecret:
+        default: Citrix Cloud API Secret    
+      CitrixCustomerId:
+        default: Citrix Cloud Customer ID     
+      CitrixHostingConnectionName:
+        default: Citrix Hosting Connection Name
+      CitrixCatalogName:
+        default: Citrix Catalog Name
+      CitrixDeliveryGroupName:
+        default: Citrix Catalog Connection Name
+      CitrixHostingConnectionAWSIAMAccessKey:
+        default: IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
+      CitrixHostingConnectionAWSIAMSecretKey:
+        default: IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
       CitrixDeliveryController1HostName:
         default: Citrix Delivery Controller 1 Name
       CitrixDeliveryController2HostName:
         default: Citrix Delivery Controller 2 Name           
+      CitrixResourceLocation:
+        default: Citrix Cloud Resource Location              
       CitrixVDAHostName:
         default: Citrix VDA Name        
       CitrixInstallS3BucketName:
@@ -87,12 +117,44 @@ Parameters:
     Type: String
   ADServer2PrivateIP:
     Type: String    
+  CitrixAPIClientID:
+    Type: String
+    NoEcho: 'true'    
+  CitrixAPIClientSecret:
+    Type: String
+    NoEcho: 'true'    
+  CitrixCustomerId:
+    Type: String
   CitrixDeliveryController1HostName:
     Type: String
     Default: CTX-DC1
   CitrixDeliveryController2HostName:
     Type: String
     Default: CTX-DC2  
+  CitrixHostingConnectionAWSIAMAccessKey:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: CitrixQSAccessKey
+    NoEcho: 'true'     
+  CitrixHostingConnectionAWSIAMSecretKey:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: CitrixQSSecretKey
+    NoEcho: 'true'     
+  CitrixResourceLocation:
+    Type: String
+    Default: AWS-QuickStart
+    Description: Created during deployment.  Must be unique.
+  CitrixHostingConnectionName:
+    Type: String
+    Default: AWS-QuickStart   
+    Description: Created during deployment.  Must be unique.    
+  CitrixCatalogName:
+    Type: String
+    Default: CAT-AWS-QuickStart
+    Description: Created during deployment.  Must be unique.    
+  CitrixDeliveryGroupName:
+    Type: String
+    Default: DG-AWS-QuickStart
+    Description: Created during deployment.  Must be unique.    
   CitrixVDAHostName:
     Type: String
     Default: CTX-VDA1      
@@ -379,8 +441,6 @@ Resources:
               waitAfterCompletion: 'forever'
         installVDA:
           files:
-            'c:\cfn\scripts\CitrixPoshSdk.exe':
-              source: http://download.apps.cloud.com/CitrixPoshSdk.exe
             'c:\cfn\scripts\VDAServerSetup.exe':
               source: !Sub 'https://${CitrixInstallS3BucketName}.s3.amazonaws.com/${CitrixInstallS3KeyPrefix}/${CitrixVDAInstallationFileName}'
               authentication: S3AccessCreds
@@ -389,6 +449,9 @@ Resources:
               authentication: S3AccessCreds
             'c:\cfn\scripts\Install-VDA.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Install-VDA.ps1'
+              authentication: S3AccessCreds 
+            'c:\cfn\scripts\Set-CitrixCloud.ps1':
+              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Set-CitrixCloud.ps1'
               authentication: S3AccessCreds 
             'c:\cfn\scripts\DisableIEESC.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1'
@@ -408,18 +471,22 @@ Resources:
               waitAfterCompletion: '0'
             d-reboot:
               command: powershell.exe -Command Restart-Computer -Force
-              waitAfterCompletion: forever                 
-            e-Install-CitrixRemotePowershellSDK:
-              command: c:\cfn\scripts\CitrixPoshSdk.exe /q
-              waitAfterCompletion: '0'              
-            f-Install-VDA: 
+              waitAfterCompletion: forever                             
+            e-Install-VDA: 
               command: !Sub |
                 powershell -command C:\cfn\scripts\Install-VDA.ps1 "-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\cfn\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}"
               waitAfterCompletion: '0'
-            g-scheduleTargetOSOptimizerOnNextBoot:
+            f-reboot:
+              command: powershell.exe -Command Restart-Computer -Force
+              waitAfterCompletion: forever              
+            g-Set-CitrixCloud: 
+              command: !Sub |
+                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}'
+              waitAfterCompletion: '0'
+            h-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f
               waitAfterCompletion: '0'                         
-            h-reboot:
+            i-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
         finalize:  

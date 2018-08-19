@@ -55,12 +55,28 @@ Resources:
     Properties:
       UserName: !Ref CitrixUser
 
-Outputs:
-  AccessKey:
-    Value: !Ref CitrixAccessKey
-    Description: To be added to Citrix XAXD Hosting Connection within Citrix Cloud
-  SecretKey:
-    Value: !GetAtt
+  AccessKeyParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub 'CitrixQSAccessKey-${AWS::StackName}'
+      Type: "String"
+      Value: !Ref CitrixAccessKey
+      Description: "IAM Access Key used for Citrix MCS Hosting Configuration"
+  
+  SecretKeyParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub 'CitrixQSSecretKey-${AWS::StackName}'
+      Type: "String"
+      Value: !GetAtt
       - CitrixAccessKey
       - SecretAccessKey
-    Description: To be added to Citrix XAXD Hosting Connection within Citrix Cloud
+      Description: "IAM Secret Key used for Citrix MCS Hosting Configuration"
+
+Outputs:
+  ParameterKeyAccessKey:
+    Value: !Ref AccessKeyParameter
+    Description: Parameter Store Key for Citrix MCS IAM Access Key
+  ParameterKeySecretKey:
+    Value: !Ref SecretKeyParameter
+    Description: Parameter Store Key for Citrix MCS IAM Secret Key

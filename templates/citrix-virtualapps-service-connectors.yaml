@@ -119,6 +119,8 @@ Parameters:
       - WS2016FULLBASE
   CitrixCustomerId:
     Type: String
+  CitrixResourceLocation:
+    Type: String    
   DomainDNSName:
     Type: String
   DomainNetBIOSName:
@@ -156,8 +158,7 @@ Parameters:
       letters, hyphens (-), and forward slash (/).
     Default: quickstart-citrix-xenappxendesktop/
     Type: String
-  CitrixResourceLocation:
-    Type: String
+
 
 Mappings:
   AWSAMIRegionMap:
@@ -306,21 +307,26 @@ Resources:
               waitAfterCompletion: 'forever'
         installCloudConnector:  
           files:
-            'c:\cfn\scripts\cwcconnector.exe':
-              source: !Sub 'https://downloads.cloud.com/${CitrixCustomerId}/connector/cwcconnector.exe'
             'c:\cfn\scripts\DisableIEESC.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1'
               authentication: S3AccessCreds              
             'c:\cfn\scripts\Deploy-CitrixCloudConnector.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Deploy-CitrixCloudConnector.ps1'
               authentication: S3AccessCreds
+            'c:\cfn\scripts\Register-CitrixCloud.ps1':
+              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Register-CitrixCloud.ps1'
+              authentication: S3AccessCreds
           commands:
             a-disableIEESC:
               command: powershell C:\cfn\scripts\DisableIEESC.ps1
               waitAfterCompletion: '0'
-            b-installCloudConnector:
+            b-register-CitrixCloud:
               command: !Sub |
-                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CustomerId '${CitrixCustomerId}' -APIClientID '${CitrixAPIClientID}' -APIClientSecret '${CitrixAPIClientSecret}' -ResourceLocation '${CitrixResourceLocation}' -ConnectorDowloadPath 'C:\cfn\scripts\'
+                powershell C:\cfn\scripts\Register-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}'
+              waitAfterCompletion: '0'
+            c-installCloudConnector:
+              command: !Sub |
+                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}'
               waitAfterCompletion: '0'
         finalize:  
           commands:
@@ -364,6 +370,7 @@ Resources:
 
   CitrixCloudConnector2:
     Type: 'AWS::EC2::Instance'
+    DependsOn: 'CitrixCloudConnector1'      
     Metadata:
       'AWS::CloudFormation::Authentication':
         S3AccessCreds:
@@ -442,11 +449,6 @@ Resources:
             'c:\cfn\scripts\Join-Domain.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1'
               authentication: S3AccessCreds   
-            # 'c:\cfn\scripts\domainjoin.ps1':
-            #   content: !Sub |
-            #     $securepasswd = (ConvertTo-SecureString "'${DomainAdminPassword}'" -AsPlainText -Force)
-            #     $creds = New-Object System.Management.Automation.PSCredential("${DomainNetBIOSName}\admin",$securepasswd)
-            #     Add-Computer -DomainName ${DomainDNSName} -Credential $creds -Restart
           commands:
             a-set-dns:
               command: !Sub |
@@ -458,8 +460,6 @@ Resources:
               waitAfterCompletion: 'forever'
         installCloudConnector:  
           files:
-            'c:\cfn\scripts\cwcconnector.exe':
-              source: !Sub 'https://downloads.cloud.com/${CitrixCustomerId}/connector/cwcconnector.exe'
             'c:\cfn\scripts\DisableIEESC.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1'
               authentication: S3AccessCreds
@@ -472,7 +472,7 @@ Resources:
               waitAfterCompletion: '0'
             b-installCloudConnector:
               command: !Sub |
-                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CustomerId '${CitrixCustomerId}' -APIClientID '${CitrixAPIClientID}' -APIClientSecret '${CitrixAPIClientSecret}' -ResourceLocation '${CitrixResourceLocation}' -ConnectorDowloadPath 'C:\cfn\scripts\'
+                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}'
               waitAfterCompletion: '0'
         finalize:  
           commands:

@@ -19,6 +19,9 @@ Metadata:
           - CitrixCloudConnector1HostName
           - CitrixCloudConnector2HostName 
           - CitrixVDAHostName  
+          - CitrixHostingConnectionName
+          - CitrixCatalogName
+          - CitrixDeliveryGroupName          
       - Label:
           default: Citrix Media Installation Location
         Parameters:
@@ -82,6 +85,12 @@ Metadata:
         default: Windows Server Version for Citrix Cloud Connector
       CitrixCustomerId:
         default: Citrix Cloud Customer ID  
+      CitrixHostingConnectionName:
+        default: Citrix Hosting Connection Name
+      CitrixCatalogName:
+        default: Citrix Catalog Name
+      CitrixDeliveryGroupName:
+        default: Citrix Catalog Connection Name        
       DomainAdminPassword:
         default: Domain Admin Password
       DomainDNSName:
@@ -138,19 +147,32 @@ Parameters:
       - m4.large 
       - m5.large
   CitrixCustomerId:
-    Description: Citrix Cloud Customer ID
+    Description: Citrix Cloud Customer ID.  See deployment instructions to obtain.
     Type: String
   CitrixAPIClientID:
-    Description: Citrix Cloud API Client ID
+    Description: Citrix Cloud API Client ID.  See deployment instructions to obtain.
     Type: String
     NoEcho: 'true'    
   CitrixAPIClientSecret:
-    Description: Citrix Cloud API Secret    
+    Description: Citrix Cloud API Secret.  See deployment instructions to obtain.
     Type: String
     NoEcho: 'true'       
   CitrixResourceLocation:
-    Description: Citrix Cloud Resource Location 
     Type: String
+    Default: AWS-QuickStart
+    Description: Created during deployment.  Must be unique.
+  CitrixHostingConnectionName:
+    Type: String
+    Default: AWS-QuickStart   
+    Description: Created during deployment.  Must be unique.    
+  CitrixCatalogName:
+    Type: String
+    Default: CAT-AWS-QuickStart
+    Description: Created during deployment.  Must be unique.    
+  CitrixDeliveryGroupName:
+    Type: String
+    Default: DG-AWS-QuickStart
+    Description: Created during deployment.  Must be unique.            
   CitrixCloudConnector1HostName:
     Type: String
     Default: CTX-CC1
@@ -449,6 +471,9 @@ Resources:
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
         CitrixVDAInstallationFileName:            !Ref CitrixVDAInstallationFileName 
         CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
+        CitrixHostingConnectionName:          !Ref CitrixHostingConnectionName
+        CitrixCatalogName:                    !Ref CitrixCatalogName
+        CitrixDeliveryGroupName:              !Ref CitrixDeliveryGroupName        
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
         DomainDNSName:                      !Ref DomainDNSName
         DomainAdminPassword:                !Ref DomainAdminPassword
@@ -457,14 +482,11 @@ Resources:
         PrivateInfraSubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2AID     
         PrivateVDASubnet1ID:                !GetAtt VPCStack.Outputs.PrivateSubnet1BID
         PrivateVDASubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2BID
+        PrivateInfraSubnet1CIDR:                !Ref PrivateInfraSubnet1CIDR
+        PrivateInfraSubnet2CIDR:                !Ref PrivateInfraSubnet2CIDR
+        PrivateVDASubnet1CIDR:                !Ref PrivateVDASubnet1CIDR
+        PrivateVDASubnet2CIDR:                !Ref PrivateVDASubnet2CIDR
         QSS3BucketName:                     !Ref QSS3BucketName
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
         VPCID:                              !GetAtt VPCStack.Outputs.VPCID
 
-
-
-Outputs:
-  CitrixAccessKey:
-    Value: !GetAtt CitrixResourceLocationStack.Outputs.AccessKey
-  CitrixSecretKey:
-    Value: !GetAtt CitrixResourceLocationStack.Outputs.SecretKey

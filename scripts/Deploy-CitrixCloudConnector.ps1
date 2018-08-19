@@ -1,238 +1,116 @@
-﻿<#
-    .SYNOPSIS
-        Downloads and Installs the Citrix Cloud Connecter
-
-    .PARAMETER CustomerId
-        The customer ID to install the connector for
-
-    .PARAMETER APIClientID:
-        The customer's client API ID
-
-    .PARAMETER APIClientSecret
-        The customer's client API Secret
-
-    .PARAMETER ResourceLocation
-        The name of the resource location to use
-
-    .PARAMETER TrustUri 
-        The URI to the trust service
-
-    .PARAMETER ConnectorDowloadPath
-        The path to download the connector to
-
-    .PARAMETER ConnectorInstallerName
-        The name of the connector installation package
-#>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$true)]
-    [String] $CustomerId,
+    [String] $CtxCustomerId, 
 
     [Parameter(Mandatory=$true)]
-    [String] $APIClientID,
+    [String] $CtxClientID,
 
     [Parameter(Mandatory=$true)]
-    [String] $APIClientSecret,
-
-    [Parameter(Mandatory=$true)]
-    [string] $ResourceLocation,
+    [String] $CtxClientSecret,
 
     [Parameter(Mandatory=$false)]
-    [string] $TrustUri = "https://trust.citrixworkspacesapi.net",
-
-    [Parameter(Mandatory=$false)]
-    [string] $ConnectorDowloadPath = $pwd,
-
-    [Parameter(Mandatory=$false)]
-    [string] $ConnectorInstallerName = "cwcconnector.exe"
+    [string] $CtxResourceLocationName = "AWS-QuickStart"
 )
 
-    function Download-Connector {
-    [CmdletBinding()]
-        param(
-            [Parameter(Mandatory=$false)][string]$downloadPath = $pwd,
-            [Parameter(Mandatory=$false)][string]$connecterName = "cwcconnector.exe",
-            [Parameter(Mandatory=$false)][System.Uri]$downloadsBaseUri = "https://downloads.cloud.com",
-            [Parameter(Mandatory=$true)][string]$customerId
-        )
-
-        $downloadsUri = New-Object -TypeName System.Uri -ArgumentList $downloadsBaseUri, "$customerId/connector/$connecterName"
-        $downloadPath = (Join-Path -Path $downloadPath -ChildPath $connecterName)
-
-        # Write-Host "Downloading Connector from $downloadsUri to $downloadPath"
-        # do {
-        #     $Failed = $false
-            
-        #     Try{
-        #         Invoke-WebRequest -Uri $downloadsUri -OutFile $downloadPath
-        #     } catch { $Failed = $true }
-
-        # } while ($Failed)
-
-        # Write-Host "Connector downloaded succesfully from $downloadsUri to $downloadPath"
-
-        # try {
-        #     Invoke-WebRequest -Uri $downloadsUri -OutFile $downloadPath
-        # }
-        # catch [System.Net.WebException] {
-        #     Throw "Unable to download connector $_"
-        # }
-        # if (Test-Path $downloadPath) {
-        #     Write-Host "Connector downloaded succesfully from $downloadsUri to $downloadPath"
-        # } else {
-        #     Throw "Unable to download connector from $downloadsUri to $downloadPath"
-        # }
+Function New-BearerAuthenticationToken {
+    Param (
+        [Parameter(Mandatory=$True)]
+        [string]
+        $ClientID,
+        [Parameter(Mandatory=$True)]
+        [string]
+        $ClientSecret
+    )
+   
+    $postHeaders = @{"Content-Type"="application/json"}
+    $body = @{
+      "ClientId"=$clientId;
+      "ClientSecret"=$clientSecret
     }
+    $trustUrl = "https://trust.citrixworkspacesapi.net/root/tokens/clients"
+   
+    $response = Invoke-RestMethod -Uri $trustUrl -Method POST -Body (ConvertTo-Json $body) -Headers $postHeaders
+    $bearerToken = $response.token
+   
+    return $bearerToken;
+   
+   }
 
-    function Get-CustomerResourceLocations {
-    [CmdletBinding()]
-        param(
-            [Parameter(Mandatory=$true)][string]$CustomerId,            
-            [Parameter(Mandatory=$true)][string] $ClientId,
-            [Parameter(Mandatory=$true)][string] $ClientSecret,
-            [Parameter(Mandatory=$true)][string] $TrustUri,
-            [Parameter(Mandatory=$false)][System.Uri] $registryServiceBaseUri = "https://registry.citrixworkspacesapi.net",
-            [Parameter(Mandatory=$false)][switch]$ReturnPSObject
-        )
-        $ErrorActionPreference = "Stop"
+Function Get-ResourceLocation {
+Param (
+    [Parameter(Mandatory=$true)]
+    [string] $customerId,
+    [Parameter(Mandatory=$true)]
+    [string] $bearerToken
+)
 
-        #GET Auth Header
-        $registryServiceUri = New-Object -TypeName System.Uri -ArgumentList $registryServiceBaseUri, "$CustomerId/resourcelocations"
-        $AuthHeader = New-BearerAuthHeaderFromSecureClient -ClientId $ClientId -ClientSecret $ClientSecret -TrustUri $TrustUri
-        write-verbose $AuthHeader.Authorization
+$requestUri = [string]::Format("https://registry.citrixworkspacesapi.net/{0}/resourcelocations", $customerId)
+$headers = @{
+    "Content-Type" = "application/json"
+    "Accept" = "application/json"
+    "Authorization" = "CWSAuth bearer=$bearerToken"
+}
 
-        #Get Customer resource location
-        $getResponse = $null
-        try {
-            $getResponse = Invoke-RestMethod -Method GET -Uri $registryServiceUri -Headers $AuthHeader -ContentType "application/json" -Verbose
-        }
-        catch [System.Net.WebException] {
-            Write-Verbose "Registry endpoint failed: $_"
-        }
 
-        if (-not $getResponse) {
-            Write-Verbose "No response from endpoint $registryServiceUri" -Verbose
-        }
+$response = Invoke-RestMethod -Uri $requestUri -Method GET -Headers $headers
 
-        if ($ReturnPSObject) {
-            return $getResponse
-        } else {
-            Write-Output (ConvertTo-Json $getResponse)
-        }
-    }
-
-    function New-BearerAuthHeaderFromSecureClient {
-        <#
-            .SYNOPSIS
-                Creates a bearer authorization header using a customer's secure client (ID & secret)
-
-            .DESCRIPTION
-                This command calls New-BearerAuthHeaderValue function to create a new bearer token.
-                Then return the authorization header CWSAuth bearer=<bearer>.
-
-            .PARAMETER  ClientId
-                A client id for the customer
-
-            .PARAMETER  ClientSecret
-                A corresponding client secret of the client id specified.
-
-            .PARAMETER  TrustUri
-                The trust url.
-
-        #>
-        [CmdletBinding()]
-        param(
-            [Parameter(Mandatory=$true)]
-            [string] $ClientId,
-
-            [Parameter(Mandatory=$true)]
-            [string] $ClientSecret,
-
-            [Parameter(Mandatory=$true)]
-            [string] $TrustUri
-        )
-        $BearerAuthHeaderValue  = New-BearerAuthHeaderValue -ClientId $ClientId -ClientSecret $ClientSecret -TrustUri $TrustUri
-        return @{"Authorization" = $BearerAuthHeaderValue}
-    }
-
-    function New-BearerAuthHeaderValue {
-        <#
-            .SYNOPSIS
-                Create a new bearer token using a Customer's Secure Client 
-
-            .DESCRIPTION
-                This command contacts trust URI to obtain a bearer token.
-
-            .PARAMETER  ClientId
-                A client id for the customer
-
-            .PARAMETER  ClientSecret
-                A corresponding client secret of the client id specified.
-
-            .PARAMETER  TrustUri
-                The trust url.
-
-            .PARAMETER Timeout
-                The Invoke-RestMethod timeout used when contacting the trust url.
-        #>
-
-        [CmdletBinding()]
-        param(
-            [Parameter(Mandatory=$true)]
-            [string] $ClientId,
-
-            [Parameter(Mandatory=$true)]
-            [string] $ClientSecret,
-
-            [Parameter(Mandatory=$true)]
-            [string] $TrustUri,
-
-            [Parameter(Mandatory=$false)]
-            [Int] $Timeout = 300
-        )
-
-        $endPoint = "root/tokens/clients"
-        $trustUri = "$TrustUri/$endPoint"
-
-        $Body = @{
-            clientId = $ClientId
-            clientSecret = $ClientSecret
-        }
-        write-verbose "[Body]: $(ConvertTo-Json $Body)"
-
-        try {
-            $response = Invoke-RestMethod -Uri $trustUri -Method "Post" -Body (ConvertTo-Json $Body) -ContentType application/json -TimeoutSec $Timeout -Verbose
-        } catch [System.Net.WebException] {
-            Write-Verbose "Trust endpoint failed: $_"
-            throw $_
-        }
-        Write-Verbose "[Response] $(ConvertTo-Json $response)"
-
-        $BearerAuthHeaderValue = "CWSAuth bearer=`"$($response.token)`""
-
-        return $BearerAuthHeaderValue
-    }
+return $response.items;
+}
 
 try {
-    Start-Transcript -Path C:\cfn\log\DeployCitrixCloudConnector.ps1.txt -Append   
-    #Download Connector
-    Download-Connector -downloadPath $ConnectorDowloadPath -connecterName $ConnectorInstallerName -customerId $CustomerId
-    
-    #Get Resource location id
-    $customerResourceLocations = Get-CustomerResourceLocations -CustomerId $CustomerId -ClientId $APIClientID -ClientSecret $APIClientSecret -TrustUri $TrustUri -ReturnPSObject -verbose
-    $SpecifiedResourceLocation = $customerResourceLocations.items | where {$_.name -eq $ResourceLocation}
-    if ($SpecifiedResourceLocation) {
-        Write-Host "Customer ResourceLocations $($SpecifiedResourceLocation.id)"
-    } else {
-        Throw "Unable to find a resource location named $ResourceLocation"
+
+    Start-Transcript -Path C:\cfn\log\Deploy-CitrixCloudConnector.ps1.txt -Append    
+
+    # Error handling
+    $Global:ErrorActionPreference = "Stop";
+
+    # Check domain membership for CCC server (required)
+    Write-Host "Checking domain membership of current machine"
+    If (-not $(Get-WmiObject Win32_ComputerSystem).PartOfDomain) {
+        Throw "Citrix Cloud Connector machine must be member of Active Directory domain, aborting"
     }
-    
-    #Install Connector
-    $args = "/q /CustomerName:$CustomerId /ClientId:$APIClientID /ClientSecret:$APIClientSecret /Location:$($SpecifiedResourceLocation.id) /AcceptTermsOfService:true"
-    $ConnectorInstaller = (join-path -Path $ConnectorDowloadPath -ChildPath $ConnectorInstallerName)
-    Write-host "** Installing... $ConnectorInstaller with arguments $args ."
-    Start-Process $ConnectorInstaller $args -Wait
+
+    # Check if user is administrator
+    Write-Host "Checking permissions"
+    If (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+        Throw "You must be administrator in order to execute this script, aborting"
+    }
+
+    # Get bearer authentication token
+    Write-Host "Generating new authentication token";
+    $CtxAuthToken = New-BearerAuthenticationToken -ClientID $CtxClientId -ClientSecret $CtxClientSecret;
+
+    # Get Resource Location ID
+    Write-Host "Get Resource Location ID from Citrix Cloud";
+    $CtxResourceLocationId = Get-ResourceLocation -customerId $CtxCustomerId -bearerToken $CtxAuthToken | Where-Object {$_.name -eq $CtxResourceLocationName} | Select-Object -First 1 -ExpandProperty "id";
+
+    # Validate that Resource Location ID has been retrieved
+    If (-not $CtxResourceLocationId -is [String]) {
+        Throw "Not able to retrieve resource location with name $CtxResourceLocationName, aborting"
+    }
+
+    # Download Citrix Cloud Connector from Citrix Cloud
+    Write-Host "Downloading Citrix Cloud Connector installer";
+    $m_CCCTempFile = $(New-TemporaryFile).FullName + ".exe";
+    $m_CCCURL = "https://downloads.cloud.com/$CtxCustomerId/connector/cwcconnector.exe";
+    (New-Object System.Net.WebClient).DownloadFile($m_CCCURL, $m_CCCTempFile);
+
+    # Install Citrix Cloud Connector
+    Write-Host "Installing Citrix Cloud Connector";
+    $m_CCCCmdArgs = "/q /CustomerName:$CtxCustomerId /ClientId:$CtxClientID /ClientSecret:$CtxClientSecret /Location:$CtxResourceLocationId /AcceptTermsOfService:true";
+    $m_ErrorLevel = Start-Process -FilePath $m_CCCTempFile -ArgumentList $m_CCCCmdArgs -Wait -PassThru;
+
+    # Check errorlevel returned by installation. If installation fails, more details can be found in %LOCALAPPDATA%\Temp\CitrixLogs\CloudServicesSetup
+    If ($m_ErrorLevel.ExitCode -ne 0) {
+        Throw "Installation of Citrix Cloud Connector failed with errorcode $($m_ErrorLevel.ExitCode), aborting"; 
+    }
+
+    # Delete installer
+    Write-Host "Cleaning up after installation"
+    Remove-Item $m_CCCTempFile
 }
 catch {
-    $_ | Write-AWSQuickStartException
-}
+        $_ | Write-AWSQuickStartException
+    }
+    
