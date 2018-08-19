@@ -106,6 +106,7 @@ try {
 
     # Publish few applications
     Write-Host "Publish applications"
+    $instanceId = Invoke-WebRequest -Uri http://169.254.169.254/latest/meta-data/instance-id    
     [Array]$m_PublishedApps = @("C:\Program Files\Internet Explorer\iexplore.exe", "C:\Windows\System32\notepad.exe"); 
 
     ForEach ($m_PAPath in $m_PublishedApps) {
@@ -113,8 +114,9 @@ try {
         Write-Host "Publishing $($m_FileDetails.FileDescription)"; 
         $m_FileIcon = Get-BrokerIcon -FileName $m_PAPath -index 0;
         $m_CtxIcon = New-BrokerIcon -EncodedIconData $m_FileIcon.EncodedIconData;
+        $m_AppName = -join($m_FileDetails.FileDescription,"_",$instanceId)
 
-        New-BrokerApplication -ApplicationType "HostedOnDesktop" -CommandLineArguments "" -CommandLineExecutable $m_PAPath -CpuPriorityLevel "Normal" -DesktopGroup $m_DG.Uid -Enabled $True -IgnoreUserHomeZone $False -MaxPerUserInstances 0 -MaxTotalInstances 0 -Name $m_FileDetails.FileDescription -Priority 0 -PublishedName $m_FileDetails.FileDescription -SecureCmdLineArgumentsEnabled $True -ShortcutAddedToDesktop $False -ShortcutAddedToStartMenu $False -UserFilterEnabled $False -Visible $True -WaitForPrinterCreation $False -IconUid $m_CtxIcon.Uid
+        New-BrokerApplication -ApplicationType "HostedOnDesktop" -CommandLineArguments "" -CommandLineExecutable $m_PAPath -CpuPriorityLevel "Normal" -DesktopGroup $m_DG.Uid -Enabled $True -IgnoreUserHomeZone $False -MaxPerUserInstances 0 -MaxTotalInstances 0 -Name $m_AppName -Priority 0 -PublishedName $m_FileDetails.FileDescription -SecureCmdLineArgumentsEnabled $True -ShortcutAddedToDesktop $False -ShortcutAddedToStartMenu $False -UserFilterEnabled $False -Visible $True -WaitForPrinterCreation $False -IconUid $m_CtxIcon.Uid
     }
 
 }
