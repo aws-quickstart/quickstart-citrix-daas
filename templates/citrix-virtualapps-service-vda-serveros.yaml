@@ -42,12 +42,6 @@ Metadata:
           - QSS3BucketName
           - QSS3KeyPrefix
       - Label:
-          default: Citrix Media Installation Location
-        Parameters:
-          - CitrixInstallS3BucketName
-          - CitrixInstallS3KeyPrefix
-          - CitrixVDAInstallationFileName
-      - Label:
           default: Citrix XenApp/XenDesktop Configuration
         Parameters:
           - CitrixDeliveryController1HostName
@@ -82,11 +76,7 @@ Metadata:
       CitrixResourceLocation:
         default: Citrix Cloud Resource Location              
       CitrixVDAHostName:
-        default: Citrix VDA Name        
-      CitrixInstallS3BucketName:
-        default: Citrix Media Installation S3 Bucket Name
-      CitrixInstallS3KeyPrefix:
-        default: Citrix Media Installation S3 Key Prefix           
+        default: Citrix VDA Name            
       DomainAdminPassword:
         default: Domain Admin Password
       DomainAdminUser:
@@ -105,8 +95,6 @@ Metadata:
         default: Quick Start S3 Bucket Name
       QSS3KeyPrefix:
         default: Quick Start S3 Key Prefix
-      CitrixVDAInstallationFileName:
-        default: Citrix VDA Install Media
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type
       CitrixVDAWindowsServerVersion:
@@ -158,28 +146,6 @@ Parameters:
   CitrixVDAHostName:
     Type: String
     Default: CTX-VDA1      
-  CitrixInstallS3BucketName:
-    AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
-    ConstraintDescription: >-
-      Citrix Install Media location bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
-    Description: >-
-      S3 bucket name for the Citrix Install Media assets. This bucket name can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-), but should
-      not start or end with a hyphen. You can specify your own bucket if you
-      copy all of the assets and submodules into it, if you want to override the
-      Quick Start behavior for your specific implementation.
-    Type: String
-  CitrixInstallS3KeyPrefix:
-    AllowedPattern: '^[0-9a-zA-Z-/]*$'
-    ConstraintDescription: >-
-      Citrix Install Media key prefix location can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
-    Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
-    Type: String         
   DomainDNSName:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
@@ -246,17 +212,16 @@ Parameters:
       include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/).
     Type: String  
-  CitrixVDAInstallationFileName:
-    Type: String
-    Description:  File name of the VDA Installation Package    
-    Default: VDAServerSetup_7.18.exe
   CitrixVDAInstanceType:
-    Default: t2.large
+    Default: m5.large
     Type: String
     AllowedValues:
       - t2.large
       - t2.xlarge
       - t2.2xlarge
+      - t3.large
+      - t3.xlarge
+      - t3.2xlarge
       - m4.large
       - m4.xlarge
       - m4.2xlarge
@@ -272,7 +237,10 @@ Parameters:
       - c5.large
       - c5.xlarge
       - c5.2xlarge
-      - c5.4xlarge     
+      - c5.4xlarge
+      - g3.4xlarge
+      - g3.8xlarge
+      - g3.16xlarge    
   CitrixVDASecurityGroup:
     Type: 'AWS::EC2::SecurityGroup::Id'
   CitrixVDAWindowsServerVersion:
@@ -442,8 +410,7 @@ Resources:
         installVDA:
           files:
             'c:\cfn\scripts\VDAServerSetup.exe':
-              source: !Sub 'https://${CitrixInstallS3BucketName}.s3.amazonaws.com/${CitrixInstallS3KeyPrefix}/${CitrixVDAInstallationFileName}'
-              authentication: S3AccessCreds
+              source: 'https://s3.amazonaws.com/temp-qsmedia/vda/VDAServerSetup_7.18.exe'
             'C:\cfn\scripts\Prep-VDA.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-VDA.ps1'
               authentication: S3AccessCreds
@@ -550,7 +517,6 @@ Resources:
                   - 's3:GetObject'
                 Resource: 
                 - !Sub 'arn:aws:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*'
-                - !Sub 'arn:aws:s3:::${CitrixInstallS3BucketName}/${CitrixInstallS3KeyPrefix}*'
                 Effect: Allow
           PolicyName: aws-quick-start-s3-policy
       Path: /

@@ -20,13 +20,7 @@ Metadata:
           - CitrixVDAHostName   
           - CitrixHostingConnectionName
           - CitrixCatalogName
-          - CitrixDeliveryGroupName            
-      - Label:
-          default: Citrix Media Installation Location
-        Parameters:
-          - CitrixInstallS3BucketName
-          - CitrixInstallS3KeyPrefix
-          - CitrixVDAInstallationFileName                       
+          - CitrixDeliveryGroupName                                 
       - Label:
           default: Amazon EC2 Configuration
         Parameters:
@@ -87,11 +81,7 @@ Metadata:
       CitrixDeliveryGroupName:
         default: Citrix Catalog Connection Name
       CitrixVDAHostName:
-        default: Citrix VDA Name          
-      CitrixInstallS3BucketName:
-        default: Citrix Media Installation S3 Bucket Name
-      CitrixInstallS3KeyPrefix:
-        default: Citrix Media Installation S3 Key Prefix                     
+        default: Citrix VDA Name                             
       CitrixCloudConnectorInstanceType:
         default: Citrix Cloud Connector Instance Type
       CitrixCustomerId:
@@ -135,9 +125,7 @@ Metadata:
       CitrixResourceLocation:
         default: Citrix Cloud Resource Location      
       CitrixVDAInstanceType:
-        default: Citrix Server VDA Instance Type
-      CitrixVDAInstallationFileName:
-        default: Citrix VDA Install Media             
+        default: Citrix Server VDA Instance Type      
       VPCCIDR:
         default: VPC ID
 
@@ -189,28 +177,6 @@ Parameters:
     Type: String
     Default: DG-AWS-QuickStart
     Description: Created during deployment.  Must be unique.            
-  CitrixInstallS3BucketName:
-    AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
-    ConstraintDescription: >-
-      Citrix Install Media location bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
-    Description: >-
-      S3 bucket name for the Citrix Install Media assets. This bucket name can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-), but should
-      not start or end with a hyphen. You can specify your own bucket if you
-      copy all of the assets and submodules into it, if you want to override the
-      Quick Start behavior for your specific implementation.
-    Type: String
-  CitrixInstallS3KeyPrefix:
-    AllowedPattern: '^[0-9a-zA-Z-/]*$'
-    ConstraintDescription: >-
-      Citrix Install Media key prefix location can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
-    Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
-    Type: String      
   CitrixCloudConnectorsWindowsServerVersion:
     Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
     Type: String
@@ -221,9 +187,10 @@ Parameters:
   CitrixCloudConnectorInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String
-    Default: t2.large
+    Default: t3.large
     AllowedValues:
       - t2.large
+      - t3.large
       - m4.large 
       - m5.large
   CitrixCustomerId:
@@ -342,19 +309,18 @@ Parameters:
       S3 key prefix for the Quick Start assets. Quick Start key prefix can
       include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/).
-    Type: String  
-  CitrixVDAInstallationFileName:
-    Type: String
-    Description:  File name of the VDA Installation Package    
-    Default: VDAServerSetup_7.18.exe    
+    Type: String    
   CitrixVDAInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String
-    Default: t2.large
+    Default: m5.large
     AllowedValues:
       - t2.large
       - t2.xlarge
       - t2.2xlarge
+      - t3.large
+      - t3.xlarge
+      - t3.2xlarge
       - m4.large
       - m4.xlarge
       - m4.2xlarge
@@ -370,7 +336,10 @@ Parameters:
       - c5.large
       - c5.xlarge
       - c5.2xlarge
-      - c5.4xlarge          
+      - c5.4xlarge
+      - g3.4xlarge
+      - g3.8xlarge
+      - g3.16xlarge          
   CitrixVDAWindowsServerVersion:
     Description: Version of preferred Windows Server for the Citrix Server VDAs.
     Type: String
@@ -447,8 +416,6 @@ Resources:
         CitrixCustomerId:                           !Ref CitrixCustomerId           
         CitrixDeliveryController1HostName:        !Ref CitrixCloudConnector1HostName
         CitrixDeliveryController2HostName:        !Ref CitrixCloudConnector2HostName     
-        CitrixInstallS3BucketName:                !Ref CitrixInstallS3BucketName
-        CitrixInstallS3KeyPrefix:                 !Ref CitrixInstallS3KeyPrefix
         CitrixHostingConnectionAWSIAMAccessKey:                !GetAtt IAM.Outputs.ParameterKeyAccessKey              
         CitrixHostingConnectionAWSIAMSecretKey:                !GetAtt IAM.Outputs.ParameterKeySecretKey  
         CitrixResourceLocation:                     !Ref CitrixResourceLocation                        
@@ -457,7 +424,6 @@ Resources:
         CitrixCatalogName:                    !Ref CitrixCatalogName
         CitrixDeliveryGroupName:              !Ref CitrixDeliveryGroupName
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
-        CitrixVDAInstallationFileName:            !Ref CitrixVDAInstallationFileName
         CitrixVDASecurityGroup:                   !GetAtt CitrixCloudSecurityGroups.Outputs.VDASecurityGroup
         CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
