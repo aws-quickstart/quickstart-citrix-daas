@@ -14,13 +14,10 @@ Metadata:
           - CitrixCustomerId
           - CitrixAPIClientID
           - CitrixAPIClientSecret
-          - CitrixResourceLocation
           - CitrixCloudConnector1HostName
           - CitrixCloudConnector2HostName 
           - CitrixVDAHostName   
-          - CitrixHostingConnectionName
-          - CitrixCatalogName
-          - CitrixDeliveryGroupName                                 
+                        
       - Label:
           default: Amazon EC2 Configuration
         Parameters:
@@ -121,9 +118,7 @@ Metadata:
       QSS3KeyPrefix:
         default: Quick Start S3 Key Prefix
       RDGWInstanceType:
-        default: Remote Desktop Gateway Instance Type
-      CitrixResourceLocation:
-        default: Citrix Cloud Resource Location      
+        default: Remote Desktop Gateway Instance Type    
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type      
       VPCCIDR:
@@ -161,22 +156,6 @@ Parameters:
   CitrixVDAHostName:
     Type: String
     Default: CTX-VDA1        
-  CitrixResourceLocation:
-    Type: String
-    Default: AWS-QuickStart
-    Description: Created during deployment.  Must be unique.
-  CitrixHostingConnectionName:
-    Type: String
-    Default: AWS-QuickStart   
-    Description: Created during deployment.  Must be unique.    
-  CitrixCatalogName:
-    Type: String
-    Default: CAT-AWS-QuickStart
-    Description: Created during deployment.  Must be unique.    
-  CitrixDeliveryGroupName:
-    Type: String
-    Default: DG-AWS-QuickStart
-    Description: Created during deployment.  Must be unique.            
   CitrixCloudConnectorsWindowsServerVersion:
     Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
     Type: String
@@ -187,7 +166,7 @@ Parameters:
   CitrixCloudConnectorInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String
-    Default: t3.large
+    Default: t2.large
     AllowedValues:
       - t2.large
       - t3.large
@@ -358,6 +337,12 @@ Resources:
       TemplateURL: !Sub
         https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-iam.yaml
 
+  QSDeploymentID:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-qsdeploymentid.yaml
+
   CitrixCloudSecurityGroups:
      Type: AWS::CloudFormation::Stack
      Properties:
@@ -388,8 +373,7 @@ Resources:
         CitrixCloudConnectorInstanceType:           !Ref CitrixCloudConnectorInstanceType
         CitrixCloudConnectorsWindowsServerVersion:  !Ref CitrixCloudConnectorsWindowsServerVersion
         CitrixCloudConnectorSecurityGroup:          !GetAtt CitrixCloudSecurityGroups.Outputs.CCSecurityGroup
-        CitrixCustomerId:                           !Ref CitrixCustomerId
-        CitrixResourceLocation:                     !Ref CitrixResourceLocation        
+        CitrixCustomerId:                           !Ref CitrixCustomerId      
         DomainNetBIOSName:                    !Ref DomainNetBIOSName
         DomainDNSName:                        !Ref DomainDNSName
         DomainAdminPassword:                  !Ref DomainAdminPassword
@@ -397,6 +381,7 @@ Resources:
         KeyPairName:                          !Ref KeyPairName
         PrivateInfraSubnet1:                  !Ref PrivateInfraSubnet1ID
         PrivateInfraSubnet2:                  !Ref PrivateInfraSubnet2ID
+        QSDeploymentID:                     !GetAtt QSDeploymentID.Outputs.ParameterQSDeploymentID
         QSS3BucketName:                       !Ref QSS3BucketName
         QSS3KeyPrefix:                        !Ref QSS3KeyPrefix
 
@@ -418,11 +403,7 @@ Resources:
         CitrixDeliveryController2HostName:        !Ref CitrixCloudConnector2HostName     
         CitrixHostingConnectionAWSIAMAccessKey:                !GetAtt IAM.Outputs.ParameterKeyAccessKey              
         CitrixHostingConnectionAWSIAMSecretKey:                !GetAtt IAM.Outputs.ParameterKeySecretKey  
-        CitrixResourceLocation:                     !Ref CitrixResourceLocation                        
         CitrixVDAHostName:                    !Ref CitrixVDAHostName 
-        CitrixHostingConnectionName:          !Ref CitrixHostingConnectionName
-        CitrixCatalogName:                    !Ref CitrixCatalogName
-        CitrixDeliveryGroupName:              !Ref CitrixDeliveryGroupName
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
         CitrixVDASecurityGroup:                   !GetAtt CitrixCloudSecurityGroups.Outputs.VDASecurityGroup
         CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
@@ -432,6 +413,7 @@ Resources:
         KeyPairName:                        !Ref KeyPairName
         PrivateVDASubnet1:                  !Ref PrivateVDASubnet1ID
         PrivateVDASubnet2:                  !Ref PrivateVDASubnet2ID
+        QSDeploymentID:                     !GetAtt QSDeploymentID.Outputs.ParameterQSDeploymentID
         QSS3BucketName:                     !Ref QSS3BucketName
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
 

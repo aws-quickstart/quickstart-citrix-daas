@@ -188,6 +188,8 @@ Parameters:
   PrivateVDASubnet2:
     Type: 'AWS::EC2::Subnet::Id'
     MinLength: '1'
+  QSDeploymentID:
+    Type: 'AWS::SSM::Parameter::Value<String>'
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
     ConstraintDescription: >-
@@ -448,7 +450,7 @@ Resources:
               waitAfterCompletion: forever              
             g-Set-CitrixCloud: 
               command: !Sub |
-                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}'
+                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -CtxZoneName '${CitrixResourceLocation}-${QSDeploymentID}' -CtxHostingConnectionName '${CitrixHostingConnectionName}-${QSDeploymentID}' -CtxCatalogName '${CitrixCatalogName}-${QSDeploymentID}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}-${QSDeploymentID}'
               waitAfterCompletion: '0'
             h-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f

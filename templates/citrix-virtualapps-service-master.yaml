@@ -15,13 +15,10 @@ Metadata:
           - CitrixCustomerId
           - CitrixAPIClientID
           - CitrixAPIClientSecret
-          - CitrixResourceLocation
           - CitrixCloudConnector1HostName
           - CitrixCloudConnector2HostName 
           - CitrixVDAHostName  
-          - CitrixHostingConnectionName
-          - CitrixCatalogName
-          - CitrixDeliveryGroupName                                 
+                             
       - Label:
           default: Active Directory Configuration
         Parameters:
@@ -75,12 +72,6 @@ Metadata:
         default: Windows Server Version for Citrix Cloud Connector
       CitrixCustomerId:
         default: Citrix Cloud Customer ID  
-      CitrixHostingConnectionName:
-        default: Citrix Hosting Connection Name
-      CitrixCatalogName:
-        default: Citrix Catalog Name
-      CitrixDeliveryGroupName:
-        default: Citrix Catalog Connection Name        
       DomainAdminPassword:
         default: Domain Admin Password
       DomainDNSName:
@@ -109,8 +100,6 @@ Metadata:
         default: Allowed Remote Desktop Gateway External Access CIDR
       RDGWInstanceType:
         default: Remote Desktop Gateway Instance Type
-      CitrixResourceLocation:
-        default: Citrix Cloud Resource Location      
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type       
       CitrixVDAWindowsServerVersion:
@@ -145,23 +134,7 @@ Parameters:
   CitrixAPIClientSecret:
     Description: Citrix Cloud API Secret.  See deployment instructions to obtain.
     Type: String
-    NoEcho: 'true'       
-  CitrixResourceLocation:
-    Type: String
-    Default: AWS-QuickStart
-    Description: Created during deployment.  Must be unique.
-  CitrixHostingConnectionName:
-    Type: String
-    Default: AWS-QuickStart   
-    Description: Created during deployment.  Must be unique.    
-  CitrixCatalogName:
-    Type: String
-    Default: CAT-AWS-QuickStart
-    Description: Created during deployment.  Must be unique.    
-  CitrixDeliveryGroupName:
-    Type: String
-    Default: DG-AWS-QuickStart
-    Description: Created during deployment.  Must be unique.            
+    NoEcho: 'true'               
   CitrixCloudConnector1HostName:
     Type: String
     Default: CTX-CC1
@@ -434,12 +407,8 @@ Resources:
         CitrixCloudConnector2HostName:        !Ref CitrixCloudConnector2HostName    
         CitrixVDAHostName:                    !Ref CitrixVDAHostName         
         CitrixCustomerId:                         !Ref CitrixCustomerId
-        CitrixResourceLocation:                   !Ref CitrixResourceLocation
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
         CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
-        CitrixHostingConnectionName:          !Ref CitrixHostingConnectionName
-        CitrixCatalogName:                    !Ref CitrixCatalogName
-        CitrixDeliveryGroupName:              !Ref CitrixDeliveryGroupName        
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
         DomainDNSName:                      !Ref DomainDNSName
         DomainAdminPassword:                !Ref DomainAdminPassword

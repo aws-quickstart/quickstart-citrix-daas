@@ -106,6 +106,7 @@ Parameters:
     Default: t2.large
     AllowedValues:
       - t2.large
+      - t3.large
       - m4.large 
       - m5.large
   CitrixCloudConnectorSecurityGroup:
@@ -120,7 +121,8 @@ Parameters:
   CitrixCustomerId:
     Type: String
   CitrixResourceLocation:
-    Type: String    
+    Type: String 
+    Default: AWS-QuickStart
   DomainDNSName:
     Type: String
   DomainNetBIOSName:
@@ -149,6 +151,8 @@ Parameters:
   PrivateInfraSubnet2:
     Description: ID of the private infrastructure subnet 2 in Availability Zone 1 (e.g., subnet-a0246dcd)
     Type: 'AWS::EC2::Subnet::Id'
+  QSDeploymentID:
+    Type: 'AWS::SSM::Parameter::Value<String>'
   QSS3BucketName:
     Type: String
   QSS3KeyPrefix:
@@ -322,11 +326,11 @@ Resources:
               waitAfterCompletion: '0'
             b-register-CitrixCloud:
               command: !Sub |
-                powershell C:\cfn\scripts\Register-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}'
+                powershell C:\cfn\scripts\Register-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
               waitAfterCompletion: '0'
             c-installCloudConnector:
               command: !Sub |
-                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}'
+                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
               waitAfterCompletion: '0'
         finalize:  
           commands:
@@ -472,7 +476,7 @@ Resources:
               waitAfterCompletion: '0'
             b-installCloudConnector:
               command: !Sub |
-                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}'
+                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
               waitAfterCompletion: '0'
         finalize:  
           commands:

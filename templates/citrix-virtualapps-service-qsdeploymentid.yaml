@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: This template deploys an IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
+Description: This template deploys a custom resource lambda function to generate a unique deployment ID used during the Citrix Cloud deployment.
 
 Resources:
-  # Lambda Function for generating the kubeadm token
-  GenCitrixCloudDeploymentID:
+  # Lambda Function for generating the deployment ID
+  GenQSDeploymentID:
     Type: "AWS::Lambda::Function"
     Properties:
       Code:
@@ -18,7 +18,7 @@ Resources:
             if event['RequestType'] == 'Delete':
               cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
             if event['RequestType'] == 'Create':
-              deployment_string = ("%s" % (id_generator(8)))
+              deployment_id = ("%s" % (id_generator(8)))
               responseData = {}
               responseData['DeploymentID'] = deployment_id
               cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
@@ -29,11 +29,11 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
 
   # A Custom resource that uses the lambda function to generate a random deployment id to be used in the naming of Citrix Cloud components.
-  CitrixCloudQSDeploymentID:
-    Type: "Custom::GenerateCitrixCloudQSDeploymentID"
+  QSDeploymentID:
+    Type: "Custom::GenerateQSDeploymentID"
     Version: "1.0"
     Properties:
-      GenCitrixCloudDeploymentID: !GetAtt GenCitrixCloudDeploymentID.Arn
+      ServiceToken: !GetAtt GenQSDeploymentID.Arn
 
   # IAM role for Lambda function for generating kubeadm token
   LambdaExecutionRole:
@@ -59,10 +59,15 @@ Resources:
             - "logs:PutLogEvents"
             Resource: "arn:aws:logs:*:*:*"
   
-  AccessKeyParameter:
+  ParameterQSDeploymentID:
     Type: "AWS::SSM::Parameter"
     Properties:
-      Name: !Sub 'CitrixQSDeploymentID-${AWS::StackName}'
+      Name: !Sub 'QSDeploymentID-${AWS::StackName}'
       Type: "String"
-      Value: !GetAtt CitrixCloudQSDeploymentID.DeploymentID
-      Description: "IAM Access Key used for Citrix MCS Hosting Configuration"            
+      Value: !GetAtt QSDeploymentID.DeploymentID
+      Description: "Unique Quickstart Deployment ID"            
+
+Outputs:
+  ParameterQSDeploymentID:
+    Value: !Ref ParameterQSDeploymentID
+    Description: Unique Quickstart Deployment ID
