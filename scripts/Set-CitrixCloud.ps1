@@ -30,8 +30,73 @@ param(
     [Parameter(Mandatory=$false)]
     [string] $CtxDeliveryGroupName = "DG-AWS-QuickStart",
 
+    [Parameter(Mandatory=$false)]
+    [string] $QSDeploymentID = "0",
+
     [Switch]$AddCurrentMachine
 )
+
+<#
+This function can be used to pass a ScriptBlock (closure) to be executed and returned.
+The operation retried a few times on failure, and if the maximum threshold is surpassed, the operation fails completely.
+Params:
+    Command         - The ScriptBlock to be executed
+    RetryDelay      - Number (in seconds) to wait between retries
+                      (default: 5)
+    MaxRetries      - Number of times to retry before accepting failure
+                      (default: 5)
+    VerboseOutput   - More info about internal processing
+                      (default: false)
+Examples:
+Execute-With-Retry { $connection.Open() }
+$result = Execute-With-Retry -RetryDelay 1 -MaxRetries 2 { $command.ExecuteReader() }
+#>
+
+function Execute-With-Retry {
+    [CmdletBinding()]
+    param(    
+    [Parameter(ValueFromPipeline,Mandatory)]
+    $Command,    
+    $RetryDelay = 30,
+    $MaxRetries = 10,
+    $VerboseOutput = $true
+    )
+    
+    $currentRetry = 0
+    $success = $false
+    $cmd = $Command.ToString()
+
+    do {
+        try
+        {
+            $result = & $Command
+            $success = $true
+            if ($VerboseOutput -eq $true) {
+                write-host "Successfully executed $cmd"
+            }
+
+            return $result
+            
+        }
+        catch [System.Exception]
+        {
+            $currentRetry = $currentRetry + 1
+                        
+            if ($VerboseOutput -eq $true) {
+                write-host "Failed to execute $cmd]: " + $_.Exception.Message
+            }
+            
+            if ($currentRetry -gt $MaxRetries) {                
+                throw "Could not execute [$cmd]. The error: " + $_.Exception.ToString()
+            } else {
+                if ($VerboseOutput -eq $true) {
+                    write-host "Waiting $RetryDelay second(s) before attempt #$currentRetry of [$cmd]"
+                }
+                Start-Sleep -s $RetryDelay
+            }
+        }
+    } while (!$success);
+}
 
 try {
 
@@ -70,20 +135,21 @@ try {
 
     # Retrieve zone
     Write-Host "Retrieve current zone"
-    $CtxZone = Get-ConfigZone -Name $CtxResourceLocationName;
+    $CtxZone = Execute-With-Retry {Get-ConfigZone -Name "$CtxResourceLocationName-$QSDeploymentID"};
+    write-host CtxZone UID: $CtxZone.uid
 
     # Create new hosting connection
     Write-Host "Create new hosting connection"
-    $m_HypervisorConnectionObject = New-Item -Path xdhyp:\Connections -Name $CtxHostingConnectionName -ConnectionType "AWS" -HypervisorAddress @("https://ec2.amazonaws.com") -UserName $AWSAPIKey -Password $AWSSecretKey -ZoneUid $CtxZone.Uid -Persist 
+    $m_HypervisorConnectionObject = New-Item -Path xdhyp:\Connections -Name "$CtxHostingConnectionName-$QSDeploymentID" -ConnectionType "AWS" -HypervisorAddress @("https://ec2.amazonaws.com") -UserName $AWSAPIKey -Password $AWSSecretKey -ZoneUid $CtxZone.Uid -Persist 
     $m_HypervisorConnection = New-BrokerHypervisorConnection -HypHypervisorConnectionUid $m_HypervisorConnectionObject.HypervisorConnectionUid
 
     # Create new catalog. As machines here are unmanaged, MachinesArePhysical is set to $True. 
     Write-Host "Create new machine catalog"
-    $m_CAT = New-BrokerCatalog  -AllocationType "Random" -Description "" -IsRemotePC $False -MachinesArePhysical $True -MinimumFunctionalLevel "L7_9" -Name $CtxCatalogName -PersistUserChanges "OnLocal" -ProvisioningType "Manual" -Scope @() -SessionSupport "MultiSession" -ZoneUid $CtxZone.Uid
+    $m_CAT = New-BrokerCatalog  -AllocationType "Random" -Description "" -IsRemotePC $False -MachinesArePhysical $True -MinimumFunctionalLevel "L7_9" -Name "$CtxCatalogName-$QSDeploymentID" -PersistUserChanges "OnLocal" -ProvisioningType "Manual" -Scope @() -SessionSupport "MultiSession" -ZoneUid $CtxZone.Uid
 
     # Create new delivery group
     Write-Host "Create new delivery group"
-    $m_DG = New-BrokerDesktopGroup  -ColorDepth "TwentyFourBit" -DeliveryType "DesktopsAndApps" -DesktopKind "Shared" -InMaintenanceMode $False -IsRemotePC $False -MinimumFunctionalLevel "L7_9" -Name $CtxDeliveryGroupName -OffPeakBufferSizePercent 10 -PeakBufferSizePercent 10 -PublishedName $CtxDeliveryGroupName -Scope @() -SecureIcaRequired $False -SessionSupport "MultiSession" -ShutdownDesktopsAfterUse $False -TimeZone "UTC"
+    $m_DG = New-BrokerDesktopGroup  -ColorDepth "TwentyFourBit" -DeliveryType "DesktopsAndApps" -DesktopKind "Shared" -InMaintenanceMode $False -IsRemotePC $False -MinimumFunctionalLevel "L7_9" -Name "$CtxDeliveryGroupName-$QSDeploymentID" -OffPeakBufferSizePercent 10 -PeakBufferSizePercent 10 -PublishedName "$CtxDeliveryGroupName-$QSDeploymentID" -Scope @() -SecureIcaRequired $False -SessionSupport "MultiSession" -ShutdownDesktopsAfterUse $False -TimeZone "UTC"
 
     # Add current machine to created delivery group. 
     If ($AddCurrentMachine) {
@@ -96,8 +162,8 @@ try {
 
     # Create entitlements
     Write-Host "Create entitlement rules"
-    New-BrokerAppEntitlementPolicyRule -DesktopGroupUid $m_DG.Uid -Enabled $True -IncludedUserFilterEnabled $False -Name "$($CtxDeliveryGroupName)_1"
-    New-BrokerEntitlementPolicyRule -DesktopGroupUid $m_DG.Uid -Enabled $True -IncludedUserFilterEnabled $False -Name "$($CtxDeliveryGroupName)_1" -PublishedName $CtxDeliveryGroupName
+    New-BrokerAppEntitlementPolicyRule -DesktopGroupUid $m_DG.Uid -Enabled $True -IncludedUserFilterEnabled $False -Name "$("$CtxDeliveryGroupName-$QSDeploymentID")_1"
+    New-BrokerEntitlementPolicyRule -DesktopGroupUid $m_DG.Uid -Enabled $True -IncludedUserFilterEnabled $False -Name "$("$CtxDeliveryGroupName-$QSDeploymentID")_1" -PublishedName "$CtxDeliveryGroupName-$QSDeploymentID"
 
     # Create access rules
     Write-Host "Create access rules"
@@ -106,7 +172,7 @@ try {
 
     # Publish few applications
     Write-Host "Publish applications"
-    $instanceId = Invoke-WebRequest -Uri http://169.254.169.254/latest/meta-data/instance-id    
+    # $instanceId = Invoke-WebRequest -Uri http://169.254.169.254/latest/meta-data/instance-id -UseBasicParsing
     [Array]$m_PublishedApps = @("C:\Program Files\Internet Explorer\iexplore.exe", "C:\Windows\System32\notepad.exe"); 
 
     ForEach ($m_PAPath in $m_PublishedApps) {
@@ -114,7 +180,8 @@ try {
         Write-Host "Publishing $($m_FileDetails.FileDescription)"; 
         $m_FileIcon = Get-BrokerIcon -FileName $m_PAPath -index 0;
         $m_CtxIcon = New-BrokerIcon -EncodedIconData $m_FileIcon.EncodedIconData;
-        $m_AppName = -join($m_FileDetails.FileDescription,"_",$instanceId)
+        # $m_AppName = -join($m_FileDetails.FileDescription,"_",$instanceId)
+        $m_AppName = -join($m_FileDetails.FileDescription,"-",$QSDeploymentID)
 
         New-BrokerApplication -ApplicationType "HostedOnDesktop" -CommandLineArguments "" -CommandLineExecutable $m_PAPath -CpuPriorityLevel "Normal" -DesktopGroup $m_DG.Uid -Enabled $True -IgnoreUserHomeZone $False -MaxPerUserInstances 0 -MaxTotalInstances 0 -Name $m_AppName -Priority 0 -PublishedName $m_FileDetails.FileDescription -SecureCmdLineArgumentsEnabled $True -ShortcutAddedToDesktop $False -ShortcutAddedToStartMenu $False -UserFilterEnabled $False -Visible $True -WaitForPrinterCreation $False -IconUid $m_CtxIcon.Uid
     }

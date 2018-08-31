@@ -55,9 +55,9 @@ Metadata:
 
     ParameterLabels:
       CitrixAPIClientID:
-        default: Citrix Cloud API Client ID
+        default: Citrix Cloud Secure Client ID
       CitrixAPIClientSecret:
-        default: Citrix Cloud API Secret                 
+        default: Citrix Cloud Secure Client Secret       
       AvailabilityZones:
         default: Availability Zones
       CitrixCloudConnector1HostName:
@@ -118,7 +118,7 @@ Parameters:
   CitrixCloudConnectorInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
     Type: String
-    Default: t3.large
+    Default: t2.large
     AllowedValues:
       - t2.large
       - t3.large
@@ -128,11 +128,11 @@ Parameters:
     Description: Citrix Cloud Customer ID.  See deployment instructions to obtain.
     Type: String
   CitrixAPIClientID:
-    Description: Citrix Cloud API Client ID.  See deployment instructions to obtain.
+    Description: Citrix Cloud Secure Client ID.  See deployment instructions to obtain.
     Type: String
     NoEcho: 'true'    
   CitrixAPIClientSecret:
-    Description: Citrix Cloud API Secret.  See deployment instructions to obtain.
+    Description: Citrix Cloud Secure Client Secret.  See deployment instructions to obtain.
     Type: String
     NoEcho: 'true'               
   CitrixCloudConnector1HostName:
@@ -425,3 +425,31 @@ Resources:
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
         VPCID:                              !GetAtt VPCStack.Outputs.VPCID
 
+Outputs:
+  CitrixResourceLocation:
+    Description: Citrix Cloud Resource Location 
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixResourceLocation
+  CitrixHostingConnectionName:
+    Description: Citrix Hosting Connection Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixHostingConnectionName
+  CitrixCatalogName:
+    Description: Citrix Catalog Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCatalogName
+  CitrixDeliveryGroupName:   
+    Description: Citrix Delivery Group Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixDeliveryGroupName
+  BastionHostEIP:
+    Description: Elastic IP 1 for Bastion Host
+    Value: !GetAtt RDGWStack.Outputs.EIP1  
+  ADServer1PrivateIP:
+    Description: AD Server 1 Private IP Address (this may vary based on Directory Service order of IP addresses)
+    Value: ADStack.Outputs.ADServer1PrivateIP
+  ADServer2PrivateIP:
+    Description: AD Server 2 Private IP Address (this may vary based on Directory Service order of IP addresses)
+    Value: !GetAtt ADStack.Outputs.ADServer2PrivateIP
+  DomainAdmin:
+    Description: Domain administrator account
+    Value: !GetAtt ADStack.Outputs.DomainAdmin
+  VPCID:
+    Description: VPC ID
+    Value: !GetAtt VPCStack.Outputs.VPCID  

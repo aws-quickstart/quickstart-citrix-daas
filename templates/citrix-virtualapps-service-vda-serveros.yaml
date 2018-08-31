@@ -54,9 +54,9 @@ Metadata:
       ADServer2PrivateIP:
         default: Domain Controller 2 Private IP Address   
       CitrixAPIClientID:
-        default: Citrix Cloud API Client ID
+        default: Citrix Cloud Secure Client ID
       CitrixAPIClientSecret:
-        default: Citrix Cloud API Secret    
+        default: Citrix Cloud Secure Client Secret    
       CitrixCustomerId:
         default: Citrix Cloud Customer ID     
       CitrixHostingConnectionName:
@@ -450,7 +450,7 @@ Resources:
               waitAfterCompletion: forever              
             g-Set-CitrixCloud: 
               command: !Sub |
-                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -CtxZoneName '${CitrixResourceLocation}-${QSDeploymentID}' -CtxHostingConnectionName '${CitrixHostingConnectionName}-${QSDeploymentID}' -CtxCatalogName '${CitrixCatalogName}-${QSDeploymentID}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}-${QSDeploymentID}'
+                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -AddCurrentMachine
               waitAfterCompletion: '0'
             h-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f
@@ -541,10 +541,17 @@ Resources:
 
 
 Outputs:
-  VDA:
+  CitrixVDAInstanceID:
     Description: VDA EC2 instance ID
     Value: !Ref VDA
-  VDARole:
-    Value: !Ref VDARole
   CitrixVDAHostName:
     Value: !Ref CitrixVDAHostName  
+  CitrixHostingConnectionName:
+    Description: Citrix Hosting Connection Name
+    Value: !Sub ${CitrixHostingConnectionName}-${QSDeploymentID}
+  CitrixCatalogName:
+    Description: Citrix Catalog Name
+    Value: !Sub ${CitrixCatalogName}-${QSDeploymentID}    
+  CitrixDeliveryGroupName:   
+    Description: Citrix Delivery Group Name
+    Value: !Sub ${CitrixDeliveryGroupName}-${QSDeploymentID}    

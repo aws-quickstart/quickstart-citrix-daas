@@ -45,9 +45,9 @@ Metadata:
       ADServer2PrivateIP:
         default: Domain Controller 2 Private IP Address      
       CitrixAPIClientID:
-        default: Citrix Cloud API Client ID
+        default: Citrix Cloud Secure Client ID
       CitrixAPIClientSecret:
-        default: Citrix Cloud API Secret        
+        default: Citrix Cloud Secure Client Secret
       CitrixCloudConnector1HostName:
         default: Citrix Cloud Connector 1 Name
       CitrixCloudConnector2HostName:
@@ -567,13 +567,14 @@ Resources:
       Path: /
 
 Outputs:
-  CitrixCloudConnector1:
-    Description: The Cloud Connector EC2 instance
+  CitrixCloudConnector1InstanceID:
+    Description: Cloud Connector EC2 2 instance
     Value: !Ref CitrixCloudConnector1
 
-  CitrixCloudConnector2:
-    Description: The Cloud Connector EC2 instance
+  CitrixCloudConnector2InstanceID:
+    Description: Cloud Connector EC2 2 instance
     Value: !Ref CitrixCloudConnector2
 
-  CitrixCloudConnectorRole:
-    Value: !Ref CitrixCloudConnectorRole
+  CitrixResourceLocation:
+    Description: Citrix Cloud Resource Location 
+    Value: !Sub ${CitrixResourceLocation}-${QSDeploymentID}

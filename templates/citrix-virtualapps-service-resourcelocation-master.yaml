@@ -418,3 +418,16 @@ Resources:
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
 
 
+Outputs:
+  CitrixResourceLocation:
+    Description: Citrix Cloud Resource Location 
+    Value: !GetAtt CitrixCloudConnectors.Outputs.CitrixResourceLocation
+  CitrixHostingConnectionName:
+    Description: Citrix Hosting Connection Name
+    Value: !GetAtt VDA.Outputs.CitrixHostingConnectionName
+  CitrixCatalogName:
+    Description: Citrix Catalog Name
+    Value: !GetAtt VDA.Outputs.CitrixCatalogName
+  CitrixDeliveryGroupName:   
+    Description: Citrix Delivery Group Name
+    Value: !GetAtt VDA.Outputs.CitrixDeliveryGroupName
