@@ -417,13 +417,10 @@ Resources:
         PrivateInfraSubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2AID     
         PrivateVDASubnet1ID:                !GetAtt VPCStack.Outputs.PrivateSubnet1BID
         PrivateVDASubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2BID
-        PrivateInfraSubnet1CIDR:                !Ref PrivateInfraSubnet1CIDR
-        PrivateInfraSubnet2CIDR:                !Ref PrivateInfraSubnet2CIDR
-        PrivateVDASubnet1CIDR:                !Ref PrivateVDASubnet1CIDR
-        PrivateVDASubnet2CIDR:                !Ref PrivateVDASubnet2CIDR
         QSS3BucketName:                     !Ref QSS3BucketName
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
         VPCID:                              !GetAtt VPCStack.Outputs.VPCID
+        BastionSecurityGroupID:             !GetAtt RDGWStack.Outputs.RemoteDesktopGatewaySGID
 
 Outputs:
   CitrixResourceLocation:

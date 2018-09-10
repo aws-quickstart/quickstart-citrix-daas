@@ -3,43 +3,9 @@ Description: 'This template deploys VPC Security Groups for Citrix Cloud Connect
 Parameters:
   VPCID:
     Type: 'AWS::EC2::VPC::Id'
-  BastionSubnet1CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.3.0/24
-    Description: CIDR block for private infrastructure subnet 1 located in Availability Zone 1.
-    Type: String
-  BastionSubnet2CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.4.0/24
-    Description: CIDR block for private infrastructure subnet 1 located in Availability Zone 1.
-    Type: String
-  PrivateInfraSubnet1CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.0.0/24
-    Description: CIDR block for private infrastructure subnet 1 located in Availability Zone 1.
-    Type: String
-  PrivateInfraSubnet2CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.1.0/24
-    Description: CIDR block for infrastructure private subnet 2 located in Availability Zone 2.
-    Type: String
-  PrivateVDASubnet1CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.2.0/24
-    Description: CIDR block for private VDA subnet 1 located in Availability Zone 1.
-    Type: String
-  PrivateVDASubnet2CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.3.0/24
-    Description: CIDR block for private VDA subnet 2 located in Availability Zone 2.
-    Type: String        
-    
+  BastionSecurityGroupID:
+    Description: ID of the Bastion Security Group (e.g., sg-7f16e910),
+    Type: 'AWS::EC2::SecurityGroup::Id'
 
 Resources:
   CCSecurityGroup:
@@ -48,27 +14,7 @@ Resources:
       GroupDescription: Security group which allows access to the Cloud Connectors
       VpcId: !Ref VPCID
       SecurityGroupIngress:
-        - CidrIp: !Ref PrivateVDASubnet1CIDR
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-        - CidrIp: !Ref PrivateVDASubnet2CIDR
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-        - CidrIp: !Ref PrivateVDASubnet1CIDR
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-        - CidrIp: !Ref PrivateVDASubnet2CIDR
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-        - CidrIp: !Ref BastionSubnet1CIDR
-          IpProtocol: tcp
-          FromPort: 3389
-          ToPort: 3389
-        - CidrIp: !Ref BastionSubnet2CIDR
+        - SourceSecurityGroupId: !Ref BastionSecurityGroupID
           IpProtocol: tcp
           FromPort: 3389
           ToPort: 3389
@@ -78,28 +24,21 @@ Resources:
       - Key: App
         Value: Citrix
 
+  CCSecurityGroupTCPIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref CCSecurityGroup
+      IpProtocol: tcp
+      FromPort: '0'
+      ToPort: '65535'
+      SourceSecurityGroupId: !Ref CCSecurityGroup
+
   VDASecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group which allows access to the VDA Workers
       VpcId: !Ref VPCID
       SecurityGroupIngress:
-        - IpProtocol: TCP
-          FromPort: 1494
-          ToPort: 1494
-          CidrIp: !Ref PrivateInfraSubnet1CIDR
-        - IpProtocol: TCP
-          FromPort: 1494
-          ToPort: 1494
-          CidrIp: !Ref PrivateInfraSubnet2CIDR
-        - IpProtocol: TCP
-          FromPort: 2598
-          ToPort: 2598
-          CidrIp: !Ref PrivateInfraSubnet1CIDR
-        - IpProtocol: TCP
-          FromPort: 2598
-          ToPort: 2598
-          CidrIp: !Ref PrivateInfraSubnet2CIDR
         - IpProtocol: TCP
           FromPort: 443
           ToPort: 443
@@ -109,18 +48,18 @@ Resources:
           ToPort: 80
           SourceSecurityGroupId: !Ref CCSecurityGroup
         - IpProtocol: TCP
-          FromPort: 8008
-          ToPort: 8008
-          CidrIp: !Ref PrivateInfraSubnet1CIDR
+          FromPort: 1494
+          ToPort: 1494
+          SourceSecurityGroupId: !Ref CCSecurityGroup
+        - IpProtocol: TCP
+          FromPort: 2598
+          ToPort: 2598
+          SourceSecurityGroupId: !Ref CCSecurityGroup
         - IpProtocol: TCP
           FromPort: 8008
           ToPort: 8008
-          CidrIp: !Ref PrivateInfraSubnet2CIDR
-        - CidrIp: !Ref BastionSubnet1CIDR
-          IpProtocol: tcp
-          FromPort: 3389
-          ToPort: 3389
-        - CidrIp: !Ref BastionSubnet2CIDR
+          SourceSecurityGroupId: !Ref CCSecurityGroup
+        - SourceSecurityGroupId: !Ref BastionSecurityGroupID
           IpProtocol: tcp
           FromPort: 3389
           ToPort: 3389
@@ -129,6 +68,16 @@ Resources:
         Value: !Sub '${AWS::StackName}-vda-sg'
       - Key: App
         Value: Citrix
+
+  VDASecurityGroupTCPIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref VDASecurityGroup
+      IpProtocol: tcp
+      FromPort: '0'
+      ToPort: '65535'
+      SourceSecurityGroupId: !Ref VDASecurityGroup
+
 Outputs:
   CCSecurityGroup:
     Value: !Ref CCSecurityGroup

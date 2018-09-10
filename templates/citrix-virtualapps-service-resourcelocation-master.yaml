@@ -43,12 +43,8 @@ Metadata:
           - PrivateInfraSubnet2ID
           - PrivateVDASubnet1ID
           - PrivateVDASubnet2ID
-          - PrivateInfraSubnet1CIDR
-          - PrivateInfraSubnet2CIDR
-          - PrivateVDASubnet1CIDR
-          - PrivateVDASubnet2CIDR 
-          - PublicSubnet1CIDR
-          - PublicSubnet2CIDR                                           
+          - BastionSecurityGroupID
+                                        
       - Label:
           default: AWS Quick Start Configuration
         Parameters:
@@ -60,7 +56,7 @@ Metadata:
       ADServer1PrivateIP:
         default: Active Directory Server 1 IP
       ADServer2PrivateIP:
-        default: Active Directory Server 2 IP        
+        default: Active Directory Server 2 IP            
       CitrixAPIClientID:
         default: Citrix Cloud API Client ID
       CitrixAPIClientSecret:
@@ -100,19 +96,7 @@ Metadata:
       PrivateVDASubnet1ID:
         default: Private Citrix VDA Subnet 1 ID
       PrivateVDASubnet2ID:
-        default: Private Citrix VDA Subnet 2 ID      
-      PrivateInfraSubnet1CIDR:
-        default: Private Citrix Infrastructure Subnet 1 CIDR
-      PrivateInfraSubnet2CIDR:
-        default: Private Citrix Infrastructure Subnet 2 CIDR
-      PrivateVDASubnet1CIDR:
-        default: Private Citrix VDA Subnet 1 CIDR
-      PrivateVDASubnet2CIDR:
-        default: Private Citrix VDA Subnet 2 CIDR    
-      PublicSubnet1CIDR:
-        default: Public Subnet 1 CIDR
-      PublicSubnet2CIDR:
-        default: Public Subnet 2 CIDR          
+        default: Private Citrix VDA Subnet 2 ID           
       QSS3BucketName:
         default: Quick Start S3 Bucket Name
       QSS3KeyPrefix:
@@ -139,6 +123,9 @@ Parameters:
       Fixed private IP for the second Active Directory server located in
       Availability Zone 2
     Type: String   
+  BastionSecurityGroupID:
+    Description: ID of the Bastion Security Group (e.g., sg-7f16e910),
+    Type: 'AWS::EC2::SecurityGroup::Id'        
   CitrixAPIClientID:
     Description: Citrix Cloud API Client ID.  See deployment instructions to obtain.
     Type: String
@@ -228,31 +215,7 @@ Parameters:
     Type: 'AWS::EC2::Subnet::Id'
   PrivateVDASubnet2ID:
     Description: ID of the private VDA subnet 1 in Availability Zone 1 (e.g., subnet-a0246dcd)
-    Type: 'AWS::EC2::Subnet::Id'
-  PrivateInfraSubnet1CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.0.0/24
-    Description: CIDR block for private infrastructure subnet 1 located in Availability Zone 1.
-    Type: String
-  PrivateInfraSubnet2CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.1.0/24
-    Description: CIDR block for infrastructure private subnet 2 located in Availability Zone 2.
-    Type: String
-  PrivateVDASubnet1CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.2.0/24
-    Description: CIDR block for private VDA subnet 1 located in Availability Zone 1.
-    Type: String
-  PrivateVDASubnet2CIDR:
-    AllowedPattern: >-
-      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
-    Default: 10.0.3.0/24
-    Description: CIDR block for private VDA subnet 2 located in Availability Zone 2.
-    Type: String        
+    Type: 'AWS::EC2::Subnet::Id'   
   PublicSubnet1CIDR:
     AllowedPattern: >-
       ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
@@ -349,13 +312,8 @@ Resources:
        TemplateURL: !Sub >-
         https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-securitygroups.yaml
        Parameters:
-        VPCID:                             !Ref VPCID
-        PrivateInfraSubnet1CIDR:           !Ref PrivateInfraSubnet1CIDR
-        PrivateInfraSubnet2CIDR:           !Ref PrivateInfraSubnet1CIDR
-        PrivateVDASubnet1CIDR:             !Ref PrivateVDASubnet1CIDR
-        PrivateVDASubnet2CIDR:             !Ref PrivateVDASubnet2CIDR                  
-        BastionSubnet1CIDR:                !Ref PublicSubnet1CIDR
-        BastionSubnet2CIDR:                !Ref PublicSubnet2CIDR                  
+        VPCID:                             !Ref VPCID                
+        BastionSecurityGroupID:                !Ref BastionSecurityGroupID                 
 
   CitrixCloudConnectors:
     Type: 'AWS::CloudFormation::Stack'
