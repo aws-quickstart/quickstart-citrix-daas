@@ -389,3 +389,12 @@ Outputs:
   CitrixDeliveryGroupName:   
     Description: Citrix Delivery Group Name
     Value: !GetAtt VDA.Outputs.CitrixDeliveryGroupName
+  CitrixCloudConnector1HostName:
+    Description: Citrix Cloud Connector 1 Host Name
+    Value: !GetAtt CitrixCloudConnectors.Outputs.CitrixCloudConnector1HostName
+  CitrixCloudConnector2HostName:
+    Description: Citrix Cloud Connector 2 Host Name
+    Value: !GetAtt CitrixCloudConnectors.Outputs.CitrixCloudConnector2HostName
+  CitrixVDAHostName:
+    Description: Citrix VDA Host Name
+    Value: !GetAtt VDA.Outputs.CitrixVDAHostName

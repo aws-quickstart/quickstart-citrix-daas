@@ -290,7 +290,7 @@ Resources:
           commands:
             a-execute-powershell-script-RenameComputer:  
               command: !Sub | 
-                powershell.exe -Command Rename-Computer -NewName ${CitrixCloudConnector1HostName} -Restart
+                powershell.exe -Command Rename-Computer -NewName '${CitrixCloudConnector1HostName}-${QSDeploymentID}' -Restart
               waitAfterCompletion: 'forever'
         domainjoin:  
           files:
@@ -368,7 +368,7 @@ Resources:
             - </script>
       Tags:
         - Key: Name
-          Value: !Sub '${AWS::StackName}-${CitrixCloudConnector1HostName}'
+          Value: !Sub '${CitrixCloudConnector1HostName}-${QSDeploymentID}'
         - Key: App
           Value: Citrix
 
@@ -443,7 +443,7 @@ Resources:
           commands:
             a-execute-powershell-script-RenameComputer:  
               command: !Sub | 
-                powershell.exe -Command Rename-Computer -NewName ${CitrixCloudConnector2HostName} -Restart
+                powershell.exe -Command Rename-Computer -NewName '${CitrixCloudConnector2HostName}-${QSDeploymentID}' -Restart
               waitAfterCompletion: 'forever'
         domainjoin:  
           files:
@@ -514,7 +514,7 @@ Resources:
             - </script>
       Tags:
         - Key: Name
-          Value: !Sub '${AWS::StackName}-${CitrixCloudConnector2HostName}'
+          Value: !Sub '${CitrixCloudConnector2HostName}-${QSDeploymentID}'
         - Key: App
           Value: Citrix
 
@@ -578,3 +578,9 @@ Outputs:
   CitrixResourceLocation:
     Description: Citrix Cloud Resource Location 
     Value: !Sub ${CitrixResourceLocation}-${QSDeploymentID}
+
+  CitrixCloudConnector1HostName:
+    Value: !Sub ${CitrixCloudConnector1HostName}-${QSDeploymentID}
+
+  CitrixCloudConnector2HostName:
+    Value: !Sub ${CitrixCloudConnector2HostName}-${QSDeploymentID}

@@ -450,3 +450,12 @@ Outputs:
   VPCID:
     Description: VPC ID
     Value: !GetAtt VPCStack.Outputs.VPCID  
+  CitrixCloudConnector1HostName:
+    Description: Citrix Cloud Connector 1 Host Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCloudConnector1HostName
+  CitrixCloudConnector2HostName:
+    Description: Citrix Cloud Connector 2 Host Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCloudConnector2HostName
+  CitrixVDAHostName:
+    Description: Citrix VDA Host Name
+    Value: !GetAtt CitrixResourceLocationStack.CitrixVDAHostName

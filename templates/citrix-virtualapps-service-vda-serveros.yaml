@@ -390,7 +390,7 @@ Resources:
           commands:
             a-execute-powershell-script-RenameComputer:  
               command: !Sub | 
-                powershell.exe -Command Rename-Computer -NewName ${CitrixVDAHostName} -Restart
+                powershell.exe -Command Rename-Computer -NewName '${CitrixVDAHostName}-${QSDeploymentID}' -Restart
               waitAfterCompletion: 'forever'
         domainjoin:  
           files:
@@ -481,7 +481,7 @@ Resources:
       SubnetId: !Ref PrivateVDASubnet1
       Tags:
         - Key: Name
-          Value: !Sub '${AWS::StackName}-${CitrixVDAHostName}'
+          Value: !Sub '${CitrixVDAHostName}-${QSDeploymentID}'
         - Key: App
           Value: Citrix
       UserData: !Base64 
@@ -545,7 +545,7 @@ Outputs:
     Description: VDA EC2 instance ID
     Value: !Ref VDA
   CitrixVDAHostName:
-    Value: !Ref CitrixVDAHostName  
+    Value: !Sub ${CitrixVDAHostName}-${QSDeploymentID}
   CitrixHostingConnectionName:
     Description: Citrix Hosting Connection Name
     Value: !Sub ${CitrixHostingConnectionName}-${QSDeploymentID}
