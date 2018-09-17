@@ -357,8 +357,8 @@ Resources:
         CitrixAPIClientID:                          !Ref CitrixAPIClientID
         CitrixAPIClientSecret:                      !Ref CitrixAPIClientSecret     
         CitrixCustomerId:                           !Ref CitrixCustomerId           
-        CitrixDeliveryController1HostName:        !Ref CitrixCloudConnector1HostName
-        CitrixDeliveryController2HostName:        !Ref CitrixCloudConnector2HostName     
+        CitrixDeliveryController1HostName:        !GetAtt CitrixCloudConnectors.Outputs.CitrixCloudConnector1HostName
+        CitrixDeliveryController2HostName:        !GetAtt CitrixCloudConnectors.Outputs.CitrixCloudConnector2HostName     
         CitrixHostingConnectionAWSIAMAccessKey:                !GetAtt IAM.Outputs.ParameterKeyAccessKey              
         CitrixHostingConnectionAWSIAMSecretKey:                !GetAtt IAM.Outputs.ParameterKeySecretKey  
         CitrixVDAHostName:                    !Ref CitrixVDAHostName 

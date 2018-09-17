@@ -81,12 +81,23 @@ try {
     Write-Host "Generating new authentication token";
     $CtxAuthToken = New-BearerAuthenticationToken -ClientID $CtxClientId -ClientSecret $CtxClientSecret;
 
-    # Get Resource Location ID
-    Write-Host "Get Resource Location ID from Citrix Cloud";
-    $CtxResourceLocationId = Get-ResourceLocation -customerId $CtxCustomerId -bearerToken $CtxAuthToken | Where-Object {$_.name -eq $CtxResourceLocationName} | Select-Object -First 1 -ExpandProperty "id";
+    For ($m_Counter = 0; $m_Counter -lt 5; $m_Counter++) {
+        # Get Resource Location ID
+        Write-Host "Get Resource Location ID from Citrix Cloud";
+        $CtxResourceLocationId = Get-ResourceLocation -customerId $CtxCustomerId -bearerToken $CtxAuthToken | Where-Object {$_.name -eq $CtxResourceLocationName} | Select-Object -First 1 -ExpandProperty "id";
+
+        # Validate that Resource Location ID has been retrieved
+        If ($CtxResourceLocationId -isnot [String]) {
+            Write-Host "Resource location $CtxResourceLocationName is not available, waiting for 5 minutes"
+            Start-Sleep -Seconds 60;
+        } Else {
+            Write-Host "Resource location $CtxResourceLocationName has been retrieved successfully"; 
+            Break; 
+        }
+    }
 
     # Validate that Resource Location ID has been retrieved
-    If (-not $CtxResourceLocationId -is [String]) {
+    If ($CtxResourceLocationId -isnot [String]) {
         Throw "Not able to retrieve resource location with name $CtxResourceLocationName, aborting"
     }
 

@@ -412,7 +412,7 @@ Resources:
         installVDA:
           files:
             'c:\cfn\scripts\VDAServerSetup.exe':
-              source: 'https://s3.amazonaws.com/temp-qsmedia/vda/VDAServerSetup_7.18.exe'
+              source: 'https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1808.exe'
             'C:\cfn\scripts\Prep-VDA.ps1':
               source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-VDA.ps1'
               authentication: S3AccessCreds
@@ -450,7 +450,7 @@ Resources:
               waitAfterCompletion: forever              
             g-Set-CitrixCloud: 
               command: !Sub |
-                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -AddCurrentMachine
+                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -AWSRegion ${AWS::Region} -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -AddCurrentMachine
               waitAfterCompletion: '0'
             h-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f

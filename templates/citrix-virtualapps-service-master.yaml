@@ -458,4 +458,4 @@ Outputs:
     Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCloudConnector2HostName
   CitrixVDAHostName:
     Description: Citrix VDA Host Name
-    Value: !GetAtt CitrixResourceLocationStack.CitrixVDAHostName
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixVDAHostName
