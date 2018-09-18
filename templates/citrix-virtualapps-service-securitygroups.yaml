@@ -20,7 +20,7 @@ Resources:
           ToPort: 3389
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-cc-sg'
+        Value: 'AWS Quick Start Citrix Cloud Connectors'
       - Key: App
         Value: Citrix
 
@@ -32,6 +32,26 @@ Resources:
       FromPort: '0'
       ToPort: '65535'
       SourceSecurityGroupId: !Ref CCSecurityGroup
+
+  VDARegistrationHTTPSecurityGroupTCPIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Description: VDA Registration HTTP 
+    Properties:
+      GroupId: !Ref CCSecurityGroup
+      IpProtocol: tcp
+      FromPort: '80'
+      ToPort: '80'
+      SourceSecurityGroupId: !Ref VDASecurityGroup
+
+  VDARegistrationHTTPSSecurityGroupTCPIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Description: VDA Registration HTTPS   
+    Properties:
+      GroupId: !Ref CCSecurityGroup
+      IpProtocol: tcp
+      FromPort: '443'
+      ToPort: '443'
+      SourceSecurityGroupId: !Ref VDASecurityGroup
 
   VDASecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -65,7 +85,7 @@ Resources:
           ToPort: 3389
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-vda-sg'
+        Value: 'AWS Quick Start Citrix VDA'
       - Key: App
         Value: Citrix
 
