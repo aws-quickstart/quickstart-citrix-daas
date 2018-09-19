@@ -394,7 +394,9 @@ function Install-VdaServer {
         [Parameter(Position=9,Mandatory=$false)] [switch]$EnableRemoteAssistance=$false,
         [Parameter(Position=10,Mandatory=$false)] [switch]$MasterImage=$false,
         [Parameter(Position=11,Mandatory=$false)] [switch]$EnableRemoteManagement=$false,
-		[Parameter(Position=12,Mandatory=$false)] [string]$ExcludedPackages = $null
+        [Parameter(Position=12,Mandatory=$false)] [string]$ExcludedPackages = $null,
+        # [Parameter(Position=12,Mandatory=$false)] [string]$InstallCitrixFilesForWindows=$true
+        [Parameter(Position=12,Mandatory=$false)] [string]$IncludeAdditional = $null
     )            
     # Get args for installing the VDA Server.
     $installargs = cwcXenDesktop\Get-VDAInstallArgs -InstallVDAWorkstation:$false -InstallPvd:$InstallPvd `
@@ -402,7 +404,8 @@ function Install-VdaServer {
                                       -Reboot:$Reboot -LogPath $LogPath `
                                       -Controllers $Controllers -UseIbizaVdaArgs:$false -EnableRemoteAssistance:$EnableRemoteAssistance `
                                       -MasterImage:$MasterImage -InstallVDAServer:$InstallVDAServer -XAServerLocation $XAServerLocation `
-                                      -EnableRemoteManagement:$EnableRemoteManagement -ExcludedPackages:$ExcludedPackages
+                                      -EnableRemoteManagement:$EnableRemoteManagement -ExcludedPackages:$ExcludedPackages -IncludeAdditional:$IncludeAdditional
+                                    #   -InstallCitrixFilesForWindows:$InstallCitrixFilesForWindows
     If ($Reboot){
         $expectedExitCode = 0 # reboot expected to be handled by the installer, in this case windows is shutting down 
                               # the process -Wait flag is set to not wait and return 0 immediately for test driven reboot
@@ -477,8 +480,9 @@ function Get-VDAInstallArgs {
         [Parameter(Position=12,Mandatory=$false)] [switch]$EnableRemoteManagement,
         [Parameter(Position=13,Mandatory=$false)] [string]$ExcludedPackages = $null,
         [Parameter(Position=14,Mandatory=$false)] [switch]$UseXenAppBranding = $false,
-        [Parameter(Position=15,Mandatory=$false)] [string]$InstallDir        
-
+        [Parameter(Position=15,Mandatory=$false)] [string]$InstallDir,        
+        # [Parameter(Position=16,Mandatory=$false)] [string]$InstallCitrixFilesForWindows   
+        [Parameter(Position=16,Mandatory=$false)] [string]$IncludeAdditional = $null   
     )    
 
     Write-Verbose "Installer logs located in:$LogPath"
@@ -533,7 +537,7 @@ function Get-VDAInstallArgs {
     $components += '"'
     $installargs.Add($components) | Out-Null
     # END components    
-    
+
     if ($InstallPvd) {
         $installargs.Add("/BASEIMAGE") | Out-Null
     }    
@@ -582,6 +586,16 @@ function Get-VDAInstallArgs {
 			}
 			write-Host "Excluding packages: $ExcludedPackages"
 			$installargs.Add("/EXCLUDE $ExcludedPackages") | Out-Null
+    }
+    
+	if (-not([string]::isNullOrempty($IncludeAdditional))) {
+		write-verbose "Requested to include these additional packages: '$IncludeAdditional'"
+			# always enclose the string in double-quotes
+			if ($IncludeAdditional[0] -ne '"') {
+				$IncludeAdditional = """$IncludeAdditional"""
+			}
+			write-Host "Include Additional: $IncludeAdditional"
+			$installargs.Add("/includeadditional $IncludeAdditional") | Out-Null
 	}
     Write-Verbose "Install Arguments: $($installargs)"
     return $installargs.ToArray()

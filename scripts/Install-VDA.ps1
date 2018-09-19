@@ -33,11 +33,12 @@ try {
     $VDA_Controller1 = cwcTools\New-FQDN -ComputerName $VDA_Controller1 -DomainName $VDA_DNSDomainName
     $VDA_Controller2 = cwcTools\New-FQDN -ComputerName $VDA_Controller2 -DomainName $VDA_DNSDomainName
     $VDA_Controllers = "$VDA_Controller1,$VDA_Controller2"
+    $IncludeAdditional = "Citrix Files for Windows"
 
     Invoke-Command -ComputerName localhost -ScriptBlock {
         Start-Process -FilePath attrib.exe -LoadUserProfile
-        cwcXenDesktop\Install-VdaServer -InstallerPath $args[0] -installPvd:$false -Controllers $args[1] -EnableRemoteAssistance -verbose
-    } -argumentlist @($setupPath, $VDA_Controllers) 
+        cwcXenDesktop\Install-VdaServer -InstallerPath $args[0]  -installPvd:$false -Controllers $args[1] -EnableRemoteAssistance -IncludeAdditional $args[2] -verbose
+    } -argumentlist @($setupPath, $VDA_Controllers, $IncludeAdditional) 
 
     cwcOS-Tools\Dismount-Iso $driveLetter
 

@@ -484,6 +484,8 @@ Resources:
           Value: !Sub '${CitrixVDAHostName}-${QSDeploymentID}'
         - Key: App
           Value: Citrix
+        - Key: QSDeplomentID
+          Value: !Sub ${QSDeploymentID}          
       UserData: !Base64 
         'Fn::Join':
           - ''

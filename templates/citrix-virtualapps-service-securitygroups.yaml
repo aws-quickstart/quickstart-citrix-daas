@@ -6,11 +6,14 @@ Parameters:
   BastionSecurityGroupID:
     Description: ID of the Bastion Security Group (e.g., sg-7f16e910),
     Type: 'AWS::EC2::SecurityGroup::Id'
+  QSDeploymentID:
+    Type: 'AWS::SSM::Parameter::Value<String>'
 
 Resources:
   CCSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupName: !Sub 'SG-CitrixCloudConnectors-${QSDeploymentID}'
       GroupDescription: Security group which allows access to the Cloud Connectors
       VpcId: !Ref VPCID
       SecurityGroupIngress:
@@ -20,9 +23,11 @@ Resources:
           ToPort: 3389
       Tags:
       - Key: Name
-        Value: 'AWS Quick Start Citrix Cloud Connectors'
+        Value: !Sub 'AWS Quick Start Citrix Cloud Connector (QSDeployment ID: ${QSDeploymentID})'
       - Key: App
         Value: Citrix
+      - Key: QSDeplomentID
+        Value: !Sub ${QSDeploymentID}        
 
   CCSecurityGroupTCPIngress:
     Type: AWS::EC2::SecurityGroupIngress
@@ -56,6 +61,7 @@ Resources:
   VDASecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupName: !Sub 'SG-CitrixVDA-${QSDeploymentID}'    
       GroupDescription: Security group which allows access to the VDA Workers
       VpcId: !Ref VPCID
       SecurityGroupIngress:
@@ -85,9 +91,11 @@ Resources:
           ToPort: 3389
       Tags:
       - Key: Name
-        Value: 'AWS Quick Start Citrix VDA'
+        Value: !Sub 'AWS Quick Start Citrix VDA (QSDeployment ID: ${QSDeploymentID})'
       - Key: App
         Value: Citrix
+      - Key: QSDeplomentID
+        Value: !Sub ${QSDeploymentID}
 
   VDASecurityGroupTCPIngress:
     Type: AWS::EC2::SecurityGroupIngress

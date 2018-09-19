@@ -307,13 +307,15 @@ Resources:
         https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-qsdeploymentid.yaml
 
   CitrixCloudSecurityGroups:
-     Type: AWS::CloudFormation::Stack
-     Properties:
-       TemplateURL: !Sub >-
+    Type: AWS::CloudFormation::Stack
+    DependsOn: 'QSDeploymentID'
+    Properties:
+      TemplateURL: !Sub >-
         https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-securitygroups.yaml
-       Parameters:
-        VPCID:                             !Ref VPCID                
-        BastionSecurityGroupID:                !Ref BastionSecurityGroupID                 
+      Parameters:
+        VPCID:                              !Ref VPCID                
+        BastionSecurityGroupID:             !Ref BastionSecurityGroupID
+        QSDeploymentID:                     !GetAtt QSDeploymentID.Outputs.ParameterQSDeploymentID                         
 
   CitrixCloudConnectors:
     Type: 'AWS::CloudFormation::Stack'

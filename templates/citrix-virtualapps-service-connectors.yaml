@@ -371,6 +371,8 @@ Resources:
           Value: !Sub '${CitrixCloudConnector1HostName}-${QSDeploymentID}'
         - Key: App
           Value: Citrix
+        - Key: QSDeplomentID
+          Value: !Sub ${QSDeploymentID}              
 
   CitrixCloudConnector2:
     Type: 'AWS::EC2::Instance'
@@ -517,6 +519,8 @@ Resources:
           Value: !Sub '${CitrixCloudConnector2HostName}-${QSDeploymentID}'
         - Key: App
           Value: Citrix
+        - Key: QSDeplomentID
+          Value: !Sub ${QSDeploymentID}              
 
   CitrixCloudConnector1WaitHandle:
     Type: 'AWS::CloudFormation::WaitConditionHandle'
