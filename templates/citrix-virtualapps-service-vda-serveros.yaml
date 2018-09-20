@@ -1,64 +1,63 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'This template deploys a Citrix Server VDA.'
-
+Description: This template deploys a Citrix Server VDA.
 Metadata:
-  'AWS::CloudFormation::Interface':
+  AWS::CloudFormation::Interface:
     ParameterGroups:
-      - Label:
-          default: Citrix Cloud Configuration
-        Parameters:
-          - CitrixCustomerId
-          - CitrixAPIClientID
-          - CitrixAPIClientSecret
-          - CitrixResourceLocation
-          - CitrixHostingConnectionAWSIAMAccessKey
-          - CitrixHostingConnectionAWSIAMSecretKey
-          - CitrixHostingConnectionName
-          - CitrixCatalogName
-          - CitrixDeliveryGroupName
-      - Label:
-          default: Network Configuration
-        Parameters:
-          - PrivateVDASubnet1
-          - PrivateVDASubnet2
-      - Label:
-          default: Amazon EC2 Configuration
-        Parameters:
-          - KeyPairName
-          - CitrixVDAInstanceType
-          - CitrixVDAWindowsServerVersion          
-      - Label:
-          default: Active Directory Configuration
-        Parameters:
-          - ADServer1PrivateIP
-          - ADServer2PrivateIP
-          - DomainDNSName
-          - DomainNetBIOSName
-          - DomainAdminPassword
-          - DomainAdminUser
-      - Label:
-          default: AWS Quick Start Configuration
-        Parameters:
-          - QSS3BucketName
-          - QSS3KeyPrefix
-      - Label:
-          default: Citrix XenApp/XenDesktop Configuration
-        Parameters:
-          - CitrixDeliveryController1HostName
-          - CitrixDeliveryController2HostName
-          - CitrixVDAHostName
-
+    - Label:
+        default: Citrix Cloud Configuration
+      Parameters:
+      - CitrixCustomerId
+      - CitrixAPIClientID
+      - CitrixAPIClientSecret
+      - CitrixResourceLocation
+      - CitrixHostingConnectionAWSIAMAccessKey
+      - CitrixHostingConnectionAWSIAMSecretKey
+      - CitrixHostingConnectionName
+      - CitrixCatalogName
+      - CitrixDeliveryGroupName
+    - Label:
+        default: Network Configuration
+      Parameters:
+      - PrivateVDASubnet1
+      - PrivateVDASubnet2
+    - Label:
+        default: Amazon EC2 Configuration
+      Parameters:
+      - KeyPairName
+      - CitrixVDAInstanceType
+      - CitrixVDAWindowsServerVersion
+    - Label:
+        default: Active Directory Configuration
+      Parameters:
+      - ADServer1PrivateIP
+      - ADServer2PrivateIP
+      - DomainDNSName
+      - DomainNetBIOSName
+      - DomainAdminPassword
+      - DomainAdminUser
+    - Label:
+        default: AWS Quick Start Configuration
+      Parameters:
+      - QSS3BucketName
+      - QSS3KeyPrefix
+    - Label:
+        default: Citrix XenApp/XenDesktop Configuration
+      Parameters:
+      - CitrixDeliveryController1HostName
+      - CitrixDeliveryController2HostName
+      - CitrixVDAHostName
     ParameterLabels:
       ADServer1PrivateIP:
         default: Domain Controller 1 Private IP Address
       ADServer2PrivateIP:
-        default: Domain Controller 2 Private IP Address   
+        default: Domain Controller 2 Private IP Address
       CitrixAPIClientID:
         default: Citrix Cloud Secure Client ID
       CitrixAPIClientSecret:
-        default: Citrix Cloud Secure Client Secret    
+        default: Citrix Cloud Secure Client Secret
       CitrixCustomerId:
-        default: Citrix Cloud Customer ID     
+        default: Citrix Cloud Customer ID
       CitrixHostingConnectionName:
         default: Citrix Hosting Connection Name
       CitrixCatalogName:
@@ -66,17 +65,19 @@ Metadata:
       CitrixDeliveryGroupName:
         default: Citrix Catalog Connection Name
       CitrixHostingConnectionAWSIAMAccessKey:
-        default: IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
+        default: IAM User to be used with Citrix MCS and Hosting Configuration as
+          CTX140429.
       CitrixHostingConnectionAWSIAMSecretKey:
-        default: IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
+        default: IAM User to be used with Citrix MCS and Hosting Configuration as
+          CTX140429.
       CitrixDeliveryController1HostName:
         default: Citrix Delivery Controller 1 Name
       CitrixDeliveryController2HostName:
-        default: Citrix Delivery Controller 2 Name           
+        default: Citrix Delivery Controller 2 Name
       CitrixResourceLocation:
-        default: Citrix Cloud Resource Location              
+        default: Citrix Cloud Resource Location
       CitrixVDAHostName:
-        default: Citrix VDA Name            
+        default: Citrix VDA Name
       DomainAdminPassword:
         default: Domain Admin Password
       DomainAdminUser:
@@ -98,19 +99,18 @@ Metadata:
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type
       CitrixVDAWindowsServerVersion:
-        default: Windows Server Version for Citrix Server VDA        
-
+        default: Windows Server Version for Citrix Server VDA
 Parameters:
   ADServer1PrivateIP:
     Type: String
   ADServer2PrivateIP:
-    Type: String    
+    Type: String
   CitrixAPIClientID:
     Type: String
-    NoEcho: 'true'    
+    NoEcho: 'true'
   CitrixAPIClientSecret:
     Type: String
-    NoEcho: 'true'    
+    NoEcho: 'true'
   CitrixCustomerId:
     Type: String
   CitrixDeliveryController1HostName:
@@ -118,39 +118,38 @@ Parameters:
     Default: CTX-DC1
   CitrixDeliveryController2HostName:
     Type: String
-    Default: CTX-DC2  
+    Default: CTX-DC2
   CitrixHostingConnectionAWSIAMAccessKey:
-    Type: 'AWS::SSM::Parameter::Value<String>'
+    Type: AWS::SSM::Parameter::Value<String>
     Default: CitrixQSAccessKey
-    NoEcho: 'true'     
+    NoEcho: 'true'
   CitrixHostingConnectionAWSIAMSecretKey:
-    Type: 'AWS::SSM::Parameter::Value<String>'
+    Type: AWS::SSM::Parameter::Value<String>
     Default: CitrixQSSecretKey
-    NoEcho: 'true'     
+    NoEcho: 'true'
   CitrixResourceLocation:
     Type: String
     Default: AWS-QuickStart
     Description: Created during deployment.  Must be unique.
   CitrixHostingConnectionName:
     Type: String
-    Default: AWS-QuickStart   
-    Description: Created during deployment.  Must be unique.    
+    Default: AWS-QuickStart
+    Description: Created during deployment.  Must be unique.
   CitrixCatalogName:
     Type: String
     Default: CAT-AWS-QuickStart
-    Description: Created during deployment.  Must be unique.    
+    Description: Created during deployment.  Must be unique.
   CitrixDeliveryGroupName:
     Type: String
     Default: DG-AWS-QuickStart
-    Description: Created during deployment.  Must be unique.    
+    Description: Created during deployment.  Must be unique.
   CitrixVDAHostName:
     Type: String
-    Default: CTX-VDA1      
+    Default: CTX-VDA1
   DomainDNSName:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
-    Description: >-
-      Fully qualified domain name (FQDN) of the forest root domain e.g.
+    Description: Fully qualified domain name (FQDN) of the forest root domain e.g.
       example.com
     MaxLength: '255'
     MinLength: '2'
@@ -158,248 +157,245 @@ Parameters:
   DomainNetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: example
-    Description: >-
-      NetBIOS name of the domain (up to 15 characters) for users of earlier
+    Description: NetBIOS name of the domain (up to 15 characters) for users of earlier
       versions of Windows e.g. EXAMPLE
     MaxLength: '15'
     MinLength: '1'
     Type: String
   DomainAdminPassword:
     Type: String
-    NoEcho: 'true'    
+    NoEcho: 'true'
   DomainAdminUser:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: admin
-    Description: >-
-      User name for the account that will be added as Domain Administrator. This
-      is separate from the default "Administrator" account. Note: Use admin if using managed AD.
+    Description: 'User name for the account that will be added as Domain Administrator.
+      This is separate from the default "Administrator" account. Note: Use admin if
+      using managed AD.'
     MaxLength: '25'
     MinLength: '5'
     Type: String
   KeyPairName:
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
-    Description: >-
-      Name of an existing EC2 KeyPair used to get the Administrator password for
-      the instance
-    Type: 'AWS::EC2::KeyPair::KeyName'
+    Description: Name of an existing EC2 KeyPair used to get the Administrator password
+      for the instance
+    Type: AWS::EC2::KeyPair::KeyName
   PrivateVDASubnet1:
-    Type: 'AWS::EC2::Subnet::Id'
+    Type: AWS::EC2::Subnet::Id
     MinLength: '1'
   PrivateVDASubnet2:
-    Type: 'AWS::EC2::Subnet::Id'
+    Type: AWS::EC2::Subnet::Id
     MinLength: '1'
   QSDeploymentID:
-    Type: 'AWS::SSM::Parameter::Value<String>'
+    Type: AWS::SSM::Parameter::Value<String>
   QSS3BucketName:
-    AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
-    ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
+      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+      (-).
     Default: aws-quickstart
-    Description: >-
-      S3 bucket name for the Quick Start assets. This bucket name can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-), but should
-      not start or end with a hyphen. You can specify your own bucket if you
-      copy all of the assets and submodules into it, if you want to override the
-      Quick Start behavior for your specific implementation.
+    Description: S3 bucket name for the Quick Start assets. This bucket name can include
+      numbers, lowercase letters, uppercase letters, and hyphens (-), but should not
+      start or end with a hyphen. You can specify your own bucket if you copy all
+      of the assets and submodules into it, if you want to override the Quick Start
+      behavior for your specific implementation.
     Type: String
   QSS3KeyPrefix:
-    AllowedPattern: '^[0-9a-zA-Z-/]*$'
-    ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
+    AllowedPattern: ^[0-9a-zA-Z-/]*$
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-citrix-virtualapps-service/
-    Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
+      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/).
-    Type: String  
+    Type: String
   CitrixVDAInstanceType:
     Default: m5.large
     Type: String
     AllowedValues:
-      - t2.large
-      - t2.xlarge
-      - t2.2xlarge
-      - t3.large
-      - t3.xlarge
-      - t3.2xlarge
-      - m4.large
-      - m4.xlarge
-      - m4.2xlarge
-      - m4.4xlarge
-      - m5.large
-      - m5.xlarge
-      - m5.2xlarge
-      - m5.4xlarge      
-      - c4.large
-      - c4.xlarge
-      - c4.2xlarge
-      - c4.4xlarge        
-      - c5.large
-      - c5.xlarge
-      - c5.2xlarge
-      - c5.4xlarge
-      - g3.4xlarge
-      - g3.8xlarge
-      - g3.16xlarge    
+    - t2.large
+    - t2.xlarge
+    - t2.2xlarge
+    - t3.large
+    - t3.xlarge
+    - t3.2xlarge
+    - m4.large
+    - m4.xlarge
+    - m4.2xlarge
+    - m4.4xlarge
+    - m5.large
+    - m5.xlarge
+    - m5.2xlarge
+    - m5.4xlarge
+    - c4.large
+    - c4.xlarge
+    - c4.2xlarge
+    - c4.4xlarge
+    - c5.large
+    - c5.xlarge
+    - c5.2xlarge
+    - c5.4xlarge
+    - g3.4xlarge
+    - g3.8xlarge
+    - g3.16xlarge
   CitrixVDASecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup::Id'
+    Type: AWS::EC2::SecurityGroup::Id
   CitrixVDAWindowsServerVersion:
     Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
     Type: String
     Default: WS2016FULLBASE
     AllowedValues:
-      - WS2012R2
-      - WS2016FULLBASE    
-
+    - WS2012R2
+    - WS2016FULLBASE
 Mappings:
   AWSAMIRegionMap:
     AMI:
-      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.07.11
-      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2018.07.11
-    ap-south-1:
-        WS2012R2: ami-e013228f
-        WS2016FULLBASE: ami-ae1627c1
-    eu-west-3:
-        WS2012R2: ami-e0b1019d
-        WS2016FULLBASE: ami-23b6065e
-    eu-west-2:
-        WS2012R2: ami-a3b259c4
-        WS2016FULLBASE: ami-9bb358fc
-    eu-west-1:
-        WS2012R2: ami-5ef8ebb4
-        WS2016FULLBASE: ami-96e1f27c
-    ap-northeast-3:
-        WS2012R2: ami-04474e79
-        WS2016FULLBASE: ami-88424bf5
-    ap-northeast-2:
-        WS2012R2: ami-28398d46
-        WS2016FULLBASE: ami-07219569
+      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.09.15
+      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2018.09.15
     ap-northeast-1:
-        WS2012R2: ami-a73c5e4a
-        WS2016FULLBASE: ami-49096ba4
-    sa-east-1:
-        WS2012R2: ami-fac4e396
-        WS2016FULLBASE: ami-36caed5a
-    ca-central-1:
-        WS2012R2: ami-f334b697
-        WS2016FULLBASE: ami-303ebc54
+      WS2012R2: ami-0f94c740726599c3a
+      WS2016FULLBASE: ami-0ecf3c199663ebcde
+    ap-northeast-2:
+      WS2012R2: ami-0f033ac3427fcdad0
+      WS2016FULLBASE: ami-06435dc96d51c1b50
+    ap-northeast-3:
+      WS2012R2: ami-01f202ad494a95d9f
+      WS2016FULLBASE: ami-0c21e2825ddcab9a3
+    ap-south-1:
+      WS2012R2: ami-0d5f824867e8aeaf6
+      WS2016FULLBASE: ami-038ba93548f26cb9c
     ap-southeast-1:
-        WS2012R2: ami-43e49da9
-        WS2016FULLBASE: ami-84e79e6e
+      WS2012R2: ami-0f42104b50a572747
+      WS2016FULLBASE: ami-031244b26d2e3079b
     ap-southeast-2:
-        WS2012R2: ami-e3862381
-        WS2016FULLBASE: ami-d48623b6
+      WS2012R2: ami-06f2dbd8cdf99fd40
+      WS2016FULLBASE: ami-0d1c25021d0863177
+    ca-central-1:
+      WS2012R2: ami-0bc1f82c15f6cb011
+      WS2016FULLBASE: ami-02b53f7a9c60e0b9f
     eu-central-1:
-        WS2012R2: ami-f7ece81c
-        WS2016FULLBASE: ami-6af7f381
+      WS2012R2: ami-09f85c4c3e4a1ca3b
+      WS2016FULLBASE: ami-077fbac22ac466c00
+    eu-west-1:
+      WS2012R2: ami-019526e560b1c9df4
+      WS2016FULLBASE: ami-0b2744e066ace793d
+    eu-west-2:
+      WS2012R2: ami-068ee8cde1f60ca7f
+      WS2016FULLBASE: ami-0c09927662c939f41
+    eu-west-3:
+      WS2012R2: ami-014aa0eab0ec618d6
+      WS2016FULLBASE: ami-063c5c314e33b92b1
+    sa-east-1:
+      WS2012R2: ami-04fddd42220f1829a
+      WS2016FULLBASE: ami-070149537a6f5aa86
     us-east-1:
-        WS2012R2: ami-60093e1f
-        WS2016FULLBASE: ami-2d360152
+      WS2012R2: ami-04b06bdb58cae787d
+      WS2016FULLBASE: ami-01945499792201081
     us-east-2:
-        WS2012R2: ami-ca2318af
-        WS2016FULLBASE: ami-36241f53
+      WS2012R2: ami-08c59800a21429561
+      WS2016FULLBASE: ami-0ca3e3965ada31684
     us-west-1:
-        WS2012R2: ami-132ac970
-        WS2016FULLBASE: ami-d12ecdb2
+      WS2012R2: ami-08f6003bf4d50fe60
+      WS2016FULLBASE: ami-0df605282263fb1c9
     us-west-2:
-        WS2012R2: ami-490b5831
-        WS2016FULLBASE: ami-6d336015
-
-
+      WS2012R2: ami-0d1a1bbc1331e97f7
+      WS2016FULLBASE: ami-0a98eba42e9bf85c9
 Resources:
   VDA:
-    Type: 'AWS::EC2::Instance'
+    Type: AWS::EC2::Instance
     Metadata:
-      'AWS::CloudFormation::Authentication':
+      AWS::CloudFormation::Authentication:
         S3AccessCreds:
           type: S3
           roleName: !Ref VDARole
           buckets:
-            - !Ref QSS3BucketName
-      'AWS::CloudFormation::Init':
+          - !Ref QSS3BucketName
+      AWS::CloudFormation::Init:
         configSets:
           config:
-            - "CFNsetup"
-            - "QuickStartSetup"
-            - "rename"
-            - "domainjoin"          
-            - "installVDA"
-            - "finalize"
+          - CFNsetup
+          - QuickStartSetup
+          - rename
+          - domainjoin
+          - installVDA
+          - finalize
         CFNsetup:
           files:
-            'c:\cfn\cfn-hup.conf':
-              content: !Join 
+            c:\cfn\cfn-hup.conf:
+              content:
+                !Join
                 - ''
-                - - |
-                    [main]
+                - - '[main]
+
+                    '
                   - stack=
-                  - !Ref 'AWS::StackId'
-                  - |+
+                  - !Ref AWS::StackId
+                  - '
 
+                    '
                   - region=
-                  - !Ref 'AWS::Region'
-                  - |+
+                  - !Ref AWS::Region
+                  - '
 
-            'c:\cfn\hooks.d\cfn-auto-reloader.conf':
-              content: !Join 
+                    '
+            c:\cfn\hooks.d\cfn-auto-reloader.conf:
+              content:
+                !Join
                 - ''
-                - - |
-                    [cfn-auto-reloader-hook]
-                  - |
-                    triggers=post.update
-                  - >
-                    path=Resources.VDA.Metadata.AWS::CloudFormation::Init
+                - - '[cfn-auto-reloader-hook]
+
+                    '
+                  - 'triggers=post.update
+
+                    '
+                  - 'path=Resources.VDA.Metadata.AWS::CloudFormation::Init
+
+                    '
                   - 'action=cfn-init.exe -v -s '
-                  - !Ref 'AWS::StackId'
+                  - !Ref AWS::StackId
                   - ' -r VDA'
                   - ' --region '
-                  - !Ref 'AWS::Region'
-                  - |+
+                  - !Ref AWS::Region
+                  - '
 
+                    '
           commands:
             a-set-execution-policy:
-              command: powershell.exe -command Set-ExecutionPolicy RemoteSigned 
+              command: powershell.exe -command Set-ExecutionPolicy RemoteSigned
               waitAfterCompletion: '0'
         QuickStartSetup:
           files:
-            'C:\cfn\scripts\Unzip-Archive.ps1':
+            C:\cfn\scripts\Unzip-Archive.ps1:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Unzip-Archive.ps1
-              authentication: S3AccessCreds 
-            'C:\cfn\modules\AWSQuickStart.zip':
+              authentication: S3AccessCreds
+            C:\cfn\modules\AWSQuickStart.zip:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip
-              authentication: S3AccessCreds           
-            'c:\cfn\modules\Citrix.zip':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}modules/Citrix.zip'
-              authentication: S3AccessCreds                     
+              authentication: S3AccessCreds
+            c:\cfn\modules\Citrix.zip:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}modules/Citrix.zip
+              authentication: S3AccessCreds
           commands:
             a-unpack-quickstart-module:
-              command: >-
-                powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
-                C:\cfn\modules\AWSQuickStart.zip -Destination
-                C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
+                C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
               waitAfterCompletion: '0'
             b-unpack-citrix-module:
-              command: >-
-                powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
-                C:\cfn\modules\Citrix.zip -Destination
-                C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
-              waitAfterCompletion: '0'                  
-        rename:  
+              command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
+                C:\cfn\modules\Citrix.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              waitAfterCompletion: '0'
+        rename:
           commands:
-            a-execute-powershell-script-RenameComputer:  
-              command: !Sub | 
+            a-execute-powershell-script-RenameComputer:
+              command: !Sub |
                 powershell.exe -Command Rename-Computer -NewName '${CitrixVDAHostName}-${QSDeploymentID}' -Restart
-              waitAfterCompletion: 'forever'
-        domainjoin:  
+              waitAfterCompletion: forever
+        domainjoin:
           files:
-            'c:\cfn\scripts\Set-Dns.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1'
-              authentication: S3AccessCreds              
-            'c:\cfn\scripts\Join-Domain.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1'
-              authentication: S3AccessCreds  
+            c:\cfn\scripts\Set-Dns.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1
+              authentication: S3AccessCreds
+            c:\cfn\scripts\Join-Domain.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1
+              authentication: S3AccessCreds
           commands:
             a-set-dns:
               command: !Sub |
@@ -408,57 +404,59 @@ Resources:
             b-join-domain:
               command: !Sub |
                 powershell.exe c:\cfn\scripts\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\${DomainAdminUser} '${DomainAdminPassword}'
-              waitAfterCompletion: 'forever'
+              waitAfterCompletion: forever
         installVDA:
           files:
-            'c:\cfn\scripts\VDAServerSetup.exe':
-              source: 'https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1808.exe'
-            'C:\cfn\scripts\Prep-VDA.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-VDA.ps1'
+            c:\cfn\scripts\VDAServerSetup.exe:
+              source: https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1808.exe
+            C:\cfn\scripts\Prep-VDA.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-VDA.ps1
               authentication: S3AccessCreds
-            'c:\cfn\scripts\Install-VDA.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Install-VDA.ps1'
-              authentication: S3AccessCreds 
-            'c:\cfn\scripts\Set-CitrixCloud.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Set-CitrixCloud.ps1'
-              authentication: S3AccessCreds 
-            'c:\cfn\scripts\DisableIEESC.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1'
+            c:\cfn\scripts\Install-VDA.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Install-VDA.ps1
               authentication: S3AccessCreds
-            'c:\cfn\scripts\Enable-CredSSP.ps1':
-              source: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1'
-              authentication: S3AccessCreds                  
+            c:\cfn\scripts\Set-CitrixCloud.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Set-CitrixCloud.ps1
+              authentication: S3AccessCreds
+            c:\cfn\scripts\DisableIEESC.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1
+              authentication: S3AccessCreds
+            c:\cfn\scripts\Enable-CredSSP.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1
+              authentication: S3AccessCreds
           commands:
             a-DisableIEESC:
               command: powershell C:\cfn\scripts\DisableIEESC.ps1
               waitAfterCompletion: '0'
             b-Enable-CredSSP:
               command: powershell -command c:\cfn\scripts\Enable-CredSSP.ps1
-              waitAfterCompletion: '0'                 
+              waitAfterCompletion: '0'
             c-Prep-VDA:
               command: powershell.exe -ExecutionPolicy Unrestricted C:\cfn\scripts\Prep-VDA.ps1
               waitAfterCompletion: '0'
             d-reboot:
               command: powershell.exe -Command Restart-Computer -Force
-              waitAfterCompletion: forever                             
-            e-Install-VDA: 
+              waitAfterCompletion: forever
+            e-Install-VDA:
               command: !Sub |
                 powershell -command C:\cfn\scripts\Install-VDA.ps1 "-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\cfn\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}"
               waitAfterCompletion: '0'
             f-reboot:
               command: powershell.exe -Command Restart-Computer -Force
-              waitAfterCompletion: forever              
-            g-Set-CitrixCloud: 
+              waitAfterCompletion: forever
+            g-Set-CitrixCloud:
               command: !Sub |
                 powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -AWSRegion ${AWS::Region} -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -AddCurrentMachine
               waitAfterCompletion: '0'
             h-scheduleTargetOSOptimizerOnNextBoot:
-              command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe /q" /f
-              waitAfterCompletion: '0'                         
+              command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+                /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe
+                /q" /f
+              waitAfterCompletion: '0'
             i-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
-        finalize:  
+        finalize:
           commands:
             z-signal-success:
               command: !Sub |
@@ -469,79 +467,79 @@ Resources:
                 enabled: 'true'
                 ensureRunning: 'true'
                 files:
-                  - 'c:\cfn\cfn-hup.conf'
-                  - 'c:\cfn\hooks.d\cfn-auto-reloader.conf'        
+                - c:\cfn\cfn-hup.conf
+                - c:\cfn\hooks.d\cfn-auto-reloader.conf
     Properties:
       IamInstanceProfile: !Ref VDAProfile
       InstanceType: !Ref CitrixVDAInstanceType
-      ImageId: !FindInMap [ AWSAMIRegionMap, !Ref "AWS::Region", !Ref CitrixVDAWindowsServerVersion ]
+      ImageId:
+        !FindInMap
+        - AWSAMIRegionMap
+        - !Ref AWS::Region
+        - !Ref CitrixVDAWindowsServerVersion
       SecurityGroupIds:
-        - !Ref CitrixVDASecurityGroup
+      - !Ref CitrixVDASecurityGroup
       KeyName: !Ref KeyPairName
       SubnetId: !Ref PrivateVDASubnet1
       Tags:
-        - Key: Name
-          Value: !Sub '${CitrixVDAHostName}-${QSDeploymentID}'
-        - Key: App
-          Value: Citrix
-        - Key: QSDeplomentID
-          Value: !Sub ${QSDeploymentID}          
-      UserData: !Base64 
-        'Fn::Join':
+      - Key: Name
+        Value: !Sub ${CitrixVDAHostName}-${QSDeploymentID}
+      - Key: App
+        Value: Citrix
+      - Key: QSDeplomentID
+        Value: !Sub ${QSDeploymentID}
+      UserData:
+        !Base64
+          Fn::Join:
           - ''
-          - - |
-              <script>
+          - - '<script>
+
+              '
             - 'cfn-init.exe -v -s '
-            - !Ref 'AWS::StackId'
+            - !Ref AWS::StackId
             - ' -r VDA'
             - ' --region '
-            - !Ref 'AWS::Region'
+            - !Ref AWS::Region
             - ' --configsets config'
-            - |+
+            - ''
             - </script>
-
   VDAWaitHandle:
-    Type: 'AWS::CloudFormation::WaitConditionHandle'
+    Type: AWS::CloudFormation::WaitConditionHandle
   VDAWaitCondition:
-    Type: 'AWS::CloudFormation::WaitCondition'
+    Type: AWS::CloudFormation::WaitCondition
     DependsOn: VDA
     Properties:
       Handle: !Ref VDAWaitHandle
       Timeout: '3600'
-
-
   VDARole:
-    Type: 'AWS::IAM::Role'
+    Type: AWS::IAM::Role
     Properties:
       Policies:
-        - PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Action:
-                  - 's3:GetObject'
-                Resource: 
-                - !Sub 'arn:aws:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*'
-                Effect: Allow
-          PolicyName: aws-quick-start-s3-policy
+      - PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Action:
+            - s3:GetObject
+            Resource:
+            - !Sub arn:aws:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*
+            Effect: Allow
+        PolicyName: aws-quick-start-s3-policy
       Path: /
       AssumeRolePolicyDocument:
         Statement:
-          - Action:
-              - 'sts:AssumeRole'
-            Principal:
-              Service:
-                - ec2.amazonaws.com
-            Effect: Allow
+        - Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Effect: Allow
         Version: 2012-10-17
-
   VDAProfile:
-    Type: 'AWS::IAM::InstanceProfile'
+    Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
-        - !Ref VDARole
+      - !Ref VDARole
       Path: /
-
-
 Outputs:
   CitrixVDAInstanceID:
     Description: VDA EC2 instance ID
@@ -553,7 +551,8 @@ Outputs:
     Value: !Sub ${CitrixHostingConnectionName}-${QSDeploymentID}
   CitrixCatalogName:
     Description: Citrix Catalog Name
-    Value: !Sub ${CitrixCatalogName}-${QSDeploymentID}    
-  CitrixDeliveryGroupName:   
+    Value: !Sub ${CitrixCatalogName}-${QSDeploymentID}
+  CitrixDeliveryGroupName:
     Description: Citrix Delivery Group Name
-    Value: !Sub ${CitrixDeliveryGroupName}-${QSDeploymentID}    
+    Value: !Sub ${CitrixDeliveryGroupName}-${QSDeploymentID}
+...
