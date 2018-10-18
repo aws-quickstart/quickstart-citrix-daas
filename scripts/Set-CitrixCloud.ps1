@@ -171,9 +171,7 @@ try {
     # Add current machine to created delivery group. 
     If ($AddCurrentMachine) {
         Write-Host "Add current machine to machine catalog and delivery group"
-    # This could be also tied up to hypervisor connection to support power management, however that is complicated to implement. Two parameters would need to be added: -HypervisorConnectionUid $m_HypervisorConnection.Uid;  and -HostedMachineId. HostedMachineId is specific to hypervisor (for AWS, it's using format like i-0a100f4a1c1fc1d29) and there is no simple method how to link current machine with it's ID. 
-    # The only method (aside from some AWS tooling or cmdlets) would be to parse the output from 'Get-ChildItem XDHyp:\Connections\AWS-QuickStart -Recurse', which is slow and again needs to have link between AWS and domain name of machine. 
-    $m_CurrentMachine = New-BrokerMachine -CatalogUid $m_CAT.Uid -MachineName "$((Get-WmiObject Win32_NTDomain).DomainName)\$([Environment]::MachineName)" -HypervisorConnectionUid $m_HypervisorConnection.Uid -HostedMachineId $m_Instance_ID; 
+    $m_CurrentMachine = Execute-With-Retry {New-BrokerMachine -CatalogUid $m_CAT.Uid -MachineName "$((Get-WmiObject Win32_NTDomain).DomainName)\$([Environment]::MachineName)" -HypervisorConnectionUid $m_HypervisorConnection.Uid -HostedMachineId $m_Instance_ID}
     Add-BrokerMachine -InputObject $m_CurrentMachine -DesktopGroup $m_DG; 
     }
 
