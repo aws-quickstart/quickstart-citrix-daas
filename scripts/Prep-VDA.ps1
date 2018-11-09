@@ -32,11 +32,15 @@ try {
 	### Install C++ libararies
 	Write-Host "Installing Nuget"
 	Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-	Write-Host "Installing VcRedist"
+	Write-Host "Installing VcRedist Module"
 	Install-Module -Name VcRedist -Force # Reference: https://github.com/aaronparker/Install-VisualCRedistributables
-	New-Item C:\Temp\VcRedist -ItemType Directory
+	Write-Host "Creating VcRedist Temp Folder"
+    New-Item C:\Temp\VcRedist -ItemType Directory
+    Write-Host "Downloading VcRedist Redist to Temp Folder"
 	Get-VcList | Get-VcRedist -Path C:\Temp\VcRedist
-	Get-VcList | Install-VcRedist -Path C:\Temp\VcRedist
+    Write-Host "Installing VcRedist"
+    $VcList = Get-VcList
+    Install-VcRedist -Path C:\Temp\VcRedist -VcList $VcList
 
 	# Install Pre-req for v7.18 https://docs.citrix.com/en-us/session-recording/current-release/system-requirements.html
 	Write-Host "Downloading Microsoft .NET Framework 4.7.1"
