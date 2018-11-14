@@ -24,4 +24,4 @@ tests:
     template_file: citrix-virtualapps-service-master.yaml
     regions:
       - us-east-1
-      - us-east-2
+      - us-west-2
