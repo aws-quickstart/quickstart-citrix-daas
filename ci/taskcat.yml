@@ -20,14 +20,42 @@ global:
  
 tests:
   quickstart-citrix-virtualapps-service:
-    parameter_input: params-master.json
+    parameter_input: params-master-ap-southeast-1.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
+      - ap-southeast-1
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-ap-southeast-2.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
+      - ap-southeast-2
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-eu-central-1.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
+      - eu-central-1
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-eu-west-1.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
+      - eu-west-1
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-us-east-1.json
     template_file: citrix-virtualapps-service-master.yaml
     regions:
       - us-east-1
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-us-east-2.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
       - us-east-2
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-us-west-1.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
       - us-west-1
+  quickstart-citrix-virtualapps-service:
+    parameter_input: params-master-us-west-2.json
+    template_file: citrix-virtualapps-service-master.yaml
+    regions:
       - us-west-2
-      - eu-west-1
-      - eu-central-1
-      - ap-southeast-1
-      - ap-southeast-2
