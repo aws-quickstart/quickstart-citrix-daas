@@ -49,11 +49,11 @@
     },
     {
         "ParameterKey": "DomainDNSName",
-        "ParameterValue": "examplefecc20.com"
+        "ParameterValue": "example90a5b3.com"
     },
     {
         "ParameterKey": "DomainNetBIOSName",
-        "ParameterValue": "examplefecc20"
+        "ParameterValue": "example90a5b3"
     },
     {
         "ParameterKey": "KeyPairName",
