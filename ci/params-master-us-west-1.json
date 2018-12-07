@@ -49,11 +49,11 @@
     },
     {
         "ParameterKey": "DomainDNSName",
-        "ParameterValue": "exampleecd292.com"
+        "ParameterValue": "exampled61c35.com"
     },
     {
         "ParameterKey": "DomainNetBIOSName",
-        "ParameterValue": "exampleecd292"
+        "ParameterValue": "exampled61c35"
     },
     {
         "ParameterKey": "KeyPairName",
