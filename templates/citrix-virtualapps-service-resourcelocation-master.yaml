@@ -34,7 +34,6 @@ Metadata:
           - DomainDNSName
           - DomainNetBIOSName
           - DomainAdminPassword
-          - DomainAdminUser
       - Label:
           default: Network Configuration
         Parameters:
@@ -81,8 +80,6 @@ Metadata:
         default: Citrix Cloud Customer ID  
       DomainAdminPassword:
         default: Domain Admin Password
-      DomainAdminUser:
-        default: Domain Admin User Name
       DomainDNSName:
         default: Domain DNS Name
       DomainNetBIOSName:
@@ -171,15 +168,6 @@ Parameters:
     MaxLength: '32'
     MinLength: '8'
     NoEcho: 'true'
-    Type: String
-  DomainAdminUser:
-    AllowedPattern: '[a-zA-Z0-9]*'
-    Default: admin
-    Description: >-
-      User name for the account that will be added as Domain Administrator. This
-      is separate from the default "Administrator" account. Note: Use admin if using managed AD.
-    MaxLength: '25'
-    MinLength: '5'
     Type: String
   DomainDNSName:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
@@ -337,7 +325,7 @@ Resources:
         DomainNetBIOSName:                    !Ref DomainNetBIOSName
         DomainDNSName:                        !Ref DomainDNSName
         DomainAdminPassword:                  !Ref DomainAdminPassword
-        DomainAdminUser:                      !Ref DomainAdminUser
+        DomainAdminUser:                      'admin'
         KeyPairName:                          !Ref KeyPairName
         PrivateInfraSubnet1:                  !Ref PrivateInfraSubnet1ID
         PrivateInfraSubnet2:                  !Ref PrivateInfraSubnet2ID

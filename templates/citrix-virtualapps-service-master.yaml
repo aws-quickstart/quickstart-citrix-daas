@@ -371,6 +371,7 @@ Resources:
       TemplateURL: !Sub >-
         https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/templates/rdgw-standalone.template
       Parameters:
+        AdminUser: 'admin'
         AdminPassword: !Ref DomainAdminPassword
         DomainDNSName: !Ref DomainDNSName
         KeyPairName: !Ref KeyPairName
