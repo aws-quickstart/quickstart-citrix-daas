@@ -441,7 +441,7 @@ Outputs:
     Value: !GetAtt RDGWStack.Outputs.EIP1  
   ADServer1PrivateIP:
     Description: AD Server 1 Private IP Address (this may vary based on Directory Service order of IP addresses)
-    Value: ADStack.Outputs.ADServer1PrivateIP
+    Value: !GetAtt ADStack.Outputs.ADServer1PrivateIP
   ADServer2PrivateIP:
     Description: AD Server 2 Private IP Address (this may vary based on Directory Service order of IP addresses)
     Value: !GetAtt ADStack.Outputs.ADServer2PrivateIP
