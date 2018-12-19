@@ -396,7 +396,7 @@ Resources:
       - ADStack
     Properties:
       TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service-resourcelocation-master.yaml
+        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service.yaml
       Parameters:
         ADServer1PrivateIP:                  !GetAtt ADStack.Outputs.ADServer1PrivateIP
         ADServer2PrivateIP:                  !GetAtt ADStack.Outputs.ADServer2PrivateIP
