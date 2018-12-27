@@ -126,7 +126,7 @@ Parameters:
     Type: String
     NoEcho: 'true'    
   CitrixAPIClientSecret:
-    Description: Secret of your Citrix Cloud Secure Client used for integration with Citrix Cloud APIs.
+    Description: Secret of your Citrix Cloud Secure Client.
     Type: String
     NoEcho: 'true'        
   CitrixCloudConnector1HostName:
@@ -183,7 +183,7 @@ Parameters:
     Default: example
     Description: >-
       NetBIOS name of the domain (up to 15 characters) for users of earlier
-      versions of Windows; e.g., EXAMPLE.
+      versions of Windows; e.g., example.
     MaxLength: '15'
     MinLength: '1'
     Type: String
@@ -196,13 +196,13 @@ Parameters:
     Description: ID of the private infrastructure subnet 1 in Availability Zone 1; e.g., subnet-a0246dcd.
     Type: 'AWS::EC2::Subnet::Id'
   PrivateInfraSubnet2ID:
-    Description: ID of the private infrastructure subnet 2 in Availability Zone 1; e.g., subnet-a0246dcd.
+    Description: ID of the private infrastructure subnet 2 in Availability Zone 2; e.g., subnet-a0246dce.
     Type: 'AWS::EC2::Subnet::Id'
   PrivateVDASubnet1ID:
-    Description: ID of the private VDA subnet 1 in Availability Zone 1; e.g., subnet-a0246dcd.
+    Description: ID of the private VDA subnet 1 in Availability Zone 1; e.g., subnet-a0246dcf.
     Type: 'AWS::EC2::Subnet::Id'
   PrivateVDASubnet2ID:
-    Description: ID of the private VDA subnet 1 in Availability Zone 1; e.g., subnet-a0246dcd.
+    Description: ID of the private VDA subnet 1 in Availability Zone 2; e.g., subnet-a0246dcg.
     Type: 'AWS::EC2::Subnet::Id'   
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
