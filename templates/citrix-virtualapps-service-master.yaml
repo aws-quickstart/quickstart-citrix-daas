@@ -125,14 +125,14 @@ Parameters:
       - m4.large 
       - m5.large
   CitrixCustomerId:
-    Description: Citrix Cloud Customer ID. See deployment instructions to obtain.
+    Description: Customer ID of your Citrix Cloud tenant.
     Type: String
   CitrixAPIClientID:
-    Description: Citrix Cloud Secure Client ID. See deployment instructions to obtain.
+    Description: ID of your Citrix Cloud Secure Client used for integration with Citrix Cloud APIs.
     Type: String
     NoEcho: 'true'    
   CitrixAPIClientSecret:
-    Description: Citrix Cloud Secure Client Secret. See deployment instructions to obtain.
+    Description: Secret of your Citrix Cloud Secure Client used for integration with Citrix Cloud APIs.
     Type: String
     NoEcho: 'true'               
   CitrixCloudConnector1HostName:
@@ -144,7 +144,7 @@ Parameters:
     Type: String
     Default: CTX-CC2  
   CitrixCloudConnectorsWindowsServerVersion:
-    Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
+    Description: Windows Server version for the Citrix Cloud Connectors.
     Type: String
     Default: WS2016FULLBASE
     AllowedValues:
@@ -299,7 +299,7 @@ Parameters:
       - g3.8xlarge
       - g3.16xlarge         
   CitrixVDAWindowsServerVersion:
-    Description: Version of preferred Windows Server for the Citrix VDA.
+    Description: Windows Server version for the Citrix VDA.
     Type: String
     Default: WS2016FULLBASE
     AllowedValues:
