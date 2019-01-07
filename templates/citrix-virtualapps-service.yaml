@@ -4,7 +4,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   This template deploys a Citrix Virtual Apps Service Resource Location.
   **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the
-  AWS resources used if you create a stack from this template. 
+  AWS resources used if you create a stack from this template. (qs-1p6u9q6o0)
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
