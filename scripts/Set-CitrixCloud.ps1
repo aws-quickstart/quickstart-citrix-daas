@@ -118,6 +118,7 @@ try {
     Write-Host "Downloading Citrix PowerShell SDK";
     $m_SDKTempFile = $(New-TemporaryFile).FullName + ".exe";
     $m_SDKURL = "http://download.apps.cloud.com/CitrixPoshSdk.exe";
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
     (New-Object System.Net.WebClient).DownloadFile($m_SDKURL, $m_SDKTempFile);
 
     # Install Citrix PowerShell SDK
