@@ -14,7 +14,7 @@ You can also use the AWS CloudFormation templates as a starting point for your o
 
 ![Quick Start architecture for Citrix Virtual Apps and Desktops service on AWS](https://d0.awsstatic.com/partner-network/QuickStart/datasheets/citrix-virtual-apps-and-desktops-service-on-aws-diagram.png)
 
-For architectural details, best practices, step-by-step instructions, and customization options, see the [deployment guide](https://https://fwd.aws/EXYE3).
+For architectural details, best practices, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/EXYE3).
 
 To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo. If you'd like to submit code for this Quick Start, please review the [AWS Quick Start Contributor's Kit](https://aws-quickstart.github.io/).
 
