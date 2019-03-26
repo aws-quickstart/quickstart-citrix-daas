@@ -13,6 +13,9 @@ param(
     [string] $CtxResourceLocationName = "AWS-QuickStart"
 )
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+
 Function New-BearerAuthenticationToken {
  Param (
      [Parameter(Mandatory=$True)]
