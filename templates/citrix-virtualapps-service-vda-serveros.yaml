@@ -510,7 +510,7 @@ Resources:
     DependsOn: VDA
     Properties:
       Handle: !Ref VDAWaitHandle
-      Timeout: '3600'
+      Timeout: '5400'
   VDARole:
     Type: AWS::IAM::Role
     Properties:

@@ -60,8 +60,8 @@ function Execute-With-Retry {
     param(    
     [Parameter(ValueFromPipeline,Mandatory)]
     $Command,    
-    $RetryDelay = 30,
-    $MaxRetries = 10,
+    $RetryDelay = 120,
+    $MaxRetries = 15,
     $VerboseOutput = $true
     )
     
