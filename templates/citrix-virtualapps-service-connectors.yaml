@@ -485,6 +485,9 @@ Resources:
             c:\cfn\scripts\DisableIEESC.ps1:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1
               authentication: S3AccessCreds
+            c:\cfn\scripts\Prep-CloudConnector.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-CloudConnector.ps1
+              authentication: S3AccessCreds
             c:\cfn\scripts\Deploy-CitrixCloudConnector.ps1:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Deploy-CitrixCloudConnector.ps1
               authentication: S3AccessCreds
@@ -492,7 +495,13 @@ Resources:
             a-DisableIEESC:
               command: powershell C:\cfn\scripts\DisableIEESC.ps1
               waitAfterCompletion: '0'
-            b-installCloudConnector:
+            b-PrepCloudConnector:
+              command: powershell -ExecutionPolicy Unrestricted C:\cfn\scripts\Prep-CloudConnector.ps1
+              waitAfterCompletion: '0'
+            c-reboot:
+              command: powershell.exe -Command Restart-Computer -Force
+              waitAfterCompletion: forever
+            d-installCloudConnector:
               command: !Sub |
                 powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
               waitAfterCompletion: '0'
