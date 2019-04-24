@@ -249,56 +249,56 @@ Parameters:
 Mappings:
   AWSAMIRegionMap:
     AMI:
-      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.04.10
-      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2019.04.10
+      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.04.21
+      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2019.04.21
     ap-northeast-1:
-      WS2012R2: ami-0bc9076d1971b892f
-      WS2016FULLBASE: ami-0fda7ce2b9a492e49
+      WS2012R2: ami-02c5fb3ff77aef33a
+      WS2016FULLBASE: ami-0599fb6f97b5a6f0a
     ap-northeast-2:
-      WS2012R2: ami-01e294502925e6862
-      WS2016FULLBASE: ami-07219b6e67e0aed12
+      WS2012R2: ami-07b5b35edebea3391
+      WS2016FULLBASE: ami-048ec09556d27fcb2
     ap-northeast-3:
-      WS2012R2: ami-0fe4366b5aa9294ef
-      WS2016FULLBASE: ami-0d31e3a17a4759e1e
+      WS2012R2: ami-00386a6abbd0c368c
+      WS2016FULLBASE: ami-0835d798a4bbd5d2e
     ap-south-1:
-      WS2012R2: ami-0afbf2194efe9f3ee
-      WS2016FULLBASE: ami-09f8b8067e81a706d
+      WS2012R2: ami-074c819f843b9741f
+      WS2016FULLBASE: ami-0e5199be42264f072
     ap-southeast-1:
-      WS2012R2: ami-0c512a41948d56a41
-      WS2016FULLBASE: ami-00b06a0971151dce9
+      WS2012R2: ami-0802d46cf3d57a4a2
+      WS2016FULLBASE: ami-0d28ef06a3d5f4fb2
     ap-southeast-2:
-      WS2012R2: ami-07dd8d162e848226a
-      WS2016FULLBASE: ami-0268d6286aac946d9
+      WS2012R2: ami-047edd4b255a050ae
+      WS2016FULLBASE: ami-0f5ee6e55f61fac83
     ca-central-1:
-      WS2012R2: ami-041d6b4493f5ef9a0
-      WS2016FULLBASE: ami-0d5ef77e48a82cd42
+      WS2012R2: ami-0bc55e3f20d763389
+      WS2016FULLBASE: ami-052a3fd3cd94d3bc8
     eu-central-1:
-      WS2012R2: ami-00295326eb2df74ae
-      WS2016FULLBASE: ami-0ff4a81fee2c82161
+      WS2012R2: ami-0997fc4a6f3b92e5d
+      WS2016FULLBASE: ami-0fb8382dc55c077e7
     eu-west-1:
-      WS2012R2: ami-03f8a7003ac359dc3
-      WS2016FULLBASE: ami-0bed345bed1cab473
+      WS2012R2: ami-037323a2bfa8efcae
+      WS2016FULLBASE: ami-0a51db045a1b55840
     eu-west-2:
-      WS2012R2: ami-00a6ba830abfa65d7
-      WS2016FULLBASE: ami-075a1811b5270e1b2
+      WS2012R2: ami-0820e6bdabe9bc290
+      WS2016FULLBASE: ami-08fa30f0d2e6e9813
     eu-west-3:
-      WS2012R2: ami-0781e5bf7fb77aa98
-      WS2016FULLBASE: ami-02a6fa22e1036b9b3
+      WS2012R2: ami-0d5d8f6b39e0b1b5a
+      WS2016FULLBASE: ami-0eaafbec450ba93e2
     sa-east-1:
-      WS2012R2: ami-0411d28c82e5ea0c0
-      WS2016FULLBASE: ami-0ec7be30c2a61840d
+      WS2012R2: ami-0b060dd9379c8eec8
+      WS2016FULLBASE: ami-0472e46aba4c94432
     us-east-1:
-      WS2012R2: ami-0e775ae02dfe67fea
-      WS2016FULLBASE: ami-0a7d688fe3e239b69
+      WS2012R2: ami-0e3fbebfa69d4c85c
+      WS2016FULLBASE: ami-0a125a00b5b736e77
     us-east-2:
-      WS2012R2: ami-0e4566dd8919a823c
-      WS2016FULLBASE: ami-0fcd1e0bdff03687d
+      WS2012R2: ami-08c44c744ddf87622
+      WS2016FULLBASE: ami-09cca5d43176319ed
     us-west-1:
-      WS2012R2: ami-09ca663e09891225b
-      WS2016FULLBASE: ami-04570521f90f1fa06
+      WS2012R2: ami-0018c07a5ca79359d
+      WS2016FULLBASE: ami-0450334b4a0241b48
     us-west-2:
-      WS2012R2: ami-0a8d209357472bee1
-      WS2016FULLBASE: ami-00b5b9e28d3450121
+      WS2012R2: ami-0395238cb927001d5
+      WS2016FULLBASE: ami-050f546880c050e1b
 Resources:
   VDA:
     Type: AWS::EC2::Instance
