@@ -287,10 +287,17 @@ Resources:
             C:\cfn\modules\AWSQuickStart.zip:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip
               authentication: S3AccessCreds
+            c:\cfn\modules\Citrix.zip:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}modules/Citrix.zip
+              authentication: S3AccessCreds
           commands:
             a-unpack-quickstart-module:
               command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
                 C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              waitAfterCompletion: '0'
+            b-unpack-citrix-module:
+              command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
+                C:\cfn\modules\Citrix.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
               waitAfterCompletion: '0'
         rename:
           commands:
@@ -320,6 +327,9 @@ Resources:
             c:\cfn\scripts\DisableIEESC.ps1:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/DisableIEESC.ps1
               authentication: S3AccessCreds
+            c:\cfn\scripts\Prep-CloudConnector.ps1:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-CloudConnector.ps1
+              authentication: S3AccessCreds
             c:\cfn\scripts\Deploy-CitrixCloudConnector.ps1:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Deploy-CitrixCloudConnector.ps1
               authentication: S3AccessCreds
@@ -334,7 +344,13 @@ Resources:
               command: !Sub |
                 powershell C:\cfn\scripts\Register-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
               waitAfterCompletion: '0'
-            c-installCloudConnector:
+            c-PrepCloudConnector:
+              command: powershell -ExecutionPolicy Unrestricted C:\cfn\scripts\Prep-CloudConnector.ps1
+              waitAfterCompletion: '0'
+            d-reboot:
+              command: powershell.exe -Command Restart-Computer -Force
+              waitAfterCompletion: forever
+            e-installCloudConnector:
               command: !Sub |
                 powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
               waitAfterCompletion: '0'
@@ -452,10 +468,17 @@ Resources:
             C:\cfn\modules\AWSQuickStart.zip:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip
               authentication: S3AccessCreds
+            c:\cfn\modules\Citrix.zip:
+              source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}modules/Citrix.zip
+              authentication: S3AccessCreds
           commands:
             a-unpack-quickstart-module:
               command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
                 C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              waitAfterCompletion: '0'
+            b-unpack-citrix-module:
+              command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
+                C:\cfn\modules\Citrix.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
               waitAfterCompletion: '0'
         rename:
           commands:
