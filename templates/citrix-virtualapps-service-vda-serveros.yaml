@@ -408,7 +408,7 @@ Resources:
         installVDA:
           files:
             c:\cfn\scripts\VDAServerSetup.exe:
-              source: https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1808.exe
+              source: https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe
             C:\cfn\scripts\Prep-VDA.ps1:
               source: !Sub https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}scripts/Prep-VDA.ps1
               authentication: S3AccessCreds
