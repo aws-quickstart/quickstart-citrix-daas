@@ -23,11 +23,11 @@ tests:
     template_file: citrix-virtualapps-service-master.yaml
     regions:
       - ap-northeast-1
-  quickstart-citrix-ap-northeast-2:
-    parameter_input: params-master-ap-northeast-2.json
-    template_file: citrix-virtualapps-service-master.yaml
-    regions:
-      - ap-northeast-2
+#  quickstart-citrix-ap-northeast-2:
+#    parameter_input: params-master-ap-northeast-2.json
+#    template_file: citrix-virtualapps-service-master.yaml
+#    regions:
+#      - ap-northeast-2
   quickstart-citrix-ap-south-1:
     parameter_input: params-master-ap-south-1.json
     template_file: citrix-virtualapps-service-master.yaml
