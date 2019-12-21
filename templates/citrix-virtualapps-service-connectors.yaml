@@ -171,53 +171,53 @@ Mappings:
       WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.07.12
       WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2019.07.12
     ap-northeast-1:
-      WS2012R2: ami-0da4d2aec4faf903c
-      WS2016FULLBASE: ami-0f8870c207dc4af69
+      WS2012R2: ami-0eeeab3e23597eaae
+      WS2016FULLBASE: ami-04f188a745c1a5ecb
     ap-northeast-2:
-      WS2012R2: ami-0736fa421b03ebc0b
-      WS2016FULLBASE: ami-00ca4e793a7f026d7
+      WS2012R2: ami-012b944b3b57bb345
+      WS2016FULLBASE: ami-0ba4be2b9122369d0
     ap-northeast-3:
-      WS2012R2: ami-01bec48a3953e24b8
-      WS2016FULLBASE: ami-015f818c817d893b7
+      WS2012R2: ami-005e57de4cdc5b435
+      WS2016FULLBASE: ami-009652e698488639b
     ap-south-1:
-      WS2012R2: ami-055b8cce72c3fe0fe
-      WS2016FULLBASE: ami-0d08c1bf7e46a5840
+      WS2012R2: ami-0a8afc66668399657
+      WS2016FULLBASE: ami-0f93a55913b1674e5
     ap-southeast-1:
-      WS2012R2: ami-01247b8894d425ad8
-      WS2016FULLBASE: ami-09082d40574490760
+      WS2012R2: ami-0c506e54506222e59
+      WS2016FULLBASE: ami-0ee7d851f6067a32a
     ap-southeast-2:
-      WS2012R2: ami-05ae58c04d30b1579
-      WS2016FULLBASE: ami-0202f51d204a8428f
+      WS2012R2: ami-0088be315f9861d69
+      WS2016FULLBASE: ami-0502d8da978325e3b
     ca-central-1:
-      WS2012R2: ami-086541da748fd1b23
-      WS2016FULLBASE: ami-07cf57bc6e0b66c11
+      WS2012R2: ami-05935d04f5d7a3772
+      WS2016FULLBASE: ami-092a17523bd292494
     eu-central-1:
-      WS2012R2: ami-08dcceb529e70f875
-      WS2016FULLBASE: ami-02a6791b44938cfcd
+      WS2012R2: ami-0297bc3628de600e3
+      WS2016FULLBASE: ami-0d0a7c3ad4944bbde
     eu-west-1:
-      WS2012R2: ami-023aa6510439dee1d
-      WS2016FULLBASE: ami-0737ec3d03742d38c
+      WS2012R2: ami-0ba4d956f4577cf9c
+      WS2016FULLBASE: ami-03e785f2620db42b7
     eu-west-2:
-      WS2012R2: ami-0722861d8f432ad84
-      WS2016FULLBASE: ami-0d3900ac08ee9aa1c
+      WS2012R2: ami-07c80be9563373f41
+      WS2016FULLBASE: ami-0a63146045407fe91
     eu-west-3:
-      WS2012R2: ami-0eef709506f197216
-      WS2016FULLBASE: ami-072e7e4e02eeb267d
+      WS2012R2: ami-0404c7c05709e8690
+      WS2016FULLBASE: ami-0d1734fdfdb51a5d2
     sa-east-1:
-      WS2012R2: ami-03af99f7954cc9501
-      WS2016FULLBASE: ami-0f06dcfea3d436659
+      WS2012R2: ami-0acf1c98ba364c3a7
+      WS2016FULLBASE: ami-03d1628df9bba93e9
     us-east-1:
-      WS2012R2: ami-055c10ae78f3a58a2
-      WS2016FULLBASE: ami-08c7081300f7d9abb
+      WS2012R2: ami-01a2180a66e81fae2
+      WS2016FULLBASE: ami-00c96c304f033dfbe
     us-east-2:
-      WS2012R2: ami-03aa4445f535b27bc
-      WS2016FULLBASE: ami-02dca99d899d09cb3
+      WS2012R2: ami-0d7d4f7e71a19179f
+      WS2016FULLBASE: ami-084c1257f64cd7db9
     us-west-1:
-      WS2012R2: ami-02ad1ae3d4204b530
-      WS2016FULLBASE: ami-0255ad7855945d5ef
+      WS2012R2: ami-052b41141ec62213b
+      WS2016FULLBASE: ami-053e7390d80e9762f
     us-west-2:
-      WS2012R2: ami-0d639a48468c98db8
-      WS2016FULLBASE: ami-000bf92d1a21bf9ac
+      WS2012R2: ami-006103fd8b3a09d9b
+      WS2016FULLBASE: ami-02a58aeaf6a5f726d
 Resources:
   CitrixCloudConnector1:
     Type: AWS::EC2::Instance
