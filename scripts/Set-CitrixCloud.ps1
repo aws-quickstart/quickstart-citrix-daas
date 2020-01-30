@@ -161,9 +161,11 @@ try {
 
     New-Item -AvailabilityZonePath @($m_AvailabilityZone_Obj.FullPath) -HypervisorConnectionName $m_HypervisorConnection.Name -NetworkPath @($m_Subnet_Obj.FullPath) -Path @("XDHyp:\HostingUnits\VDA-Network-$($QSDeploymentID)") -PersonalvDiskStoragePath @() -RootPath $m_VPC_Obj.FullPath -StoragePath @();
 
+    Start-Sleep -s 90
+
     # Create new catalog. As machines here are unmanaged, MachinesArePhysical is set to $True. 
     Write-Host "Create new machine catalog"
-    $m_CAT = New-BrokerCatalog  -AllocationType "Random" -Description "Created by AWS QuickStart - Deployment ID $QSDeploymentID" -IsRemotePC $False -MachinesArePhysical $False -MinimumFunctionalLevel "L7_9" -Name "$CtxCatalogName-$QSDeploymentID" -PersistUserChanges "OnLocal" -ProvisioningType "Manual" -Scope @() -SessionSupport "MultiSession" -ZoneUid $CtxZone.Uid
+    $m_CAT = New-BrokerCatalog  -AllocationType "Random" -Description "Created by AWS QuickStart - Deployment ID $QSDeploymentID" -IsRemotePC $False -MachinesArePhysical $False -MinimumFunctionalLevel "L7_6" -Name "$CtxCatalogName-$QSDeploymentID" -PersistUserChanges "OnLocal" -ProvisioningType "Manual" -Scope @() -SessionSupport "MultiSession" -ZoneUid $CtxZone.Uid
 
     # Create new delivery group
     Write-Host "Create new delivery group"
