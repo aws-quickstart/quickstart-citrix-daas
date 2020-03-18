@@ -349,6 +349,7 @@ Resources:
           DomainAdminPassword: !Ref DomainAdminPassword
           DomainDNSName: !Ref DomainDNSName
           DomainNetBIOSName: !Ref DomainNetBIOSName
+          KeyPairName: !Ref KeyPairName
           PrivateSubnet1CIDR: !Ref PrivateInfraSubnet1CIDR
           PrivateSubnet1ID: !GetAtt 
             - VPCStack
