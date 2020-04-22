@@ -18,7 +18,9 @@ try {
     # Write-Host "Copying XD Media locally"
     # cwcOS-Tools\Download-File -FileName $VDA_MediaName -Path $VDA_MediaLocation -ToFolder $VDA_LocalMediaLocation -verbose
     Start-Transcript -Path C:\cfn\log\Prep-VDA.ps1.txt -Append    
-	
+
+	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
     Import-Module ServerManager
     Write-Host "Enabling RDS Server Role"
     Add-WindowsFeature RDS-RD-Server
