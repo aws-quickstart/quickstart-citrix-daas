@@ -34,8 +34,8 @@ Resources:
     Properties:
       GroupId: !Ref CCSecurityGroup
       IpProtocol: tcp
-      FromPort: '0'
-      ToPort: '65535'
+      FromPort: 0
+      ToPort: 65535
       SourceSecurityGroupId: !Ref CCSecurityGroup
 
   VDARegistrationHTTPSecurityGroupTCPIngress:
@@ -44,8 +44,8 @@ Resources:
     Properties:
       GroupId: !Ref CCSecurityGroup
       IpProtocol: tcp
-      FromPort: '80'
-      ToPort: '80'
+      FromPort: 80
+      ToPort: 80
       SourceSecurityGroupId: !Ref VDASecurityGroup
 
   VDARegistrationHTTPSSecurityGroupTCPIngress:
@@ -54,8 +54,8 @@ Resources:
     Properties:
       GroupId: !Ref CCSecurityGroup
       IpProtocol: tcp
-      FromPort: '443'
-      ToPort: '443'
+      FromPort: 443
+      ToPort: 443
       SourceSecurityGroupId: !Ref VDASecurityGroup
 
   VDASecurityGroup:
@@ -102,8 +102,8 @@ Resources:
     Properties:
       GroupId: !Ref VDASecurityGroup
       IpProtocol: tcp
-      FromPort: '0'
-      ToPort: '65535'
+      FromPort: 0
+      ToPort: 65535
       SourceSecurityGroupId: !Ref VDASecurityGroup
 
 Outputs:

@@ -50,6 +50,7 @@ Metadata:
           default: AWS Quick Start Configuration
         Parameters:
           - QSS3BucketName
+          - QSS3BucketRegion
           - QSS3KeyPrefix
            
 
@@ -94,6 +95,8 @@ Metadata:
         default: Public subnet 2 CIDR
       QSS3BucketName:
         default: Quick Start S3 bucket name
+      QSS3BucketRegion:
+        default: Quick Start S3 bucket region
       QSS3KeyPrefix:
         default: Quick Start S3 key prefix
       RDGWCIDR:
@@ -238,6 +241,10 @@ Parameters:
       copy all of the assets and submodules into it, if you want to override the
       Quick Start behavior for your specific implementation.
     Type: String
+  QSS3BucketRegion:
+    Default: us-east-1
+    Description: 'The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.'
+    Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription: >-
@@ -307,17 +314,18 @@ Parameters:
       - WS2016FULLBASE
 
 Conditions:
-  GovCloudCondition: !Equals 
-    - !Ref 'AWS::Region'
-    - us-gov-west-1
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 
 Resources:
 
   VPCStack:
     Type: 'AWS::CloudFormation::Stack'
     Properties:
-      TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template
+      TemplateURL:
+        !Sub
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template'
+          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
         AvailabilityZones: !Join 
           - ','
@@ -338,13 +346,11 @@ Resources:
     DependsOn: VPCStack
     Type: 'AWS::CloudFormation::Stack'
     Properties:
-      TemplateURL: !Sub 
-        - >-
-          https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/ad-3.template
-        - QSS3Region: !If 
-            - GovCloudCondition
-            - s3-us-gov-west-1
-            - s3
+      TemplateURL:
+        !Sub
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/ad-3.template'
+          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
           DomainAdminPassword: !Ref DomainAdminPassword
           DomainDNSName: !Ref DomainDNSName
@@ -361,6 +367,7 @@ Resources:
           PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
           PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
           QSS3BucketName: !Ref QSS3BucketName
+          QSS3BucketRegion: !Ref QSS3BucketRegion
           QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/'
           VPCCIDR: !Ref VPCCIDR
           VPCID: !GetAtt 
@@ -371,8 +378,11 @@ Resources:
     Type: 'AWS::CloudFormation::Stack'
     DependsOn: VPCStack
     Properties:
-      TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/templates/rdgw-standalone.template
+      TemplateURL:
+        !Sub
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/templates/rdgw-standalone.template'
+          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
         AdminUser: 'admin'
         AdminPassword: !Ref DomainAdminPassword
@@ -385,6 +395,7 @@ Resources:
           - VPCStack
           - Outputs.PublicSubnet2ID
         QSS3BucketName: !Ref QSS3BucketName
+        QSS3BucketRegion: !Ref QSS3BucketRegion
         QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/'
         RDGWInstanceType: !Ref RDGWInstanceType
         RDGWCIDR: !Ref RDGWCIDR
@@ -398,8 +409,11 @@ Resources:
       - VPCStack
       - ADStack
     Properties:
-      TemplateURL: !Sub >-
-        https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/citrix-virtualapps-service.yaml
+      TemplateURL:
+        !Sub
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/citrix-virtualapps-service.yaml'
+          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
         ADServer1PrivateIP:                  !GetAtt ADStack.Outputs.ADServer1PrivateIP
         ADServer2PrivateIP:                  !GetAtt ADStack.Outputs.ADServer2PrivateIP
@@ -422,6 +436,7 @@ Resources:
         PrivateVDASubnet1ID:                !GetAtt VPCStack.Outputs.PrivateSubnet1BID
         PrivateVDASubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2BID
         QSS3BucketName:                     !Ref QSS3BucketName
+        QSS3BucketRegion:                   !Ref QSS3BucketRegion
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
         VPCID:                              !GetAtt VPCStack.Outputs.VPCID
         BastionSecurityGroupID:             !GetAtt RDGWStack.Outputs.RemoteDesktopGatewaySGID
