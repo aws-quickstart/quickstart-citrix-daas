@@ -301,8 +301,8 @@ Mappings:
       WS2012R2: ami-069c53e1e7e4fac42
       WS2016FULLBASE: ami-0b2ce977c1b36856d
     us-west-1:
-      WS2012R2: ami-02e1d4031abd2c358
-      WS2016FULLBASE: ami-06894046d41571622
+      WS2012R2: ami-060a37a22181acf41
+      WS2016FULLBASE: ami-0aa89f1b833336bf6
     us-west-2:
       WS2012R2: ami-0de8bce894b0eadce
       WS2016FULLBASE: ami-0f26f5844bdf3c2ad
