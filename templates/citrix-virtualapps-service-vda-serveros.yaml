@@ -493,16 +493,25 @@ Resources:
             f-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
-            g-Set-CitrixCloud:
+            g-download-SDK:
+              command: powershell.exe -ExecutionPolicy Unrestricted -Command Start-BitsTransfer -Source https://download.apps.cloud.com/CitrixPoshSdk.exe -Destination C:\cfn\CitrixPoshSdk.exe
+              waitaftercompletion: '60'
+            h-Install-SDK:
+              command: powershell.exe -ExecutionPolicy Unrestricted -Command Start-Process -FilePath "C:\cfn\CitrixPoshSdk.exe" -ArgumentList "/q"
+              waitaftercompletion: '180'
+            i-reboot:
+              command: powershell.exe -Command Restart-Computer -Force
+              waitAfterCompletion: forever
+            j-Set-CitrixCloud:
               command: !Sub |
-                powershell -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -AWSRegion ${AWS::Region} -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -AddCurrentMachine
+                powershell -ExecutionPolicy Unrestricted -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -AWSRegion ${AWS::Region} -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -DomainNetBIOSName '${DomainNetBIOSName}' -DomainAdminUser '${DomainAdminUser}' -DomainAdminPassword '${DomainAdminPassword}' -AddCurrentMachine
               waitAfterCompletion: '0'
-            h-scheduleTargetOSOptimizerOnNextBoot:
+            k-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
                 /v "CitrixTargetOSOptimizer" /t REG_SZ /d "C:\PROGRA~1\Citrix\PvsVm\TargetOSOptimizer\TargetOSOptimizer.exe
                 /q" /f
               waitAfterCompletion: '0'
-            i-reboot:
+            l-reboot:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
         finalize:
