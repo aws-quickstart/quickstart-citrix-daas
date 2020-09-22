@@ -194,7 +194,7 @@ Mappings:
       WS2016FULLBASE: ami-0359bda8e2d189644
     ap-southeast-2:
       WS2012R2: ami-05a48d1d20102801e
-      WS2016FULLBASE: ami-0659baaaa394eba5e
+      WS2016FULLBASE: ami-0359bda8e2d189644
     ca-central-1:
       WS2012R2: ami-00e9db447655e113f
       WS2016FULLBASE: ami-083db6415ff4ab7b1
