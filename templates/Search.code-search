@@ -1,0 +1,14 @@
+# Query: ami-0659baaaa394eba5e
+# ContextLines: 1
+
+2 results - 2 files
+
+citrix-virtualapps-service-connectors.yaml:
+  196        WS2012R2: ami-05a48d1d20102801e
+  197:       WS2016FULLBASE: ami-0359bda8e2d189644
+  198      ca-central-1:
+
+citrix-virtualapps-service-vda-serveros.yaml:
+  277        WS2012R2: ami-05a48d1d20102801e
+  278:       WS2016FULLBASE: ami-0359bda8e2d189644
+  279      ca-central-1:
