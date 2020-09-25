@@ -259,53 +259,53 @@ Mappings:
       WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.07.12
       WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2019.07.12
     ap-northeast-1:
-      WS2012R2: ami-0b0c9f033e6f44b78
-      WS2016FULLBASE: ami-0cd7a835d20a5fa3e
+      WS2012R2: ami-0e377bbb4e0f9799a
+      WS2016FULLBASE: ami-038c59e921e8b9c7d
     ap-northeast-2:
-      WS2012R2: ami-018c1bdd5432a6a74
-      WS2016FULLBASE: ami-0515c11fbe1299f0a
+      WS2012R2: ami-0e5436556286c6e86
+      WS2016FULLBASE: ami-0e1c822d2f1dcf194
     ap-northeast-3:
-      WS2012R2: ami-0d50f82e89b49ce12
-      WS2016FULLBASE: ami-09750f3492b7762ed
+      WS2012R2: ami-031cfbd28804ce187
+      WS2016FULLBASE: ami-082f7813888685626
     ap-south-1:
-      WS2012R2: ami-02498810fdfa4b932
-      WS2016FULLBASE: ami-0996674586963828d
+      WS2012R2: ami-003365fd14b9a1d51
+      WS2016FULLBASE: ami-07cd5239368f4714d
     ap-southeast-1:
-      WS2012R2: ami-031aa60a13feb802b
-      WS2016FULLBASE: ami-0c9be38028c474d31
+      WS2012R2: ami-06ef8ad5f12e6b1d1
+      WS2016FULLBASE: ami-0e0626e647f7ff431
     ap-southeast-2:
-      WS2012R2: ami-05a48d1d20102801e
-      WS2016FULLBASE: ami-0659baaaa394eba5e
+      WS2012R2: ami-05e73d4d812d7703f
+      WS2016FULLBASE: ami-0359bda8e2d189644
     ca-central-1:
-      WS2012R2: ami-00e9db447655e113f
-      WS2016FULLBASE: ami-083db6415ff4ab7b1
+      WS2012R2: ami-07fb8c97fd99863d7
+      WS2016FULLBASE: ami-0b5a9a9d2ee410e45
     eu-central-1:
-      WS2012R2: ami-00c3f464096640ebc
-      WS2016FULLBASE: ami-065377970c7b7369b
+      WS2012R2: ami-0ae15069f2ef59f7f
+      WS2016FULLBASE: ami-0bbb16edf5b988af4
     eu-west-1:
-      WS2012R2: ami-0c6f7f1b00ea4dcb1
-      WS2016FULLBASE: ami-0e59f5ff8749f81c8
+      WS2012R2: ami-03087574c45a7cb2b
+      WS2016FULLBASE: ami-05645d7a81a567ff7
     eu-west-2:
-      WS2012R2: ami-047ff8007ad2221c4
-      WS2016FULLBASE: ami-05cf35bf39c3c0d6d
+      WS2012R2: ami-04ffac9b3974ff786
+      WS2016FULLBASE: ami-0ee25530d3bd7ef9c
     eu-west-3:
-      WS2012R2: ami-02ec9744c1383e84d
-      WS2016FULLBASE: ami-08f9a552e55285f32
+      WS2012R2: ami-01955301a261f5cfc
+      WS2016FULLBASE: ami-0e382f677f1079547
     sa-east-1:
-      WS2012R2: ami-0219a20514f1572d8
-      WS2016FULLBASE: ami-02d888aa9faa1017b
+      WS2012R2: ami-05a7133f110fd4330
+      WS2016FULLBASE: ami-0762edd7b85b88782
     us-east-1:
-      WS2012R2: ami-01b670d1a5b2c1da7
-      WS2016FULLBASE: ami-0cc5ea3dde5301489
+      WS2012R2: ami-0a11ca1795e68bd94
+      WS2016FULLBASE: ami-06f6f33114d2db0b1
     us-east-2:
-      WS2012R2: ami-04fe13467029c1627
-      WS2016FULLBASE: ami-0a16ffe32a92704ea
+      WS2012R2: ami-047b577fb036bfa95
+      WS2016FULLBASE: ami-0935ea295cac2689d
     us-west-1:
-      WS2012R2: ami-060a37a22181acf41
-      WS2016FULLBASE: ami-0aa89f1b833336bf6
+      WS2012R2: ami-06fc26b9b267337e9
+      WS2016FULLBASE: ami-03a3dfe44d6af440c
     us-west-2:
-      WS2012R2: ami-08d5ef742d7b43c8b
-      WS2016FULLBASE: ami-0f9cc35d712b86a4f
+      WS2012R2: ami-0f921f7888173ad5a
+      WS2016FULLBASE: ami-07c0a21a5f1e474d1
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 
