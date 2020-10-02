@@ -18,7 +18,8 @@ try {
 	
     # Install Pre-req for Citrix Cloud Connector, required as of @4/15/2019
 	Write-Host "Downloading Microsoft .NET Framework 4.7.2"
-	cwcOS-Tools\Download-File -FileName "NDP472-KB4054530-x86-x64-AllOS-ENU.exe" -Path "https://cwsproduction.blob.core.windows.net/downloads/redist" -ToFolder "C:\cfn\scripts\" -verbose
+	Import-Module BitsTransfer
+    Start-BitsTransfer -Source "https://cwsproduction.blob.core.windows.net/downloads/redist/NDP472-KB4054530-x86-x64-AllOS-ENU.exe"  -Destination "C:\cfn\scripts\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
 	Write-Host "Installing Microsoft .NET Framework 4.7.2"
 	#Install-MSIOrEXE -installerPath c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe -installerArgs @("/Q", "/norestart")
     Start-Process -FilePath "c:\cfn\scripts\NDP472-KB4054530-x86-x64-AllOS-ENU.exe" -ArgumentList "/q /norestart" -Wait

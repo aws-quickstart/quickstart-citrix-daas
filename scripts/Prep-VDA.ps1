@@ -48,7 +48,8 @@ try {
 
     # Install Pre-req for v7.18 https://docs.citrix.com/en-us/session-recording/current-release/system-requirements.html
     Write-Host "Downloading Microsoft .NET Framework 4.7.1"
-    cwcOS-Tools\Download-File -FileName "NDP471-KB4033342-x86-x64-AllOS-ENU.exe" -Path "https://download.microsoft.com/download/9/E/6/9E63300C-0941-4B45-A0EC-0008F96DD480" -ToFolder "C:\cfn\scripts\" -verbose
+    Import-Module BitsTransfer
+    Start-BitsTransfer -Source "https://download.microsoft.com/download/9/E/6/9E63300C-0941-4B45-A0EC-0008F96DD480/NDP471-KB4033342-x86-x64-AllOS-ENU.exe"  -Destination "C:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe"
     Write-Host "Installing Microsoft .NET Framework 4.7.1"
     #Install-MSIOrEXE -installerPath c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe -installerArgs @("/Q", "/norestart")
     Start-Process -FilePath "c:\cfn\scripts\NDP471-KB4033342-x86-x64-AllOS-ENU.exe" -ArgumentList "/q /norestart" -Wait
