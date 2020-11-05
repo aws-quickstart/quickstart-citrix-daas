@@ -466,9 +466,10 @@ Outputs:
   CitrixDeliveryGroupName:   
     Description: Citrix Delivery Group Name
     Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixDeliveryGroupName
-  BastionHostEIP:
-    Description: Elastic IP 1 for Bastion Host
-    Value: !GetAtt RDGWStack.Outputs.EIP1  
+  BastionHostURL:
+    Condition: CreateRDGW
+    Description: URL for Bastion Host load balancer
+    Value: !GetAtt RDGWStack.Outputs.RDPURL 
   ADServer1PrivateIP:
     Description: AD Server 1 Private IP Address (this may vary based on Directory Service order of IP addresses)
     Value: !GetAtt ADStack.Outputs.ADServer1PrivateIP
