@@ -30,6 +30,7 @@ tests:
       CitrixVDAHostName: CTX-VDA1
       CitrixVDAInstanceType: t2.large
       CitrixVDAWindowsServerVersion: WS2016FULLBASE
+      DeployRDGW: 'No'
       DomainAdminPassword: $[taskcat_genpass_12]
       DomainDNSName: example9cc7c9.com
       DomainNetBIOSName: example9cc7c9
@@ -57,6 +58,7 @@ tests:
       CitrixVDAHostName: CTX-VDA1
       CitrixVDAInstanceType: t2.large
       CitrixVDAWindowsServerVersion: WS2016FULLBASE
+      DeployRDGW: 'No'
       DomainAdminPassword: $[taskcat_genpass_12]
       DomainDNSName: example66f2ac.com
       DomainNetBIOSName: example66f2ac
@@ -84,6 +86,7 @@ tests:
       CitrixVDAHostName: CTX-VDA1
       CitrixVDAInstanceType: t2.large
       CitrixVDAWindowsServerVersion: WS2016FULLBASE
+      DeployRDGW: 'No'
       DomainAdminPassword: $[taskcat_genpass_12]
       DomainDNSName: exampled61c35.com
       DomainNetBIOSName: exampled61c35
