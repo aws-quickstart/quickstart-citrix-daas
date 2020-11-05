@@ -45,6 +45,7 @@ Metadata:
           - PrivateVDASubnet2CIDR
           - PublicSubnet1CIDR
           - PublicSubnet2CIDR
+          - DeployRDGW
           - RDGWCIDR
       - Label:
           default: AWS Quick Start Configuration
@@ -73,6 +74,8 @@ Metadata:
         default: Windows Server version for Citrix Cloud Connector
       CitrixCustomerId:
         default: Citrix Cloud Customer ID  
+      DeployRDGW:
+        default: Deploy RD Gateway
       DomainAdminPassword:
         default: Domain admin password
       DomainDNSName:
@@ -157,6 +160,13 @@ Parameters:
     Type: String
     Default: CTX-VDA1
     Description: Host name of the Citrix VDA.
+  DeployRDGW:
+    Description: Deploy Remote Desktop Gateway
+    Type: String
+    AllowedValues:
+      - 'Yes'
+      - 'No'
+    Default: 'Yes'
   DomainAdminPassword:
     AllowedPattern: >-
       (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
@@ -315,6 +325,7 @@ Parameters:
 
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
+  CreateRDGW: !Equals [!Ref DeployRDGW, 'Yes']
 
 Resources:
 
@@ -377,6 +388,7 @@ Resources:
   RDGWStack:
     Type: 'AWS::CloudFormation::Stack'
     DependsOn: VPCStack
+    Condition: CreateRDGW
     Properties:
       TemplateURL:
         !Sub
