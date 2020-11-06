@@ -447,7 +447,7 @@ Resources:
         QSS3BucketRegion:                   !Ref QSS3BucketRegion
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
         VPCID:                              !GetAtt VPCStack.Outputs.VPCID
-        BastionSecurityGroupID:             !GetAtt RDGWStack.Outputs.RemoteDesktopGatewaySGID
+        BastionSecurityGroupID:             !If [CreateRDGW, !GetAtt RDGWStack.Outputs.RemoteDesktopGatewaySGID, !GetAtt ADStack.Outputs.DomainMemberSGID]
 
 Outputs:
   CitrixResourceLocation:
