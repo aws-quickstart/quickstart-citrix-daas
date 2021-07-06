@@ -182,6 +182,10 @@ Parameters:
     Description: Name of an existing EC2 KeyPair used to get the Administrator password
       for the instance
     Type: AWS::EC2::KeyPair::KeyName
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: Latest Windows Server 2016 AMI ID from AWS Systems Manager Parameter Store.
+    Default: /aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base
   PrivateVDASubnet1:
     Type: AWS::EC2::Subnet::Id
     MinLength: '1'
@@ -253,59 +257,6 @@ Parameters:
     AllowedValues:
     - WS2012R2
     - WS2016FULLBASE
-Mappings:
-  AWSAMIRegionMap:
-    AMI:
-      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.07.12
-      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2019.07.12
-    ap-northeast-1:
-      WS2012R2: ami-0095532c73a3a284d
-      WS2016FULLBASE: ami-08e6afc6abaa5f3a8
-    ap-northeast-2:
-      WS2012R2: ami-09ae13ac06dd71444
-      WS2016FULLBASE: ami-0026f59cd162adcce
-    ap-northeast-3:
-      WS2012R2: ami-0a8e80541fd3961a3
-      WS2016FULLBASE: ami-032d2057878009d33
-    ap-south-1:
-      WS2012R2: ami-00ac3fc379139f9df
-      WS2016FULLBASE: ami-099c32cc2e643efee
-    ap-southeast-1:
-      WS2012R2: ami-06e0f4874310ec241
-      WS2016FULLBASE: ami-0aef6aba2189944a9
-    ap-southeast-2:
-      WS2012R2: ami-03927d360dc1912a3
-      WS2016FULLBASE: ami-0a5b662b2b7e449d0
-    ca-central-1:
-      WS2012R2: ami-01d5d9963a23baeff
-      WS2016FULLBASE: ami-0585ce349cd7134b7
-    eu-central-1:
-      WS2012R2: ami-086770b2a003b7a03
-      WS2016FULLBASE: ami-0a56865f14f05a388
-    eu-west-1:
-      WS2012R2: ami-0319770117d2b8a04
-      WS2016FULLBASE: ami-090c85078373e11fd
-    eu-west-2:
-      WS2012R2: ami-0b83d37d11345cfb3
-      WS2016FULLBASE: ami-0644b27ed18be9556
-    eu-west-3:
-      WS2012R2: ami-0f2d9884287dec35c
-      WS2016FULLBASE: ami-0694398ee05b23acd
-    sa-east-1:
-      WS2012R2: ami-08fa6f6085e1fc7fb
-      WS2016FULLBASE: ami-0dc2896857a4a523a
-    us-east-1:
-      WS2012R2: ami-03091025e44ce2249
-      WS2016FULLBASE: ami-0d39d14f5f1a82d2b
-    us-east-2:
-      WS2012R2: ami-0d2fdf77c7b0e7fce
-      WS2016FULLBASE: ami-046ba197a4a7f497e
-    us-west-1:
-      WS2012R2: ami-0c980234db5b91d44
-      WS2016FULLBASE: ami-0807f3d00dc7f1d6e
-    us-west-2:
-      WS2012R2: ami-0f029cc18caf3388c
-      WS2016FULLBASE: ami-0e791d6e88614c4a5
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 
@@ -530,11 +481,7 @@ Resources:
     Properties:
       IamInstanceProfile: !Ref VDAProfile
       InstanceType: !Ref CitrixVDAInstanceType
-      ImageId:
-        !FindInMap
-        - AWSAMIRegionMap
-        - !Ref AWS::Region
-        - !Ref CitrixVDAWindowsServerVersion
+      ImageId: !Ref 'LatestAmiId'
       SecurityGroupIds:
       - !Ref CitrixVDASecurityGroup
       KeyName: !Ref KeyPairName

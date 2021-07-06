@@ -272,6 +272,7 @@ Parameters:
     Default: t2.large
     AllowedValues:
       - t2.large
+      - t3.large
       - m3.large
       - m3.xlarge
       - m3.2xlarge
