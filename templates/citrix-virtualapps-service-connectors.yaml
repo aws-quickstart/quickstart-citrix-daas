@@ -147,6 +147,7 @@ Parameters:
     Type: AWS::EC2::KeyPair::KeyName
   LatestAmiId:
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: Latest Windows Server 2016 AMI ID from AWS Systems Manager Parameter Store.
     Default: /aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base
   PrivateInfraSubnet1:
     Description: ID of the private infrastructure subnet 1 in Availability Zone 1
