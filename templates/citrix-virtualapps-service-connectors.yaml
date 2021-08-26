@@ -203,7 +203,7 @@ Mappings:
       WS2016FULLBASE: ami-05a7d6bb8ff16d5a5
     eu-west-1:
       WS2012R2: ami-0a868a5415cfc04fb
-      WS2016FULLBASE: ami-0ba02848e01cae475
+      WS2016FULLBASE: ami-0241c63173d423f4d
     eu-west-2:
       WS2012R2: ami-0991ef322d58d5787
       WS2016FULLBASE: ami-05c3f9b86d55ea80d
