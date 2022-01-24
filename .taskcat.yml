@@ -17,7 +17,7 @@ project:
   - us-west-2
   s3_bucket: ''
 tests:
-  quickstart-citrix-eu-central-1:
+  quickstart-citrix-no-vda-eu-central-1:
     parameters:
       AvailabilityZones: $[taskcat_genaz_2]
       CitrixAPIClientID: override_this
@@ -45,7 +45,7 @@ tests:
     - eu-central-1
     s3_bucket: ''
     template: templates/citrix-virtualapps-service-master.yaml
-  quickstart-citrix-us-east-1:
+  quickstart-citrix-no-vda-us-east-1:
     parameters:
       AvailabilityZones: $[taskcat_genaz_2]
       CitrixAPIClientID: override_this
@@ -73,7 +73,7 @@ tests:
     - us-east-1
     s3_bucket: ''
     template: templates/citrix-virtualapps-service-master.yaml
-  quickstart-citrix-us-west-1:
+  quickstart-citrix-no-vda-us-west-1:
     parameters:
       AvailabilityZones: $[taskcat_genaz_2]
       CitrixAPIClientID: override_this

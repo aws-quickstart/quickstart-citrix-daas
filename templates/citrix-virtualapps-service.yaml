@@ -16,7 +16,7 @@ Metadata:
           - CitrixAPIClientSecret
           - CitrixCloudConnector1HostName
           - CitrixCloudConnector2HostName 
-          - CitrixVDAHostName   
+          - CitrixVDAHostName
                         
       - Label:
           default: Amazon EC2 Configuration
@@ -25,7 +25,8 @@ Metadata:
           - CitrixCloudConnectorInstanceType
           - CitrixVDAInstanceType
           - CitrixCloudConnectorsWindowsServerVersion
-          - CitrixVDAWindowsServerVersion          
+          - CitrixVDAWindowsServerVersion
+          - CitrixVDAServerSetupFileLocation
       - Label:
           default: Microsoft Active Directory Configuration
         Parameters:
@@ -73,6 +74,8 @@ Metadata:
         default: Windows Server version for Citrix Cloud Connector
       CitrixVDAHostName:
         default: Citrix VDA name
+      CitrixVDAServerSetupFileLocation:
+        default: Citrix VDA server setup file location
       CitrixCloudConnectorInstanceType:
         default: Citrix Cloud Connector instance type
       CitrixCustomerId:
@@ -144,6 +147,15 @@ Parameters:
     Type: String
     Default: CTX-VDA1
     Description: Host name of the Citrix VDA.
+  CitrixVDAServerSetupFileLocation:
+    Description: >-
+      Provide a public URL of the VDAServerSetup_1903.exe file downloaded from
+      https://www.citrix.com/downloads/citrix-virtual-apps-and-desktops/product-software/citrix-virtual-apps-and-desktops-1903.html.
+      If no value is provided, creation of the VDA Stack will be skipped.
+      Note: requiring a public URL is a stop-gap replacement for a previously publicly available VDA setup exe that is now removed.
+      https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe.
+    Type: String
+    Default: ""
   CitrixCloudConnectorsWindowsServerVersion:
     Description: Windows Server version for the Citrix Cloud Connectors.
     Type: String
@@ -276,8 +288,10 @@ Parameters:
   VPCID:
     Description: ID of the VPC; e.g., vpc-0343606e.
     Type: 'AWS::EC2::VPC::Id'
+
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
+  CreateVDAStack: !Not [!Equals [!Ref CitrixVDAServerSetupFileLocation, '']]
 
 Resources:
   IAM:
@@ -349,6 +363,7 @@ Resources:
     DependsOn: 
       - CitrixCloudConnectors
       - CitrixCloudSecurityGroups
+    Condition: CreateVDAStack
     Properties:
       TemplateURL:
         !Sub
@@ -369,6 +384,7 @@ Resources:
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
         CitrixVDASecurityGroup:                   !GetAtt CitrixCloudSecurityGroups.Outputs.VDASecurityGroup
         CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
+        CitrixVDAServerSetupFileLocation:   !Ref CitrixVDAServerSetupFileLocation
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
         DomainDNSName:                      !Ref DomainDNSName
         DomainAdminPassword:                !Ref DomainAdminPassword
@@ -385,21 +401,25 @@ Outputs:
   CitrixResourceLocation:
     Description: Citrix Cloud Resource Location 
     Value: !GetAtt CitrixCloudConnectors.Outputs.CitrixResourceLocation
-  CitrixHostingConnectionName:
-    Description: Citrix Hosting Connection Name
-    Value: !GetAtt VDA.Outputs.CitrixHostingConnectionName
-  CitrixCatalogName:
-    Description: Citrix Catalog Name
-    Value: !GetAtt VDA.Outputs.CitrixCatalogName
-  CitrixDeliveryGroupName:   
-    Description: Citrix Delivery Group Name
-    Value: !GetAtt VDA.Outputs.CitrixDeliveryGroupName
   CitrixCloudConnector1HostName:
     Description: Citrix Cloud Connector 1 Host Name
     Value: !GetAtt CitrixCloudConnectors.Outputs.CitrixCloudConnector1HostName
   CitrixCloudConnector2HostName:
     Description: Citrix Cloud Connector 2 Host Name
     Value: !GetAtt CitrixCloudConnectors.Outputs.CitrixCloudConnector2HostName
+  CitrixHostingConnectionName:
+    Condition: CreateVDAStack
+    Description: Citrix Hosting Connection Name
+    Value: !GetAtt VDA.Outputs.CitrixHostingConnectionName
+  CitrixCatalogName:
+    Condition: CreateVDAStack
+    Description: Citrix Catalog Name
+    Value: !GetAtt VDA.Outputs.CitrixCatalogName
+  CitrixDeliveryGroupName:
+    Condition: CreateVDAStack
+    Description: Citrix Delivery Group Name
+    Value: !GetAtt VDA.Outputs.CitrixDeliveryGroupName
   CitrixVDAHostName:
+    Condition: CreateVDAStack
     Description: Citrix VDA Host Name
     Value: !GetAtt VDA.Outputs.CitrixVDAHostName
