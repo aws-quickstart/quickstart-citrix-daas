@@ -32,8 +32,9 @@ Metadata:
           - RDGWInstanceType
           - CitrixCloudConnectorInstanceType
           - CitrixVDAInstanceType
+          - CitrixVDAServerSetupFileLocation
           - CitrixCloudConnectorsWindowsServerVersion
-          - CitrixVDAWindowsServerVersion                   
+          - CitrixVDAWindowsServerVersion
       - Label:
           default: Network Configuration
         Parameters:
@@ -110,6 +111,8 @@ Metadata:
         default: Citrix Server VDA instance type
       CitrixVDAWindowsServerVersion:
         default: Windows Server version for Citrix VDA
+      CitrixVDAServerSetupFileLocation:
+        default: Citrix VDA server setup file location
       VPCCIDR:
         default: VPC CIDR
 
@@ -272,6 +275,7 @@ Parameters:
     Default: t2.large
     AllowedValues:
       - t2.large
+      - t3.large
       - m3.large
       - m3.xlarge
       - m3.2xlarge
@@ -315,6 +319,15 @@ Parameters:
       - g3.4xlarge
       - g3.8xlarge
       - g3.16xlarge         
+  CitrixVDAServerSetupFileLocation:
+    Description: >-
+      Provide a public URL of the VDAServerSetup_1903.exe file downloaded from
+      https://www.citrix.com/downloads/citrix-virtual-apps-and-desktops/product-software/citrix-virtual-apps-and-desktops-1903.html.
+      If no value is provided, creation of the VDA Stack will be skipped.
+      Note: requiring a public URL is a stop-gap replacement for a previously publicly available VDA setup exe that is now removed.
+      https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe.
+    Type: String
+    Default: ""
   CitrixVDAWindowsServerVersion:
     Description: Windows Server version for the Citrix VDA.
     Type: String
@@ -326,6 +339,7 @@ Parameters:
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
   CreateRDGW: !Equals [!Ref DeployRDGW, 'Yes']
+  CreateVDAStack: !Not [!Equals [!Ref CitrixVDAServerSetupFileLocation, '']]
 
 Resources:
 
@@ -334,7 +348,7 @@ Resources:
     Properties:
       TemplateURL:
         !Sub
-          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template'
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template.yaml'
           - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
             S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
@@ -343,7 +357,6 @@ Resources:
           - !Ref AvailabilityZones
         CreatePrivateSubnets: true
         CreateAdditionalPrivateSubnets: true
-        KeyPairName: !Ref KeyPairName
         NumberOfAZs: '2'
         PrivateSubnet1ACIDR: !Ref PrivateInfraSubnet1CIDR
         PrivateSubnet1BCIDR: !Ref PrivateVDASubnet2CIDR
@@ -435,6 +448,7 @@ Resources:
         CitrixCustomerId:                         !Ref CitrixCustomerId
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
         CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
+        CitrixVDAServerSetupFileLocation:   !Ref CitrixVDAServerSetupFileLocation
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
         DomainDNSName:                      !Ref DomainDNSName
         DomainAdminPassword:                !Ref DomainAdminPassword
@@ -453,15 +467,6 @@ Outputs:
   CitrixResourceLocation:
     Description: Citrix Cloud Resource Location 
     Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixResourceLocation
-  CitrixHostingConnectionName:
-    Description: Citrix Hosting Connection Name
-    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixHostingConnectionName
-  CitrixCatalogName:
-    Description: Citrix Catalog Name
-    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCatalogName
-  CitrixDeliveryGroupName:   
-    Description: Citrix Delivery Group Name
-    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixDeliveryGroupName
   BastionHostURL:
     Condition: CreateRDGW
     Description: URL for Bastion Host load balancer
@@ -484,6 +489,19 @@ Outputs:
   CitrixCloudConnector2HostName:
     Description: Citrix Cloud Connector 2 Host Name
     Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCloudConnector2HostName
+  CitrixHostingConnectionName:
+    Condition: CreateVDAStack
+    Description: Citrix Hosting Connection Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixHostingConnectionName
+  CitrixCatalogName:
+    Condition: CreateVDAStack
+    Description: Citrix Catalog Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixCatalogName
+  CitrixDeliveryGroupName:
+    Condition: CreateVDAStack
+    Description: Citrix Delivery Group Name
+    Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixDeliveryGroupName
   CitrixVDAHostName:
+    Condition: CreateVDAStack
     Description: Citrix VDA Host Name
     Value: !GetAtt CitrixResourceLocationStack.Outputs.CitrixVDAHostName

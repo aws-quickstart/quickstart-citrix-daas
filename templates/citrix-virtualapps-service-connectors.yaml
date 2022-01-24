@@ -145,6 +145,10 @@ Parameters:
     Description: Name of an existing EC2 KeyPair used to get the Administrator password
       for the instance
     Type: AWS::EC2::KeyPair::KeyName
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: Latest Windows Server 2016 AMI ID from AWS Systems Manager Parameter Store.
+    Default: /aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base
   PrivateInfraSubnet1:
     Description: ID of the private infrastructure subnet 1 in Availability Zone 1
       (e.g., subnet-a0246dcd)
@@ -172,59 +176,6 @@ Parameters:
       uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-citrix-virtualapps-service/
     Type: String
-Mappings:
-  AWSAMIRegionMap:
-    AMI:
-      WS2012R2: Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.07.12
-      WS2016FULLBASE: Windows_Server-2016-English-Full-Base-2020.01.15
-    ap-northeast-1:
-      WS2012R2: ami-0f9c482ae7cb6661f
-      WS2016FULLBASE: ami-02ad43988184ad42e
-    ap-northeast-2:
-      WS2012R2: ami-0ee1f437da16fb62e
-      WS2016FULLBASE: ami-015a58a88899ef30f
-    ap-northeast-3:
-      WS2012R2: ami-077d412cb3a29b7ca
-      WS2016FULLBASE: ami-08bda27472ae7689f
-    ap-south-1:
-      WS2012R2: ami-0a684c755f03261bb
-      WS2016FULLBASE: ami-0eb094e431a3874cc
-    ap-southeast-1:
-      WS2012R2: ami-0d65a2f7b6c8b4380
-      WS2016FULLBASE: ami-0d4f8cbf66afb549a
-    ap-southeast-2:
-      WS2012R2: ami-0b2ad3c55a037cc30
-      WS2016FULLBASE: ami-05f1bac3bdba6d300
-    ca-central-1:
-      WS2012R2: ami-07481ac91dabfe829
-      WS2016FULLBASE: ami-0f762fc8b7afbfee1
-    eu-central-1:
-      WS2012R2: ami-03a092d4ec340dbbf
-      WS2016FULLBASE: ami-05a7d6bb8ff16d5a5
-    eu-west-1:
-      WS2012R2: ami-0a868a5415cfc04fb
-      WS2016FULLBASE: ami-0ba02848e01cae475
-    eu-west-2:
-      WS2012R2: ami-0991ef322d58d5787
-      WS2016FULLBASE: ami-05c3f9b86d55ea80d
-    eu-west-3:
-      WS2012R2: ami-0f024d907c7d48271
-      WS2016FULLBASE: ami-0f48c62f45dcaa4c1
-    sa-east-1:
-      WS2012R2: ami-09e478126cba857c9
-      WS2016FULLBASE: ami-015905f77c669d9ea
-    us-east-1:
-      WS2012R2: ami-079fe16082fb837c5
-      WS2016FULLBASE: ami-032e26fff3bb717f3
-    us-east-2:
-      WS2012R2: ami-0f5f950bd81ec96e0
-      WS2016FULLBASE: ami-0db153619de617953
-    us-west-1:
-      WS2012R2: ami-0f1bd3e0f73a95b37
-      WS2016FULLBASE: ami-0a62f4194772fe5c0
-    us-west-2:
-      WS2012R2: ami-0d886083a2ac8d80c
-      WS2016FULLBASE: ami-07f9aa0ff79eca6c4
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 Resources:
@@ -413,11 +364,7 @@ Resources:
                 - c:\cfn\hooks.d\cfn-auto-reloader.conf
     Properties:
       InstanceType: !Ref CitrixCloudConnectorInstanceType
-      ImageId:
-        !FindInMap
-        - AWSAMIRegionMap
-        - !Ref AWS::Region
-        - !Ref CitrixCloudConnectorsWindowsServerVersion
+      ImageId: !Ref 'LatestAmiId'
       IamInstanceProfile: !Ref CitrixCloudConnectorProfile
       SecurityGroupIds:
       - !Ref CitrixCloudConnectorSecurityGroup
@@ -619,11 +566,7 @@ Resources:
     Properties:
       IamInstanceProfile: !Ref CitrixCloudConnectorProfile
       InstanceType: !Ref CitrixCloudConnectorInstanceType
-      ImageId:
-        !FindInMap
-        - AWSAMIRegionMap
-        - !Ref AWS::Region
-        - !Ref CitrixCloudConnectorsWindowsServerVersion
+      ImageId: !Ref 'LatestAmiId'
       SecurityGroupIds:
       - !Ref CitrixCloudConnectorSecurityGroup
       KeyName: !Ref KeyPairName
