@@ -146,6 +146,15 @@ Parameters:
     Type: String
     Default: DG-AWS-QuickStart
     Description: Created during deployment.  Must be unique.
+  CitrixVDAServerSetupFileLocation:
+    Description: >-
+      Provide a public URL of the VDAServerSetup_1903.exe file downloaded from
+      https://www.citrix.com/downloads/citrix-virtual-apps-and-desktops/product-software/citrix-virtual-apps-and-desktops-1903.html.
+      If no value is provided, creation of the VDA Stack will be skipped.
+      Note: requiring a public URL is a stop-gap replacement for a previously publicly available VDA setup exe that is now removed.
+      https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe.
+    Type: String
+    Default: ""
   CitrixVDAHostName:
     Type: String
     Default: CTX-VDA1
@@ -388,7 +397,7 @@ Resources:
         installVDA:
           files:
             c:\cfn\scripts\VDAServerSetup.exe:
-              source: https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe
+              source: !Ref CitrixVDAServerSetupFileLocation
             C:\cfn\scripts\Prep-VDA.ps1:
               source:
                 !Sub
