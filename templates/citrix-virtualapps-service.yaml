@@ -139,13 +139,19 @@ Parameters:
     Description: Host name of the first Citrix Cloud Connector.
     Type: String
     Default: CTX-CC1
+    MaxLength: '10'
+    MinLength: '1'
   CitrixCloudConnector2HostName:
     Description: Host name of the second Citrix Cloud Connector.
     Type: String
-    Default: CTX-CC2  
+    Default: CTX-CC2
+    MaxLength: '10'
+    MinLength: '1'
   CitrixVDAHostName:
     Type: String
     Default: CTX-VDA1
+    MaxLength: '10'
+    MinLength: '1'
     Description: Host name of the Citrix VDA.
   CitrixVDAServerSetupFileLocation:
     Description: >-
