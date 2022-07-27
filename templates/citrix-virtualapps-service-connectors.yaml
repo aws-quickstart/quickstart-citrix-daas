@@ -2,6 +2,14 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: This template deploys two Citrix Cloud Connectors.
 Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W9002
+        - W9003
+        - W9006
+        - W9004
+        - W4002
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
@@ -273,8 +281,7 @@ Resources:
         rename:
           commands:
             a-execute-powershell-script-RenameComputer:
-              command: !Sub |
-                powershell.exe -Command Rename-Computer -NewName '${CitrixCloudConnector1HostName}-${QSDeploymentID}' -Restart
+              command: !Sub "powershell.exe -Command Rename-Computer -NewName '${CitrixCloudConnector1HostName}-${QSDeploymentID}' -Restart"
               waitAfterCompletion: forever
         domainjoin:
           files:
@@ -294,12 +301,10 @@ Resources:
               authentication: S3AccessCreds
           commands:
             a-set-dns:
-              command: !Sub |
-                powershell.exe c:\cfn\scripts\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}"
               waitAfterCompletion: '30'
             b-join-domain:
-              command: !Sub |
-                powershell.exe c:\cfn\scripts\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\${DomainAdminUser} '${DomainAdminPassword}'
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\\${DomainAdminUser} '${DomainAdminPassword}'"
               waitAfterCompletion: forever
         installCloudConnector:
           files:
@@ -336,8 +341,7 @@ Resources:
               command: powershell C:\cfn\scripts\DisableIEESC.ps1
               waitAfterCompletion: '0'
             b-register-CitrixCloud:
-              command: !Sub |
-                powershell C:\cfn\scripts\Register-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
+              command: !Sub "powershell C:\\cfn\\scripts\\Register-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'"
               waitAfterCompletion: '0'
             c-PrepCloudConnector:
               command: powershell -ExecutionPolicy Unrestricted C:\cfn\scripts\Prep-CloudConnector.ps1
@@ -346,14 +350,12 @@ Resources:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
             e-installCloudConnector:
-              command: !Sub |
-                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
+              command: !Sub "powershell C:\\cfn\\scripts\\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'"
               waitAfterCompletion: '0'
         finalize:
           commands:
             z-signal-success:
-              command: !Sub |
-                cfn-signal.exe -e 0 "${CitrixCloudConnector1WaitHandle}"
+              command: !Sub "cfn-signal.exe -e 0 '${CitrixCloudConnector1WaitHandle}'"
           services:
             windows:
               cfn-hup:
@@ -485,8 +487,7 @@ Resources:
         rename:
           commands:
             a-execute-powershell-script-RenameComputer:
-              command: !Sub |
-                powershell.exe -Command Rename-Computer -NewName '${CitrixCloudConnector2HostName}-${QSDeploymentID}' -Restart
+              command: !Sub "powershell.exe -Command Rename-Computer -NewName '${CitrixCloudConnector2HostName}-${QSDeploymentID}' -Restart"
               waitAfterCompletion: forever
         domainjoin:
           files:
@@ -506,12 +507,10 @@ Resources:
               authentication: S3AccessCreds
           commands:
             a-set-dns:
-              command: !Sub |
-                powershell.exe c:\cfn\scripts\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}"
               waitAfterCompletion: '30'
             b-join-domain:
-              command: !Sub |
-                powershell.exe c:\cfn\scripts\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\${DomainAdminUser} '${DomainAdminPassword}'
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\\${DomainAdminUser} '${DomainAdminPassword}'"
               waitAfterCompletion: forever
         installCloudConnector:
           files:
@@ -547,14 +546,12 @@ Resources:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
             d-installCloudConnector:
-              command: !Sub |
-                powershell C:\cfn\scripts\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'
+              command: !Sub "powershell C:\\cfn\\scripts\\Deploy-CitrixCloudConnector.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -CtxResourceLocationName '${CitrixResourceLocation}-${QSDeploymentID}'"
               waitAfterCompletion: '0'
         finalize:
           commands:
             z-signal-success:
-              command: !Sub |
-                cfn-signal.exe -e 0 "${CitrixCloudConnector2WaitHandle}"
+              command: !Sub "cfn-signal.exe -e 0 '${CitrixCloudConnector2WaitHandle}'"
           services:
             windows:
               cfn-hup:
@@ -634,6 +631,10 @@ Resources:
             - ec2.amazonaws.com
           Effect: Allow
         Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonSSMDirectoryServiceAccess'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/CloudWatchAgentServerPolicy'
   CitrixCloudConnectorProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
