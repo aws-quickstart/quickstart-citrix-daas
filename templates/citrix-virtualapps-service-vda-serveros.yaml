@@ -389,7 +389,7 @@ Resources:
               command: !Sub "powershell.exe c:\\cfn\\scripts\\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}"
               waitAfterCompletion: '30'
             b-join-domain:
-              command: !Sub "powershell.exe c:\\cfn\\scripts\\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\${DomainAdminUser} '${DomainAdminPassword}'"
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\\${DomainAdminUser} '${DomainAdminPassword}'"
               waitAfterCompletion: forever
         installVDA:
           files:
@@ -472,7 +472,7 @@ Resources:
         finalize:
           commands:
             z-signal-success:
-              command: !Sub 'cfn-signal.exe -e 0 '${VDAWaitHandle}'"
+              command: !Sub "cfn-signal.exe -e 0 '${VDAWaitHandle}'"
           services:
             windows:
               cfn-hup:
