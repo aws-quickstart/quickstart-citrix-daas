@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: This template deploys two Citrix Cloud Connectors.
+Description: This template deploys two Citrix Cloud Connectors. (qs-1t985k9rp)
 Metadata:
   cfn-lint:
     config:
@@ -22,7 +22,6 @@ Metadata:
       Parameters:
       - KeyPairName
       - CitrixCloudConnectorInstanceType
-      - CitrixCloudConnectorWindowsServerVersion
     - Label:
         default: Active Directory Configuration
       Parameters:
@@ -62,8 +61,6 @@ Metadata:
         default: Citrix Cloud Connector 2 Name
       CitrixCloudConnectorInstanceType:
         default: Citrix Cloud Connector Instance Type
-      CitrixCloudConnectorWindowsServerVersion:
-        default: Windows Server Version for Citrix Cloud Connector
       CitrixCustomerId:
         default: Citrix Cloud Customer ID
       DomainAdminPassword:
@@ -88,10 +85,6 @@ Metadata:
         default: Quick Start S3 Key Prefix
       CitrixResourceLocation:
         default: Citrix Cloud Resource Location
-      VDAInstanceType:
-        default: Citrix Server VDA Instance Type
-      VDAWindowsServerVersion:
-        default: Windows Server Version for Citrix Server VDA
 Parameters:
   ADServer1PrivateIP:
     Type: String
@@ -120,13 +113,6 @@ Parameters:
     - m5.large
   CitrixCloudConnectorSecurityGroup:
     Type: AWS::EC2::SecurityGroup::Id
-  CitrixCloudConnectorsWindowsServerVersion:
-    Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-    - WS2012R2
-    - WS2016FULLBASE
   CitrixCustomerId:
     Type: String
   CitrixResourceLocation:

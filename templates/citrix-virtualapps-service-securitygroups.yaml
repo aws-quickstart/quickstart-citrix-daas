@@ -1,5 +1,12 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'This template deploys VPC Security Groups for Citrix Cloud Connectors and Citrix VDA'
+Description: 'This template deploys VPC Security Groups for Citrix Cloud Connectors and Citrix VDA. (qs-1t985k9ri)'
+Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W9002
+        - W9003
+        - W9004
 Parameters:
   VPCID:
     Type: 'AWS::EC2::VPC::Id'
@@ -27,7 +34,7 @@ Resources:
       - Key: App
         Value: Citrix
       - Key: QSDeplomentID
-        Value: !Sub ${QSDeploymentID}        
+        Value: !Sub ${QSDeploymentID}
 
   CCSecurityGroupTCPIngress:
     Type: AWS::EC2::SecurityGroupIngress
@@ -40,7 +47,6 @@ Resources:
 
   VDARegistrationHTTPSecurityGroupTCPIngress:
     Type: AWS::EC2::SecurityGroupIngress
-    Description: VDA Registration HTTP 
     Properties:
       GroupId: !Ref CCSecurityGroup
       IpProtocol: tcp
@@ -50,7 +56,6 @@ Resources:
 
   VDARegistrationHTTPSSecurityGroupTCPIngress:
     Type: AWS::EC2::SecurityGroupIngress
-    Description: VDA Registration HTTPS   
     Properties:
       GroupId: !Ref CCSecurityGroup
       IpProtocol: tcp
@@ -61,7 +66,7 @@ Resources:
   VDASecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub 'SG-CitrixVDA-${QSDeploymentID}'    
+      GroupName: !Sub 'SG-CitrixVDA-${QSDeploymentID}'
       GroupDescription: Security group which allows access to the VDA Workers
       VpcId: !Ref VPCID
       SecurityGroupIngress:

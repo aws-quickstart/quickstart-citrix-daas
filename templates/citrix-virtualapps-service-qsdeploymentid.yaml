@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: This template deploys a custom resource lambda function to generate a unique deployment ID used during the Citrix Cloud deployment.
+Description: This template deploys a custom resource lambda function to generate a unique deployment ID used during the Citrix Cloud deployment. (qs-1t985k9p0)
 
 Resources:
   # Lambda Function for generating the deployment ID
@@ -57,15 +57,15 @@ Resources:
             - "logs:CreateLogGroup"
             - "logs:CreateLogStream"
             - "logs:PutLogEvents"
-            Resource: "arn:aws:logs:*:*:*"
-  
+            Resource: !Sub "arn:${AWS::Partition}:logs:*:*:*"
+
   ParameterQSDeploymentID:
     Type: "AWS::SSM::Parameter"
     Properties:
       Name: !Sub 'QSDeploymentID-${AWS::StackName}'
       Type: "String"
       Value: !GetAtt QSDeploymentID.DeploymentID
-      Description: "Unique Quickstart Deployment ID"            
+      Description: "Unique Quickstart Deployment ID"
 
 Outputs:
   ParameterQSDeploymentID:

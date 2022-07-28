@@ -1,7 +1,15 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: This template deploys a Citrix Server VDA.
+Description: This template deploys a Citrix Server VDA. (qs-1t985k9si)
 Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W9002
+        - W9003
+        - W9006
+        - W9004
+        - W4002
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
@@ -20,13 +28,11 @@ Metadata:
         default: Network Configuration
       Parameters:
       - PrivateVDASubnet1
-      - PrivateVDASubnet2
     - Label:
         default: Amazon EC2 Configuration
       Parameters:
       - KeyPairName
       - CitrixVDAInstanceType
-      - CitrixVDAWindowsServerVersion
     - Label:
         default: Active Directory Configuration
       Parameters:
@@ -91,8 +97,6 @@ Metadata:
         default: Key Pair Name
       PrivateVDASubnet1:
         default: Private Citrix VDA Subnet 1 ID
-      PrivateVDASubnet2:
-        default: Private Citrix VDA Subnet 2 ID
       QSS3BucketName:
         default: Quick Start S3 Bucket Name
       QSS3BucketRegion:
@@ -101,8 +105,6 @@ Metadata:
         default: Quick Start S3 Key Prefix
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type
-      CitrixVDAWindowsServerVersion:
-        default: Windows Server Version for Citrix Server VDA
 Parameters:
   ADServer1PrivateIP:
     Type: String
@@ -198,9 +200,6 @@ Parameters:
   PrivateVDASubnet1:
     Type: AWS::EC2::Subnet::Id
     MinLength: '1'
-  PrivateVDASubnet2:
-    Type: AWS::EC2::Subnet::Id
-    MinLength: '1'
   QSDeploymentID:
     Type: AWS::SSM::Parameter::Value<String>
   QSS3BucketName:
@@ -259,13 +258,6 @@ Parameters:
     - g3.16xlarge
   CitrixVDASecurityGroup:
     Type: AWS::EC2::SecurityGroup::Id
-  CitrixVDAWindowsServerVersion:
-    Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-    - WS2012R2
-    - WS2016FULLBASE
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 

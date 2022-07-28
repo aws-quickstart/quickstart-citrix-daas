@@ -1,9 +1,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: This template deploys an IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429.
+Description: This template deploys an IAM User to be used with Citrix MCS and Hosting Configuration as CTX140429. (qs-1t985k9sa)
 
 Resources:
   CitrixUser:
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+            - EIAMPolicyWildcardResource
+          ignore_reasons:
+            - EIAMPolicyWildcardResource: "Wildcard resource allowed per Citrix documentation"
     Type: 'AWS::IAM::User'
     Properties:
       Policies:
@@ -62,7 +69,7 @@ Resources:
       Type: "String"
       Value: !Ref CitrixAccessKey
       Description: "IAM Access Key used for Citrix MCS Hosting Configuration"
-  
+
   SecretKeyParameter:
     Type: "AWS::SSM::Parameter"
     Properties:
