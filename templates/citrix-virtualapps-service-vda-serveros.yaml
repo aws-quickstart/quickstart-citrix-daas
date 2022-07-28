@@ -1,7 +1,15 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: This template deploys a Citrix Server VDA.
+Description: This template deploys a Citrix Server VDA. (qs-1t985k9si)
 Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W9002
+        - W9003
+        - W9006
+        - W9004
+        - W4002
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
@@ -20,13 +28,11 @@ Metadata:
         default: Network Configuration
       Parameters:
       - PrivateVDASubnet1
-      - PrivateVDASubnet2
     - Label:
         default: Amazon EC2 Configuration
       Parameters:
       - KeyPairName
       - CitrixVDAInstanceType
-      - CitrixVDAWindowsServerVersion
     - Label:
         default: Active Directory Configuration
       Parameters:
@@ -91,8 +97,6 @@ Metadata:
         default: Key Pair Name
       PrivateVDASubnet1:
         default: Private Citrix VDA Subnet 1 ID
-      PrivateVDASubnet2:
-        default: Private Citrix VDA Subnet 2 ID
       QSS3BucketName:
         default: Quick Start S3 Bucket Name
       QSS3BucketRegion:
@@ -101,8 +105,6 @@ Metadata:
         default: Quick Start S3 Key Prefix
       CitrixVDAInstanceType:
         default: Citrix Server VDA Instance Type
-      CitrixVDAWindowsServerVersion:
-        default: Windows Server Version for Citrix Server VDA
 Parameters:
   ADServer1PrivateIP:
     Type: String
@@ -198,9 +200,6 @@ Parameters:
   PrivateVDASubnet1:
     Type: AWS::EC2::Subnet::Id
     MinLength: '1'
-  PrivateVDASubnet2:
-    Type: AWS::EC2::Subnet::Id
-    MinLength: '1'
   QSDeploymentID:
     Type: AWS::SSM::Parameter::Value<String>
   QSS3BucketName:
@@ -259,13 +258,6 @@ Parameters:
     - g3.16xlarge
   CitrixVDASecurityGroup:
     Type: AWS::EC2::SecurityGroup::Id
-  CitrixVDAWindowsServerVersion:
-    Description: Version of preferred Windows Server for the Citrix Cloud Connectors.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-    - WS2012R2
-    - WS2016FULLBASE
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 
@@ -366,8 +358,7 @@ Resources:
         rename:
           commands:
             a-execute-powershell-script-RenameComputer:
-              command: !Sub |
-                powershell.exe -Command Rename-Computer -NewName '${CitrixVDAHostName}-${QSDeploymentID}' -Restart
+              command: !Sub "powershell.exe -Command Rename-Computer -NewName '${CitrixVDAHostName}-${QSDeploymentID}' -Restart"
               waitAfterCompletion: forever
         domainjoin:
           files:
@@ -387,12 +378,10 @@ Resources:
               authentication: S3AccessCreds
           commands:
             a-set-dns:
-              command: !Sub |
-                powershell.exe c:\cfn\scripts\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Set-Dns.ps1 ${ADServer1PrivateIP} ${ADServer2PrivateIP}"
               waitAfterCompletion: '30'
             b-join-domain:
-              command: !Sub |
-                powershell.exe c:\cfn\scripts\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\${DomainAdminUser} '${DomainAdminPassword}'
+              command: !Sub "powershell.exe c:\\cfn\\scripts\\Join-Domain.ps1 ${DomainDNSName} ${DomainNetBIOSName}\\${DomainAdminUser} '${DomainAdminPassword}'"
               waitAfterCompletion: forever
         installVDA:
           files:
@@ -447,8 +436,7 @@ Resources:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
             e-Install-VDA:
-              command: !Sub |
-                powershell -command C:\cfn\scripts\Install-VDA.ps1 "-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\cfn\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}"
+              command: !Sub "powershell -command C:\\cfn\\scripts\\Install-VDA.ps1 \"-VDA_MediaName VDAServerSetup.exe -VDA_MediaLocation c:\\cfn\\scripts -VDA_Controller1 ${CitrixDeliveryController1HostName} -VDA_Controller2 ${CitrixDeliveryController2HostName} -VDA_DNSDomainName ${DomainDNSName}\""
               waitAfterCompletion: '0'
             f-reboot:
               command: powershell.exe -Command Restart-Computer -Force
@@ -463,8 +451,7 @@ Resources:
               command: powershell.exe -Command Restart-Computer -Force
               waitAfterCompletion: forever
             j-Set-CitrixCloud:
-              command: !Sub |
-                powershell -ExecutionPolicy Unrestricted -command C:\cfn\scripts\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -AWSRegion ${AWS::Region} -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -DomainNetBIOSName '${DomainNetBIOSName}' -DomainAdminUser '${DomainAdminUser}' -DomainAdminPassword '${DomainAdminPassword}' -AddCurrentMachine
+              command: !Sub "powershell -ExecutionPolicy Unrestricted -command C:\\cfn\\scripts\\Set-CitrixCloud.ps1 -CtxCustomerId '${CitrixCustomerId}' -CtxClientID '${CitrixAPIClientID}' -CtxClientSecret '${CitrixAPIClientSecret}' -QSDeploymentID '${QSDeploymentID}' -CtxResourceLocationName '${CitrixResourceLocation}' -AWSAPIKey '${CitrixHostingConnectionAWSIAMAccessKey}' -AWSSecretKey '${CitrixHostingConnectionAWSIAMSecretKey}' -AWSRegion ${AWS::Region} -CtxZoneName '${CitrixResourceLocation}' -CtxHostingConnectionName '${CitrixHostingConnectionName}' -CtxCatalogName '${CitrixCatalogName}' -CtxDeliveryGroupName '${CitrixDeliveryGroupName}' -DomainNetBIOSName '${DomainNetBIOSName}' -DomainAdminUser '${DomainAdminUser}' -DomainAdminPassword '${DomainAdminPassword}' -AddCurrentMachine"
               waitAfterCompletion: '0'
             k-scheduleTargetOSOptimizerOnNextBoot:
               command: reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
@@ -477,8 +464,7 @@ Resources:
         finalize:
           commands:
             z-signal-success:
-              command: !Sub |
-                cfn-signal.exe -e 0 "${VDAWaitHandle}"
+              command: !Sub 'cfn-signal.exe -e 0 "${VDAWaitHandle}"'
           services:
             windows:
               cfn-hup:
@@ -549,6 +535,10 @@ Resources:
             - ec2.amazonaws.com
           Effect: Allow
         Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonSSMDirectoryServiceAccess'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/CloudWatchAgentServerPolicy'
   VDAProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
