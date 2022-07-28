@@ -355,7 +355,7 @@ Resources:
         finalize:
           commands:
             z-signal-success:
-              command: !Sub "cfn-signal.exe -e 0 '${CitrixCloudConnector1WaitHandle}'"
+              command: !Sub 'cfn-signal.exe -e 0 "${CitrixCloudConnector1WaitHandle}"'
           services:
             windows:
               cfn-hup:
@@ -551,7 +551,7 @@ Resources:
         finalize:
           commands:
             z-signal-success:
-              command: !Sub "cfn-signal.exe -e 0 '${CitrixCloudConnector2WaitHandle}'"
+              command: !Sub 'cfn-signal.exe -e 0 "${CitrixCloudConnector2WaitHandle}"'
           services:
             windows:
               cfn-hup:
