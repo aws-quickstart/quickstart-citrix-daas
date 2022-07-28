@@ -33,8 +33,6 @@ Metadata:
           - CitrixCloudConnectorInstanceType
           - CitrixVDAInstanceType
           - CitrixVDAServerSetupFileLocation
-          - CitrixCloudConnectorsWindowsServerVersion
-          - CitrixVDAWindowsServerVersion
       - Label:
           default: Network Configuration
         Parameters:
@@ -71,8 +69,6 @@ Metadata:
         default: Citrix VDA name
       CitrixCloudConnectorInstanceType:
         default: Citrix Cloud Connector instance type
-      CitrixCloudConnectorsWindowsServerVersion:
-        default: Windows Server version for Citrix Cloud Connector
       CitrixCustomerId:
         default: Citrix Cloud Customer ID
       DeployRDGW:
@@ -109,8 +105,6 @@ Metadata:
         default: RD Gateway instance type
       CitrixVDAInstanceType:
         default: Citrix Server VDA instance type
-      CitrixVDAWindowsServerVersion:
-        default: Windows Server version for Citrix VDA
       CitrixVDAServerSetupFileLocation:
         default: Citrix VDA server setup file location
       VPCCIDR:
@@ -156,13 +150,6 @@ Parameters:
     Default: CTX-CC2
     MaxLength: '10'
     MinLength: '1'
-  CitrixCloudConnectorsWindowsServerVersion:
-    Description: Windows Server version for the Citrix Cloud Connectors.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-      - WS2012R2
-      - WS2016FULLBASE
   CitrixVDAHostName:
     Type: String
     Default: CTX-VDA1
@@ -344,13 +331,6 @@ Parameters:
       https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe.
     Type: String
     Default: ""
-  CitrixVDAWindowsServerVersion:
-    Description: Windows Server version for the Citrix VDA.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-      - WS2012R2
-      - WS2016FULLBASE
 
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
@@ -451,14 +431,12 @@ Resources:
         ADServer2PrivateIP:                  !GetAtt ADStack.Outputs.ADServer2PrivateIP
         CitrixAPIClientID:                        !Ref CitrixAPIClientID
         CitrixAPIClientSecret:                    !Ref CitrixAPIClientSecret
-        CitrixCloudConnectorsWindowsServerVersion:  !Ref CitrixCloudConnectorsWindowsServerVersion
         CitrixCloudConnectorInstanceType:           !Ref CitrixCloudConnectorInstanceType
         CitrixCloudConnector1HostName:        !Ref CitrixCloudConnector1HostName
         CitrixCloudConnector2HostName:        !Ref CitrixCloudConnector2HostName
         CitrixVDAHostName:                    !Ref CitrixVDAHostName
         CitrixCustomerId:                         !Ref CitrixCustomerId
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
-        CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
         CitrixVDAServerSetupFileLocation:   !Ref CitrixVDAServerSetupFileLocation
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
         DomainDNSName:                      !Ref DomainDNSName

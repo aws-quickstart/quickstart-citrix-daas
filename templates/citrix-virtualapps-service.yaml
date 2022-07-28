@@ -24,8 +24,6 @@ Metadata:
           - KeyPairName
           - CitrixCloudConnectorInstanceType
           - CitrixVDAInstanceType
-          - CitrixCloudConnectorsWindowsServerVersion
-          - CitrixVDAWindowsServerVersion
           - CitrixVDAServerSetupFileLocation
       - Label:
           default: Microsoft Active Directory Configuration
@@ -68,8 +66,6 @@ Metadata:
         default: Citrix Cloud Connector 1 name
       CitrixCloudConnector2HostName:
         default: Citrix Cloud Connector 2 name
-      CitrixCloudConnectorsWindowsServerVersion:
-        default: Windows Server version for Citrix Cloud Connector
       CitrixVDAHostName:
         default: Citrix VDA name
       CitrixVDAServerSetupFileLocation:
@@ -102,8 +98,6 @@ Metadata:
         default: Quick Start S3 key prefix
       CitrixVDAInstanceType:
         default: Citrix Server VDA instance type
-      CitrixVDAWindowsServerVersion:
-        default: Windows Server version for Citrix VDA
       VPCID:
         default: VPC ID
 
@@ -158,13 +152,6 @@ Parameters:
       https://s3.us-east-2.amazonaws.com/ctxs-vda-installer/vda/VDAServerSetup_1903.exe.
     Type: String
     Default: ""
-  CitrixCloudConnectorsWindowsServerVersion:
-    Description: Windows Server version for the Citrix Cloud Connectors.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-      - WS2012R2
-      - WS2016FULLBASE
   CitrixCloudConnectorInstanceType:
     Description: Amazon EC2 instance type for the Citrix Cloud Connector instances.
     Type: String
@@ -280,13 +267,6 @@ Parameters:
       - g3.4xlarge
       - g3.8xlarge
       - g3.16xlarge
-  CitrixVDAWindowsServerVersion:
-    Description: Windows Server version for the Citrix VDA.
-    Type: String
-    Default: WS2016FULLBASE
-    AllowedValues:
-      - WS2012R2
-      - WS2016FULLBASE
   VPCID:
     Description: ID of the VPC; e.g., vpc-0343606e.
     Type: 'AWS::EC2::VPC::Id'
@@ -343,7 +323,6 @@ Resources:
         CitrixCloudConnector1HostName:        !Ref CitrixCloudConnector1HostName
         CitrixCloudConnector2HostName:        !Ref CitrixCloudConnector2HostName
         CitrixCloudConnectorInstanceType:           !Ref CitrixCloudConnectorInstanceType
-        CitrixCloudConnectorsWindowsServerVersion:  !Ref CitrixCloudConnectorsWindowsServerVersion
         CitrixCloudConnectorSecurityGroup:          !GetAtt CitrixCloudSecurityGroups.Outputs.CCSecurityGroup
         CitrixCustomerId:                           !Ref CitrixCustomerId
         DomainNetBIOSName:                    !Ref DomainNetBIOSName
@@ -380,7 +359,6 @@ Resources:
         CitrixVDAHostName:                    !Ref CitrixVDAHostName
         CitrixVDAInstanceType:                    !Ref CitrixVDAInstanceType
         CitrixVDASecurityGroup:                   !GetAtt CitrixCloudSecurityGroups.Outputs.VDASecurityGroup
-        CitrixVDAWindowsServerVersion:            !Ref CitrixVDAWindowsServerVersion
         CitrixVDAServerSetupFileLocation:   !Ref CitrixVDAServerSetupFileLocation
         DomainNetBIOSName:                  !Ref DomainNetBIOSName
         DomainDNSName:                      !Ref DomainDNSName
