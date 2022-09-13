@@ -1,3 +1,24 @@
 //Include any predeployment steps here, such as signing up for a Marketplace AMI or making any changes to a partner account. If there are no predeployment steps, leave this file empty.
 
 == Predeployment steps
+
+To deploy this Quick Start template, you need a Citrix Cloud tenant, with an active DaaS trial or paid subscription. For information on requesting a trial, contact your Citrix reseller or sales representative, or visit the https://www.citrix.com/products/citrix-cloud/[Citrix Cloud services website^].
+
+=== Create a Secure Client
+
+After you sign up for your active trial or paid subscription of Citrix DaaS, you need to create a Secure Client in your Citrix Cloud tenant. When you create the Secure Client, you need to record the Customer ID, the Secure Client ID, and the Secure Client Secret. These three pieces of information will be used by the Quick Start template.
+
+. Log in to the Citrix Cloud management console.
+. Go to https://us.cloud.com/identity/api-access[API Access^].
+. Note the Customer ID.
++
+This value is shown in bold. Note that this is different than the OrgID, which is shown in the top right corner of the Citrix Cloud management console.
+[#predeploy1]
+.Identifying customer ID and creating a new secure client
+image::../docs/deployment_guide/images/secure_client.png[Secure client]
++
+. Enter a name for the client.
+. Choose **Create Client**.
+. Download the following information from the pop-up window:
+** **Secure Client ID** – This value looks something like `c0xbc290-20c4-e96e-9f69-69b4526edf5d`. The value is shown under Id at the time of creation, and you can retrieve it later by going to the Identify and Access Management page.
+** **Secure Client Secret** – This value looks something like `jPcBJmYtBndMI1R-p420Gw==`, and it is shown only at the time of creation.

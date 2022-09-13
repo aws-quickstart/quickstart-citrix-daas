@@ -1,3 +1,5 @@
 // Include details about any licenses and how to sign up. Provide links as appropriate.
 
+This Quick Start leverages Citrix DaaS, which is delivered as a managed service from Citrix Cloud. For this Quick Start script to function, you will need either an active trial or a paid subscription to the Citrix Virtual Apps and Desktops service. This service is licensed on a per-user, per-month basis. For more information or to request a trial, contact your Citrix reseller or sales representative. To request an evaluation, see the https://www.citrix.com/cloud/form/inquiry/[Citrix Cloud services website^].
+
 There is no cost to use this Quick Start, but you will be billed for any AWS services or resources that this Quick Start deploys. For more information, refer to the https://fwd.aws/rA69w?[AWS Quick Start General Information Guide^].

@@ -7,7 +7,7 @@ AWS Cloud.
 
 [#architecture1]
 .Quick Start architecture for {partner-product-short-name} on AWS
-image::../docs/deployment_guide/images/architecture_diagram.png[Architecture]
+image::../docs/deployment_guide/images/citrix-daas-architecture.png[Architecture]
 
 As shown in <<architecture1>>, this Quick Start sets up the following:
 
@@ -17,12 +17,16 @@ best practices, to provide you with your own virtual network on AWS.*
 * In the public subnets:
 ** Managed network address translation (NAT) gateways to allow outbound
 internet access for resources in the private subnets.*
-** A Linux bastion host in an Auto Scaling group to allow inbound Secure
-Shell (SSH) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.*
+** A Remote Desktop Gateway in an Auto Scaling group to allow inbound Remote Desktop access to EC2 instances in public and private subnets.*
 * In the private subnets:
-** <item>.
-** <item>.
-// Add bullet points for any additional components that are included in the deployment. Ensure that the additional components are shown in the architecture diagram. End each bullet with a period.
-* <describe any additional components>.
+** AWS Directory Service for Microsoft Active Directory deployed in both Availability Zones for redundancy.
+** Two Citrix Cloud Connectors (domain-joined Windows servers) running on EC2 instances, deployed in both Availability Zones for redundancy.
+** A Windows Server with the Citrix Virtual Delivery Agent (VDA) installed, running on an EC2 instance.
+
+This Quick Start also performs the following in your Citrix Cloud tenant:
+* Configures the two Citrix Cloud Connector instances to form a resource location on AWS.
+* Creates an AWS hosting connection and resource.
+* Creates a machine catalog, and adds the VDA instance to the machine catalog.
+* Creates a Delivery Group, including a hosted shared desktop and two sample published applications.
 
 [.small]#* The template that deploys this Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#

@@ -1,4 +1,5 @@
-This Quick Start deploys {partner-product-name} on the AWS Cloud. This guide covers the steps necessary to deploy this Quick Start.
+This Quick Start deploys a {partner-product-name} resource location on the AWS Cloud. This guide covers the steps necessary to deploy this Quick Start.
+It is intended for users who want to accelerate a production implementation by automating the foundation setup, or for users who want to set up a trial deployment of Citrix Cloud.
 
 // For advanced information about the product, troubleshooting, or additional functionality, refer to the https://{quickstart-github-org}.github.io/{quickstart-project-name}/operational/index.html[Operational Guide^].
 
