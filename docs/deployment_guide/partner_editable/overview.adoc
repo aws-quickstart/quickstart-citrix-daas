@@ -1,5 +1,4 @@
-This Quick Start deploys a {partner-product-name} resource location on the AWS Cloud. This guide covers the steps necessary to deploy this Quick Start.
-It is intended for users who want to accelerate a production implementation by automating the foundation setup, or for users who want to set up a trial deployment of Citrix Cloud.
+This Quick Start deploys https://www.citrix.com/solutions/vdi-and-daas/what-is-desktop-as-a-service-daas.html[Citrix Desktop as a Service (DaaS)^] in the AWS Cloud. It is for users that want to set up the foundation for a production DaaS environment or a trial Citrix Cloud deployment.
 
 // For advanced information about the product, troubleshooting, or additional functionality, refer to the https://{quickstart-github-org}.github.io/{quickstart-project-name}/operational/index.html[Operational Guide^].
 

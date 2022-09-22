@@ -2,7 +2,7 @@
 :quickstart-github-org: aws-quickstart
 :partner-product-name: Citrix DaaS
 :partner-product-short-name: Citrix DaaS
-:partner-company-name: Citrix Systems, Inc.
+:partner-company-name: Citrix Systems Inc.
 :doc-month: September
 :doc-year: 2022
 :partner-contributors: {partner-company-name}
