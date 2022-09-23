@@ -21,9 +21,7 @@ Most of the EC2 instances created by this Quick Start do not have a public IP ad
 . Connect to the RD Gateway instance over the internet by using Remote Desktop, then use Remote Desktop on the RD Gateway to connect to the other EC2 instances.  You can find the private IP addresses of the Citrix Cloud Connector and VDA instances by selecting the respective EC2 instance in the AWS Console.
 
 ==== Explore the Resources Created in Your Citrix Cloud Tenant
-This Quick Start creates resources in your Citrix Cloud tenant, many of which you can customize. To access them, log into the https://citrix.cloud.com/[Citrix Cloud management console^].
-
-This Quick Start creates a resource location for each deployment. The resource location follows a standard naming convention and includes the Deployment ID to make it unique.
+This Quick Start creates resources in your Citrix Cloud tenant, many of which you can customize. To access them, log into the https://citrix.cloud.com/[Citrix Cloud management console^]. This Quick Start creates a resource location for each deployment. The resource location follows a standard naming convention and includes the Deployment ID to make it unique.
 
 [#postdeploy1]
 .Quick Start Citrix resource location
@@ -35,25 +33,23 @@ Note that the resource location contains the two Citrix Cloud Connector instance
 .Quick Start Citrix Cloud Connectors
 image::../docs/deployment_guide/images/citrix_cloud_connectors.png[Citrix resource location]
 
-When a resource location is created, the Active Directory to which the Citrix Cloud Connectors are joined is automatically added to the list of available domains in the Citrix Cloud tenant. To see this list of domains in the Citrix Cloud management console, choose Identity and Access Management, and then choose https://us.cloud.com/identity/domains[Domains^].
+When a resource location is created, the Active Directory to which the Citrix Cloud Connectors are joined is automatically added to the list of available domains in the Citrix Cloud tenant. To see this list of domains in the Citrix Cloud management console, choose *Identity and Access Management*, and then choose https://us.cloud.com/identity/domains[Domains^].
 
-You can see that the qstest.com forest/domain (the name chosen for this Quick Start sample deployment) is now available in the Citrix Cloud tenant.
+You can see that the `qstest.com forest/domain` (the name chosen for this Quick Start sample deployment) is now available in the Citrix Cloud tenant.
 
 [#postdeploy3]
 .Citrix Cloud tenant domains
 image::../docs/deployment_guide/images/tenant_domains.png[Citrix domains]
 
-To provision and manage the VDA with the Citrix DaaS, this Quick Start template creates a Hosting Connection and a Hosting Resource in your specific environment. More information on hosting connections and resources can be found in the https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/connections.html[Citrix documentation^].
+To provision and manage the VDA with the Citrix DaaS, this Quick Start template creates a Hosting Connection and a Hosting Resource in your environment. For more information, refer to https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/connections.html[Create and manage connections^].
 
 [#postdeploy4]
 .Citrix Cloud hosting connection
 image::../docs/deployment_guide/images/hosting_connections.png[Hosting connections]
 
-The virtual applications and desktops are delivered from the VDA EC2 instance where they’re installed and executed. This Quick Start template creates a single VDA based on Windows Server 2016.
+This Quick Start creates one VDA deployed to a single Windows Server 2016 EC2 instance. Virtual applications and desktops are installed to and delivered from this EC2 instance.
 
-Machine catalogs typically contain one or more identically configured VDAs that share the properties of the machine catalog. More information on machine catalogs can be found in the https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/machine-catalogs-create.html[Citrix documentation].
-
-This Quick Start template creates one manually provisioned, power-managed machine catalog based on Windows Server 2016.
+This Quick Start template creates one manually provisioned, power-managed machine catalog based on Windows Server 2016. Machine catalogs typically contain one or more identically configured VDAs that share the properties of the machine catalog. For more information, refer to https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/machine-catalogs-create.html[Create machine catalogs^].
 
 [#postdeploy5]
 .Citrix Cloud machine catalog
@@ -65,15 +61,13 @@ The Quick Start template adds the VDA instance it creates to the machine catalog
 .Citrix Cloud VDA
 image::../docs/deployment_guide/images/vda.png[Citrix VDA]
 
-The virtual applications and desktops are defined by Delivery Groups. Delivery Groups have a number of attributes associated with them, including Apps, Desktops, users, and machine catalogs. You can find more information on Delivery Groups in the https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/delivery-groups-create.html[Citrix documentation].
-
-This Quick Start template creates one Delivery Group, which is available to all authenticated users.
+This Quick Start template creates one Delivery Group, which is available to all authenticated users. Virtual applications and desktops are defined by Delivery Groups. Delivery Groups have a number of attributes associated with them, including Apps, Desktops, users, and machine catalogs. For more information, refer to https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/delivery-groups-create.html[Create delivery groups^].
 
 [#postdeploy7]
 .Citrix Cloud delivery group
 image::../docs/deployment_guide/images/delivery_group.png[Citrix Cloud delivery group]
 
-This Quick Start template also defines two sample applications and a published desktop (delivered from the machine catalog).
+This Quick Start template also defines two sample applications and a published desktop, delivered from the machine catalog.
 
 [#postdeploy8]
 .Citrix Cloud defined applications
@@ -87,7 +81,7 @@ image::../docs/deployment_guide/images/published_desktop.png[published desktop]
 
 This Quick Start template is designed to create a fully functional deployment. After the deployment is complete, you should be able to navigate to the Citrix Workspace for your Citrix Cloud tenant, log in with appropriate credentials, and connect to the published applications or desktop.
 
-To test your deployment, first identify the URL of your Citrix Workspace. In the Citrix Cloud management console, choose https://us.cloud.com/workspaceconfiguration/access[Workspace Configuration]. The Workspace URL will look something like the following:
+To test your deployment, first identify the URL of your Citrix Workspace. In the Citrix Cloud management console, choose https://us.cloud.com/workspaceconfiguration/access[Workspace Configuration^]. The Workspace URL will look something like the following:
 
 [#postdeploy10]
 .Citrix Cloud Workspace URL
@@ -106,7 +100,7 @@ After you log in, you will see the two sample published apps and an AWS QuickSta
 image::../docs/deployment_guide/images/workspace_apps.png[workspace_apps]
 
 == Customizing Your Citrix DaaS Deployment on AWS
-You will likely want to customize the deployment to meet the needs of a specific use case. As you’ve seen here, this Quick Start template creates a fully functional system in about 90
+This Quick Start deploys a reference architecture that can be customized. As you’ve seen here, this Quick Start template creates a fully functional system in about 90
 minutes, but you need to customize the Delivery Group to match the organization’s needs. You can also install additional applications on the VDA by remotely connecting to the instance as an administrator.
 
 Common next steps and system customizations include:
