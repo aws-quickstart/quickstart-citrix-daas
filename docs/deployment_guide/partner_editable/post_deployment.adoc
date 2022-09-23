@@ -73,7 +73,7 @@ The Quick Start template adds the VDA instance it creates to the machine catalog
 .Citrix Cloud VDA
 image::../docs/deployment_guide/images/vda.png[Citrix VDA]
 
-* One Delivery Group available to all authenticated users. Virtual applications and desktops are defined by Delivery Groups. Delivery Groups have a number of attributes associated with them, including Apps, Desktops, users, and machine catalogs. For more information, refer to https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/delivery-groups-create.html[Create delivery groups^].
+* One Delivery Group available to all authenticated users. Virtual applications and desktops are defined by Delivery Groups. Delivery Groups have a number of attributes associated with them, including apps, desktops, users, and machine catalogs. For more information, refer to https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/delivery-groups-create.html[Create delivery groups^].
 
 +
 [#postdeploy7]
@@ -97,7 +97,7 @@ image::../docs/deployment_guide/images/published_desktop.png[published desktop]
 This Quick Start template is designed to create a fully functional deployment. After the deployment is complete, you should be able to navigate to the Citrix Workspace for your Citrix Cloud tenant, log in with appropriate credentials, and connect to the published applications or desktop.
 
 To test your deployment, first identify the URL of your Citrix Workspace. In the Citrix Cloud management console, choose https://us.cloud.com/workspaceconfiguration/access[Workspace Configuration^]. The Workspace URL will look something like the following:
-
+// TODO: information not accessible by users of screen readers
 [#postdeploy10]
 .Citrix Cloud Workspace URL
 image::../docs/deployment_guide/images/workspace_url.png[workspace_url]
@@ -115,7 +115,7 @@ After you log in, you will see the two sample published apps and an AWS QuickSta
 image::../docs/deployment_guide/images/workspace_apps.png[workspace_apps]
 
 == Customizing Your Citrix DaaS Deployment on AWS
-This Quick Start deploys the foundation for a fully functional production DaaS environmentreference architecture that can be customized. As you’ve seen here, this Quick Start template creates a fully functional system in about 90
+This Quick Start deploys a reference architecture that can be customized. As you’ve seen here, this Quick Start template creates a fully functional system in about 90
 minutes, but you need to customize the Delivery Group to match the organization’s needs. You can also install additional applications on the VDA by remotely connecting to the instance as an administrator.
 
 Common next steps and system customizations include:
