@@ -76,7 +76,7 @@ image::../docs/deployment_guide/images/hosting_connections.png[Hosting connectio
 image::../docs/deployment_guide/images/machine_catalog.png[Machine catalog]
 
 +
-The Quick Start template adds the VDA instance it creates to the machine catalog it creates.
+The Quick Start template adds the VDA instance it creates to the machine catalog.
 
 +
 [#postdeploy6]
@@ -114,21 +114,19 @@ The Quick Start deploys two sample apps and one sample desktop, which appear in 
 image::../docs/deployment_guide/images/workspace_apps.png[workspace_apps]
 
 == Customizing Your Citrix DaaS Deployment on AWS
-This Quick Start deploys a reference architecture that can be customized. As you’ve seen here, this Quick Start template creates a fully functional system in about 90
-minutes, but you need to customize the Delivery Group to match the organization’s needs. You can also install additional applications on the VDA by remotely connecting to the instance as an administrator.
+This Quick Start deploys a fully functional Citrix DaaS system, but you can customize the delivery group to match your organization’s needs. You can also install additional applications on the VDA by remotely connecting to the VDA instance as an administrator. Refer to the links in the link:#_resources[Resources] section of this guide for more information.
 
-Common next steps and system customizations include:
 
-* Modifying published applications or desktops (to remove defaults, add new apps, filter access to the resources by Active Directory user or group, etc.). This can be done on the Manage tab of Citrix DaaS in the Citrix Cloud management console. The Delivery Group properties are a great place to start.
-* Configuring https://docs.citrix.com/en-us/citrix-virtual-apps-desktops/manage-deployment/user-profiles.html[Citrix User Profile Management^]. Citrix DaaS includes a component called User Profile Management (UPM), which allows you to manage roaming user profiles in a high-performance, flexible manner. For more information on use cases and configuration of Citrix UPM.
-* Provisioning and configuring the https://docs.citrix.com/en-us/workspace-environment-management/service.html[Citrix Workspace Environment Manager^] service. The Citrix Workspace Environment Manager service uses intelligent resource management and User Profile Management technologies to deliver competitive performance, desktop logon, and application response times for Citrix DaaS deployments. It is a software-only, driver-free solution, requiring only a lightweight agent to be installed on your VDA.
-* Creating a https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/machine-catalogs-create.html#prepare-a-master-image-on-the-hypervisor-or-cloud-service[master image^] VDA template instance, and deploying any number of additional instances based on the master image with Machine Creation Services. This is a more complex process, but it allows you to provision and version-manage instances at scale.
-* Deploying https://www.citrix.com/networking/[advanced networking capabilities^] into the system. Citrix is also an provider of networking services, including a mix of sophisticated networking appliances and networking-related web services. You might be interested in one or more of the following:
-** https://www.citrix.com/products/citrix-adc/[Citrix ADC^] VPX (formerly known as NetScaler ADC), virtual appliance-based application delivery controller, performs application-specific traffic analysis to intelligently distribute, optimize, and secure Layer 4-Layer 7 (L4–L7) network traffic for web applications. It provides a broad range of services from sophisticated load balancing and SSL offload to advanced authentication, application firewalling, and more. Design and deployment guidance can be found in the https://www.citrix.com/content/dam/citrix/en_us/documents/reference-material/validated-reference-design-netscaler-and-amazon-aws.pdf[Citrix documentation].
-** https://www.citrix.com/products/citrix-gateway/[Citrix Gateway^] VPX (formerly known as Citrix NetScaler Unified Gateway) provides a comprehensive, secure remote access solution to a variety of different applications, effectively consolidating remote access infrastructure and providing secure single sign-on to Citrix virtual apps and desktops, Remote Desktop Protocol (RDP), web, and SaaS applications. One common use case with the Citrix Workspace is leveraging Citrix Gateway VPX on AWS to flexibly proxy ICA/HDX traffic (Citrix remote display protocol used by virtual apps and desktops) directly into the AWS VPC. Find more information on configuring Citrix Gateway VPX for use with Citrix Workspace in the https://support.citrix.com/article/CTX232640[Citrix documentation^].
-** https://docs.citrix.com/en-us/citrix-gateway-service.html[Citrix Gateway Service^] is a secure remote access solution with diverse identity and Access Management (IdAM) capabilities, delivering a unified experience into Citrix DaaS and much more!
-** https://docs.citrix.com/en-us/citrix-adc-cpx/current-release/about.html[Citrix ADC CPX^] is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use Citrix ADC load balancing and traffic management features for container-based applications.
-** https://www.citrix.com/products/citrix-web-app-firewall/[Citrix Web App Firewall^] protects web applications and sites from both known and unknown attacks, including application-layer and zero-day threats. It’s available as a standalone appliance or integrated with the Citrix ADC platform.
-** https://www.citrix.com/products/citrix-secure-web-gateway/[Citrix Secure Web Gateway^] (formerly known as Citrix NetScaler Secure Web Gateway) is an effective, easy-to-use, high-performing web security solution with user behavior analytics. It leverages a combination of web services and customer managed appliances to help protect users from known and unknown web threats. It helps enforce company security policies on all outgoing web traffic, effectively protecting the company from known and unknown attacks while providing visibility and control over outbound web traffic.
-** https://www.citrix.com/products/citrix-application-delivery-management/[Citrix Application Delivery Management^] is a centralized network management, analytics, and orchestration solution. From a single platform, administrators can view, automate, and manage network services for scale-out application architectures.
-** https://www.citrix.com/products/citrix-intelligent-traffic-management/[Citrix Intelligent Traffic Management^] is based on recently acquired Cedexis technology. Our advanced traffic management improves user experience by harnessing big data and routing users to their requested content.
+== Resources
+
+* Citrix
+** https://docs.citrix.com/en-us/citrix-daas/install-configure/delivery-groups-manage.html[Manage delivery groups^]
+** https://docs.citrix.com/en-us/citrix-virtual-apps-desktops/manage-deployment/applications-manage.html[Applications^]
+** https://docs.citrix.com/en-us/citrix-virtual-apps-desktops/manage-deployment/user-profiles.html[User profiles^]
+** https://docs.citrix.com/en-us/workspace-environment-management/service.html[Workspace Environment Management service^]
+** https://docs.citrix.com/en-us/citrix-virtual-apps-desktops-service/install-configure/machine-catalogs-create.html#prepare-a-master-image-on-the-hypervisor-or-cloud-service[Prepare a master image on the hypervisor or cloud service^]
+** https://www.citrix.com/solutions/app-delivery-and-security/[Citrix Application Delivery and Security^]
+
+
+
+
