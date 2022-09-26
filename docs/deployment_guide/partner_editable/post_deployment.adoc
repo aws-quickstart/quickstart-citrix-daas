@@ -14,7 +14,7 @@ The Quick Start deploys the following EC2 instances in your AWS account:
 * One Citrix Virtual Delivery Agent (VDA)
 
 ==== Connect to the Bastion Host (RD Gateway)
-Most of the EC2 instances created by this Quick Start do not have a public IP address. To connect to these instances, use the RD Gateway.
+The Citrix Cloud Connector and VDA EC2 instances deployed by this Quick Start do not have public IP addresses. To connect to these instances, use the RD Gateway.
 
 . Log in to the RD Gateway instance by opening a Remote Desktop Connection to the *BastionHostEIP* address shown on the Outputs tab.
 . Use the value of *DomainAdmin* as the user name, and use the value of *DomainAdminPassword* as the password. Note that the RD Gateway has a public IP address, but the other instances have private IP addresses.
