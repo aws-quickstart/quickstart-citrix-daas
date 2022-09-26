@@ -102,23 +102,12 @@ image::../docs/deployment_guide/images/sample_applications.png[sample applicatio
 .Citrix Cloud published desktop
 image::../docs/deployment_guide/images/published_desktop.png[published desktop]
 
-=== Test Your Citrix DaaS Deployment
+=== Log in to Citrix Cloud Workspace
 
-This Quick Start template is designed to create a fully functional deployment. After the deployment is complete, you should be able to navigate to the Citrix Workspace for your Citrix Cloud tenant, log in with appropriate credentials, and connect to the published applications or desktop.
+. In the https://citrix.cloud.com/[Citrix Cloud management console^], choose *Workspace Configuration*. On the *Access* tab, note the *Workspace URL*.
+. Navigate to the Workspace URL using either the Citrix Workspace app or a web browser. Log in with a valid AD user's credentials.
 
-To test your deployment, first identify the URL of your Citrix Workspace. In the Citrix Cloud management console, choose https://us.cloud.com/workspaceconfiguration/access[Workspace Configuration^]. The Workspace URL will look something like the following:
-// TODO: information not accessible by users of screen readers
-[#postdeploy10]
-.Citrix Cloud Workspace URL
-image::../docs/deployment_guide/images/workspace_url.png[workspace_url]
-
-This URL can be used by either the Citrix Workspace app or a web browser to access Citrix DaaS created by this Quick Start template. After you are connected, log in with a valid Active Directory user:
-
-[#postdeploy11]
-.Citrix Cloud Workspace login
-image::../docs/deployment_guide/images/workspace_login.png[workspace_login]
-
-After you log in, you will see the two sample published apps and an AWS QuickStart Desktop.
+The Quick Start deploys two sample apps and one sample desktop, which appear in the Citrix Workspace.
 
 [#postdeploy12]
 .Citrix Cloud Workspace published apps and desktop
