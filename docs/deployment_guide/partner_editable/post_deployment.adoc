@@ -13,7 +13,7 @@ The Citrix Cloud Connector and VDA EC2 instances do not have public IP addresses
 
 ==== Connect to the RD Gateway instance
 
-. Sign in to the https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#[AWS Management Console] and open the CloudFormation console.
+. Sign in to the https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#[AWS Management Console^] and open the CloudFormation console.
 . In the left navigation pane, choose *Stacks*.
 . On the *Stacks* page, choose the Citrix DaaS stack.
 . Choose the *Outputs* tab. Note the following values:
@@ -24,7 +24,7 @@ The Citrix Cloud Connector and VDA EC2 instances do not have public IP addresses
 
 ==== Connect to a Citrix Cloud Connector or VDA instance
 
-. Sign in to the https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#[AWS Management Console] and open the EC2 console.
+. Sign in to the https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#[AWS Management Console^] and open the EC2 console.
 . In the left navigation pane, choose *Instances*.
 . On the *Instances* page, choose the EC2 instance.
 . Choose the *Networking* tab. Note the private IP address.

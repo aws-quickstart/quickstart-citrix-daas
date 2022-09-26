@@ -1,6 +1,6 @@
 // Include details about any licenses and how to sign up. Provide links as appropriate.
 
-This Quick Start requires an active trial or a paid subscription to the Citrix DaaS service. If you don't have one, https://www.citrix.com/cloud/form/inquiry/[contact a Citrix representative].
+This Quick Start requires an active trial or a paid subscription to the Citrix DaaS service. If you don't have one, https://www.citrix.com/cloud/form/inquiry/[contact a Citrix representative^].
 
 There is no cost to use this Quick Start, but you will be billed for any AWS services or resources that this Quick Start deploys. For more information, refer to the https://fwd.aws/rA69w?[AWS Quick Start General Information Guide^].
 
