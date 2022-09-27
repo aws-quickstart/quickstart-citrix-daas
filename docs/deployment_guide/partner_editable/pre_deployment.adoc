@@ -2,23 +2,16 @@
 
 == Predeployment steps
 
-To deploy this Quick Start template, you need a Citrix Cloud tenant, with an active DaaS trial or paid subscription. For information on requesting a trial, contact your Citrix reseller or sales representative, or visit the https://www.citrix.com/products/citrix-cloud/[Citrix Cloud services website^].
+=== Sign up for a DaaS subscription
+
+This Quick Start requires a Citrix Cloud tenant with an active trial or a paid subscription to the Citrix DaaS service. If you don't have a subscription, https://www.citrix.com/products/citrix-cloud/form/inquiry/[contact a Citrix representative^].
 
 === Create a Secure Client
 
-After you sign up for your active trial or paid subscription of Citrix DaaS, you need to create a Secure Client in your Citrix Cloud tenant. When you create the Secure Client, you need to record the Customer ID, the Secure Client ID, and the Secure Client Secret. These three pieces of information will be used by the Quick Start template.
+After you obtain a DaaS subscription, refer to https://developer.cloud.com/citrix-cloud/citrix-cloud-api-overview/docs/get-started-with-citrix-cloud-apis#create-an-api-client[Create an API client^] to create a secure client in your Citrix Cloud tenant.
 
-. Log in to the Citrix Cloud management console.
-. Go to https://us.cloud.com/identity/api-access[API Access^].
-. Note the Customer ID.
-+
-This value is shown in bold. Note that this is different than the OrgID, which is shown in the top right corner of the Citrix Cloud management console.
-[#predeploy1]
-.Identifying customer ID and creating a new secure client
-image::../docs/deployment_guide/images/secure_client.png[Secure client]
-+
-. Enter a name for the client.
-. Choose **Create Client**.
-. Download the following information from the pop-up window:
-** **Secure Client ID** – This value looks something like `c0xbc290-20c4-e96e-9f69-69b4526edf5d`. The value is shown under Id at the time of creation, and you can retrieve it later by going to the Identify and Access Management page.
-** **Secure Client Secret** – This value looks something like `jPcBJmYtBndMI1R-p420Gw==`, and it is shown only at the time of creation.
+When creating the client, you must copy the Secure Client ID, Secure Client Secret, and Customer ID provided. The Quick Start template requires these values to deploy the Quick Start. When you deploy the Quick Start, enter them in the AWS CloudFormation console for the following parameters:
+
+* **Citrix Customer ID** – Quick Start *Citrix Cloud Customer ID* (`CitrixCustomerId`) parameter.
+* **Citrix Secure Client ID** – Quick Start *Citrix Cloud Secure Client ID* (`CitrixAPIClientID`) parameter.
+* **Citrix Secure Client Secret** – Quick Start *Citrix Cloud Secure Client Secret* (`CitrixAPIClientSecret`) parameter.
