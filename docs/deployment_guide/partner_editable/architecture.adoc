@@ -1,0 +1,49 @@
+:xrefstyle: short
+
+Deploying this Quick Start with default parameters builds the following {partner-product-short-name} environment in the
+AWS Cloud.
+
+// Replace this example diagram with your own. Follow our wiki guidelines: https://w.amazon.com/bin/view/AWS_Quick_Starts/Process_for_PSAs/#HPrepareyourarchitecturediagram. Upload your source PowerPoint file to the GitHub {deployment name}/docs/images/ directory in its repository.
+
+[#architecture1]
+.Quick Start architecture for {partner-product-short-name} on AWS
+image::../docs/deployment_guide/images/citrix-daas-architecture.png[Architecture]
+
+As shown in <<architecture1>>, this Quick Start sets up the following:
+
+* A highly available architecture that spans two Availability Zones.*
+* A virtual private cloud (VPC) configured with public and private subnets, according to AWS
+best practices, to provide you with your own virtual network on AWS.*
+* In the public subnets:
+** Managed network address translation (NAT) gateways to allow outbound
+internet access for resources in the private subnets.*
+** A Remote Desktop Gateway in an Auto Scaling group to allow inbound Remote Desktop access to EC2 instances in public and private subnets.*
+* In the private subnets:
+** AWS Directory Service for Microsoft Active Directory (AD) deployed in both Availability Zones for redundancy.
+** Two Citrix Cloud Connectors (domain-joined Windows servers) running on EC2 instances, deployed in both Availability Zones for redundancy.
+** A Windows Server with the Citrix Virtual Delivery Agent (VDA) installed, running on an EC2 instance.
+
+This Quick Start also performs the following in your Citrix Cloud tenant:
+* Configures the two Citrix Cloud Connector instances to form a resource location on AWS.
+* Creates an AWS hosting connection and resource.
+* Creates a machine catalog, and adds the VDA instance to the machine catalog.
+* Creates a Delivery Group, including a hosted shared desktop and two sample published applications.
+
+[.small]#* The template that deploys this Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
+
+* A highly available system architecture that spans two Availability Zones.*
+* A virtual private cloud (VPC) configured with public and private subnets according to AWS best practices, to provide you with your own virtual network on AWS.*
+* In the public subnets:
+** Managed NAT gateways to allow outbound internet access for resources in the private subnets.*
+** Remote Desktop Gateway in an Auto Scaling group to allow inbound Remote Desktop access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.*
+* In the private subnets:
+** Citrix Cloud Connector deployed to a domain-joined Windows Server EC2 instance in each Availability Zone.
+** Citrix Virtual Delivery Agent (VDA) deployed to a single Windows Server EC2 instance.
+* AWS Directory Service to deploy AWS Managed Microsoft Active Directory (AD) directories in both Availability Zones.
+
+This Quick Start also performs the following in your Citrix Cloud tenant (not shown):
+
+* Configures the two Citrix Cloud Connector instances to form a resource location on AWS.
+* Creates an AWS hosting connection and resource.
+* Creates a machine catalog, and adds the VDA instance to the machine catalog.
+* Creates a Delivery Group, including a hosted shared desktop and two sample published applications.
