@@ -75,7 +75,7 @@ image::../docs/deployment_guide/images/hosting_connections.png[Hosting connectio
 image::../docs/deployment_guide/images/machine_catalog.png[Machine catalog]
 
 +
-The Quick Start template adds the VDA instance it creates to the machine catalog.
+The Partner Solution template adds the VDA instance it creates to the machine catalog.
 
 +
 [#postdeploy6]
@@ -106,14 +106,14 @@ image::../docs/deployment_guide/images/published_desktop.png[published desktop]
 . In the https://citrix.cloud.com/[Citrix Cloud management console^], choose *Workspace Configuration*. On the *Access* tab, note the *Workspace URL*.
 . Navigate to the Workspace URL using either the Citrix Workspace app or a web browser. Log in with a valid AD user's credentials.
 
-The Quick Start deploys two sample apps and one sample desktop, which appear in the Citrix Workspace.
+The Partner Solution deploys two sample apps and one sample desktop, which appear in the Citrix Workspace.
 
 [#postdeploy12]
 .Citrix Cloud Workspace published apps and desktop
 image::../docs/deployment_guide/images/workspace_apps.png[workspace_apps]
 
 === Customizing Your Citrix DaaS Deployment on AWS
-This Quick Start deploys a fully functional Citrix DaaS system, but you can customize the delivery group to match your organization’s needs. You can also install additional applications on the VDA by remotely connecting to the VDA instance as an administrator. Refer to the links in the link:#_resources[Resources] section of this guide for more information.
+This Partner Solution deploys a fully functional Citrix DaaS system, but you can customize the delivery group to match your organization’s needs. You can also install additional applications on the VDA by remotely connecting to the VDA instance as an administrator. Refer to the links in the link:#_resources[Resources] section of this guide for more information.
 
 
 == Resources
