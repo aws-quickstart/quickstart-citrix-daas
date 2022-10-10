@@ -15,10 +15,10 @@ As shown in <<architecture1>>, this AWS Partner Solution sets up the following:
 * A virtual private cloud (VPC) configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.*
 * In the public subnets:
 ** Managed NAT gateways to allow outbound internet access for resources in the private subnets.*
-** Remote Desktop Gateway (RD Gateway) in an Auto Scaling group to allow inbound Remote Desktop access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.*
+** Remote Desktop Gateway (RD Gateway) instances in an Auto Scaling group to provide remote access to Amazon Elastic Compute Cloud (Amazon EC2) instances the private subnets.*
 * In the private subnets:
-** Citrix Cloud Connector deployed to domain-joined Windows Server EC2 instances.
-** Citrix Virtual Delivery Agent (VDA) deployed to a single Windows Server EC2 instance.
+** Two Citrix Cloud Connectors deployed to domain-joined Windows Server EC2 instances.
+** One Citrix Virtual Delivery Agent (VDA) deployed to a Windows Server EC2 instance.
 * AWS Directory Service to deploy AWS Managed Microsoft Active Directory (AD) directories in both Availability Zones.
 
 This Partner Solution also performs the following in your Citrix Cloud tenant (not shown):
