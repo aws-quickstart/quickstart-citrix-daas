@@ -3,7 +3,7 @@
 :partner-product-name: Citrix DaaS
 :partner-product-short-name: Citrix DaaS
 :partner-company-name: Citrix Systems Inc.
-:doc-month: September
+:doc-month: October
 :doc-year: 2022
 :partner-contributors: {partner-company-name}
 // :other-contributors: Akua Mansa, Trek10
