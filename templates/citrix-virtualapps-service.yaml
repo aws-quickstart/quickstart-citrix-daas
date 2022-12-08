@@ -365,7 +365,6 @@ Resources:
         DomainAdminPassword:                !Ref DomainAdminPassword
         KeyPairName:                        !Ref KeyPairName
         PrivateVDASubnet1:                  !Ref PrivateVDASubnet1ID
-        PrivateVDASubnet2:                  !Ref PrivateVDASubnet2ID
         QSDeploymentID:                     !GetAtt QSDeploymentID.Outputs.ParameterQSDeploymentID
         QSS3BucketName:                     !Ref QSS3BucketName
         QSS3BucketRegion:                   !Ref QSS3BucketRegion
