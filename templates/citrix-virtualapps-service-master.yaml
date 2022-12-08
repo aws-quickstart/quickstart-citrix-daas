@@ -445,7 +445,6 @@ Resources:
         PrivateInfraSubnet1ID:                !GetAtt VPCStack.Outputs.PrivateSubnet1AID
         PrivateInfraSubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2AID
         PrivateVDASubnet1ID:                !GetAtt VPCStack.Outputs.PrivateSubnet1BID
-        PrivateVDASubnet2ID:                !GetAtt VPCStack.Outputs.PrivateSubnet2BID
         QSS3BucketName:                     !Ref QSS3BucketName
         QSS3BucketRegion:                   !Ref QSS3BucketRegion
         QSS3KeyPrefix:                      !Ref QSS3KeyPrefix
