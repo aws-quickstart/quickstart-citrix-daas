@@ -1,5 +1,7 @@
 :quickstart-project-name: quickstart-citrix-daas
 :quickstart-github-org: aws-quickstart
+:partner-solution-project-name: quickstart-citrix-daas
+:partner-solution-github-org: aws-quickstart
 :partner-product-name: Citrix DaaS
 :partner-product-short-name: Citrix DaaS
 :partner-company-name: Citrix Systems Inc.
