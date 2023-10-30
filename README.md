@@ -1,8 +1,3 @@
-## Citrix DaaS on AWS
-
-For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/EXYE3?).
-
-To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo.
-
-To submit code for this Partner Solution, see the [AWS Partner Solutions Contributor's Guide](https://fwd.aws/NwqYA?).
-
+# quickstart-citrix-daas 
+## This repository has been deprecated in favor of https://github.com/aws-ia/cfn-ps-citrix-daas. 
+***We will archive this repository and keep it publicly available until May 1, 2024.***
